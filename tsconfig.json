@@ -1,0 +1,19 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.config.json"
+    },
+    // Plugin
+    {
+      "path": "./packages/vue3-plugin/tsconfig.app.json"
+    },
+    {
+      "path": "./packages/vue3-plugin/tsconfig.vitest.json"
+    },
+    // Playground
+    {
+      "path": "./packages/playground/tsconfig.app.json"
+    }
+  ]
+}

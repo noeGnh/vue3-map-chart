@@ -1,0 +1,28 @@
+{
+  "name": "docs",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Plugin docs",
+  "author": "Noé Gnanih <noegnanih@gmail.com>",
+  "homepage": "",
+  "license": "MIT",
+  "main": "index.ts",
+  "directories": {
+    "plugin": "vue3-plugin",
+    "test": "__tests__"
+  },
+  "files": [
+    "vue3-plugin"
+  ],
+  "scripts": {
+    "dev": "vitepress dev .",
+    "build": "vitepress build .",
+    "lint": "eslint '.vitepress/**/*.{ts,vue}'"
+  },
+  "dependencies": {
+    "vue3-plugin": "workspace:*"
+  },
+  "devDependencies": {
+    "vitepress": "^1.1.4"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "name": "vue3-plugin",
+  "description": "Plugin description",
+  "version": "0.0.1",
+  "private": false,
+  "author": "Noé Gnanih <noegnanih@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./*": "./*"
+  },
+  "typings": "types/index.d.ts",
+  "files": [
+    "dist",
+    "types",
+    "README.md"
+  ],
+  "scripts": {
+    "dev-server": "pnpm --parallel vite",
+    "dev-types": "vue-tsc  --noEmit -p tsconfig.app.json --watch",
+    "build": "yarn build-lib && yarn build-types",
+    "build-lib": "vite build",
+    "build-types": "vue-tsc --emitDeclarationOnly --declaration -p tsconfig.app.json",
+    "lint": "eslint 'src/**/*.{ts,vue}'",
+    "test": "vitest",
+    "test-ci": "vitest --run",
+    "version": "auto-changelog --template keepachangelog --hide-credit -p && git add CHANGELOG.md"
+  },
+  "peerDependencies": {
+    "vue": "^3.2.45"
+  },
+  "devDependencies": {
+    "auto-changelog": "^2.4.0",
+    "vite": "^4.1.0",
+    "vitest": "^0.28.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/issues"
+  },
+  "homepage": "https://github.com#readme",
+  "publishConfig": {
+    "access": "public"
+  }
+}
