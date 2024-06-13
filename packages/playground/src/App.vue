@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <HelloWorld />
+  <MapChart />
 </template>
 
 <style scoped></style>

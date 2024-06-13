@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
-import Vue3Plugin from 'vue3-plugin'
+import Vue3MapChart from 'vue3-map-chart'
 
 import App from './App.vue'
 
-createApp(App).use(Vue3Plugin).mount('#app')
+createApp(App).use(Vue3MapChart).mount('#app')

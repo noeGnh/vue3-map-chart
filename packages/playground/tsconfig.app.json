@@ -11,8 +11,9 @@
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
-    "noEmit": true,
-    "forceConsistentCasingInFileNames": true
+    "noEmit": false,
+    "forceConsistentCasingInFileNames": true,
+    "composite": true
   },
   "include": [
     "src/**/*.ts",

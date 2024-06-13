@@ -1,4 +1,8 @@
 {
+  "compilerOptions": {
+    "strict": true,
+    "forceConsistentCasingInFileNames": true
+  },
   "files": [],
   "references": [
     {
@@ -6,10 +10,10 @@
     },
     // Plugin
     {
-      "path": "./packages/vue3-plugin/tsconfig.app.json"
+      "path": "./packages/vue3-map-chart/tsconfig.app.json"
     },
     {
-      "path": "./packages/vue3-plugin/tsconfig.vitest.json"
+      "path": "./packages/vue3-map-chart/tsconfig.vitest.json"
     },
     // Playground
     {

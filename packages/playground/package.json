@@ -8,8 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.2.45",
-    "vue3-plugin": "workspace:*"
+    "vue": "^3.4.27",
+    "vue3-map-chart": "workspace:*"
   },
   "devDependencies": {
     "vite": "^4.1.0",

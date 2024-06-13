@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 
 process.env.NODE_ENV
 export default defineConfig({
+  base: process.env.NODE_ENV === 'production' ? '/vue3-map-chart' : '/',
   plugins: [
     vue(),
     AutoImport({
@@ -37,10 +38,10 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      'vue3-plugin':
+      'vue3-map-chart':
         process.env.NODE_ENV === 'production'
-          ? 'vue3-plugin'
-          : 'vue3-plugin/src/index.ts',
+          ? 'vue3-map-chart'
+          : 'vue3-map-chart/src/index.ts',
     },
     dedupe: ['vue'],
   },
@@ -51,7 +52,7 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    exclude: ['vue3-plugin'],
+    exclude: ['vue3-map-chart'],
   },
   server: {
     port: 4320,

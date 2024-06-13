@@ -4,10 +4,12 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { fileURLToPath } from 'url'
 import { defineConfig } from 'vite'
+import svgLoader from 'vite-svg-loader'
 
 export default defineConfig({
   plugins: [
     vue(),
+    svgLoader(),
     Components({
       dts: true,
       extensions: ['vue', 'md'],
@@ -46,7 +48,7 @@ export default defineConfig({
   ],
   build: {
     lib: {
-      name: 'Vue3Plugin',
+      name: 'Vue3MapChart',
       entry: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
       formats: ['es', 'cjs', 'iife'],
       fileName: (format) => {
