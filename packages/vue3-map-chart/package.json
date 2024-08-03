@@ -54,5 +54,8 @@
   "homepage": "https://github.com#readme",
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@vueuse/core": "^10.11.0"
   }
 }

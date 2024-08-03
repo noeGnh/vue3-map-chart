@@ -3,7 +3,7 @@
   "include": ["src/env.d.ts", "src/**/*", "src/**/*.vue", "*.d.ts"],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
-    "lib": ["ES2019"],
+    "lib": ["ES2019", "DOM"],
     "composite": true,
     "outDir": "dist",
     "declarationDir": "types",

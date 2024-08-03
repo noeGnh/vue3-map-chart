@@ -1,9 +1,65 @@
 <script setup lang="ts">
-  //
+  const data = {
+    US: 13,
+    CA: 63,
+    GB: 10,
+    DE: 95,
+    JP: 76,
+    CN: 46,
+    IN: 98,
+    BR: 96,
+    AU: 10,
+    IT: 85,
+    RU: 42,
+    ZA: 58,
+    NG: 72,
+    MX: 13,
+    ES: 17,
+    AR: 64,
+    CH: 41,
+    NL: 35,
+    KR: 45,
+    SE: 72,
+    NO: 79,
+    FI: 34,
+    DK: 81,
+    PL: 27,
+    GR: 78,
+    PT: 77,
+    BE: 14,
+    IE: 92,
+    NZ: 83,
+    IL: 43,
+    TR: 42,
+    SA: 74,
+    EG: 93,
+    PK: 54,
+    BD: 25,
+    IR: 29,
+    IQ: 60,
+    AF: 22,
+    DZ: 17,
+    MA: 60,
+    TH: 96,
+    MY: 64,
+    VN: 11,
+    PH: 51,
+    SG: 20,
+    ID: 47,
+    CL: 53,
+    CO: 30,
+    PE: 47,
+    VE: 57,
+    CU: 92,
+    FR: {
+      value: 47,
+      color: 'red',
+    },
+  }
 </script>
 
 <template>
-  <MapChart />
+  <MapChart :data="data" :height="600" :display-legend-when-empty="false" />
 </template>
 
 <style scoped></style>

@@ -10,6 +10,6 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     MapChart: typeof import('./src/components/MapChart.vue')['default']
-    SvgComponent: typeof import('./src/components/SvgComponent.vue')['default']
+    Tooltip: typeof import('./src/components/Tooltip.vue')['default']
   }
 }
