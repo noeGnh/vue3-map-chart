@@ -60,6 +60,7 @@
 
 <template>
   <MapChart
+    type="world"
     :data="data"
     :height="600"
     :display-legend-when-empty="false"

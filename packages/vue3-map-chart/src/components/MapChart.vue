@@ -19,6 +19,7 @@
     displayLegend?: boolean
     displayLegendWhenEmpty?: boolean
     formatValueWithSIPrefix?: boolean
+    forceCursorPointer?: boolean
     legendBgColor?: string
     legendTextColor?: string
     legendValuePrefix?: string
@@ -40,14 +41,15 @@
     displayLegend: true,
     displayLegendWhenEmpty: true,
     formatValueWithSIPrefix: false,
+    forceCursorPointer: false,
     legendBgColor: undefined,
     legendTextColor: undefined,
     legendValuePrefix: '',
     legendValueSuffix: '',
     defaultFillColor: 'rgb(236, 236, 236)',
     defaultFillHoverColor: 'rgb(226, 226, 226)',
-    defaultStrokeHoverColor: 'rgb(128, 128, 128)',
-    defaultStrokeColor: 'rgb(128, 128, 128)',
+    defaultStrokeHoverColor: 'rgb(200, 200, 200)',
+    defaultStrokeColor: 'rgb(200, 200, 200)',
     baseColor: '#0782c5',
   })
 
@@ -81,9 +83,13 @@
 
   const defaultStrokeColor = computed(() => props.defaultStrokeColor)
 
-  const defaultCursor = computed(() =>
-    props.displayLegend && props.displayLegendWhenEmpty ? 'pointer' : 'default'
-  )
+  const defaultCursor = computed(() => {
+    if (props.forceCursorPointer) return 'pointer'
+
+    return props.displayLegend && props.displayLegendWhenEmpty
+      ? 'pointer'
+      : 'default'
+  })
 
   // handle events
 
@@ -181,6 +187,7 @@
           opacity = 1
         } else {
           opacity = (value - min) / (max - min)
+          opacity = opacity == 0 ? 0.01 : opacity
         }
         css.value += ` #${key.toUpperCase()} { fill: ${
           color || props.baseColor

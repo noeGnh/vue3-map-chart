@@ -5,7 +5,7 @@ export type MapType =
   | 'europe'
   | 'north-america'
   | 'south-america'
-  | 'australia'
+  | 'oceania'
 
 export interface MapDataValue {
   value?: number
