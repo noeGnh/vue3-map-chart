@@ -1,6 +1,6 @@
 {
   "name": "vue3-map-chart",
-  "description": "Plugin description",
+  "description": "A Vue JS Component for displaying dynamic data on a world and continents maps.",
   "version": "0.0.1",
   "private": false,
   "author": "Noé Gnanih <noegnanih@gmail.com>",
@@ -45,13 +45,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com"
+    "url": "https://github.com/noeGnh/vue3-map-chart"
   },
-  "keywords": [],
+  "keywords": [
+    "vue",
+    "vue3",
+    "map",
+    "chart"
+  ],
   "bugs": {
-    "url": "https://github.com/issues"
+    "url": "https://github.com/noeGnh/vue3-map-chart/issues"
   },
-  "homepage": "https://github.com#readme",
+  "homepage": "https://github.com/noeGnh/vue3-map-chart#readme",
   "publishConfig": {
     "access": "public"
   },
