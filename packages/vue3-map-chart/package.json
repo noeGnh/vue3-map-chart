@@ -56,6 +56,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@vueuse/core": "^10.11.0"
+    "@vueuse/core": "^10.11.0",
+    "i18n-iso-countries": "^7.11.3"
   }
 }

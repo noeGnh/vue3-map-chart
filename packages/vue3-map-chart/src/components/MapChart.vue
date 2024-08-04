@@ -1,15 +1,17 @@
 <script setup lang="ts">
-  import { useEventListener, useStyleTag } from '@vueuse/core'
+  import { useEventListener, useMouse, useStyleTag } from '@vueuse/core'
+  import countries from 'i18n-iso-countries'
   import type { CSSProperties } from 'vue'
 
-  import type { MapData, MapType } from '../types'
-  import { isObject } from '../utils'
-
-  // import Tooltip from './Tooltip.vue'
+  import locales from '../i18n-iso-countries-locales'
+  import type { MapData, MapDataValue, MapType } from '../types'
+  import { formatNumberWithSIPrefix, isObject } from '../utils'
+  import Tooltip from './Tooltip.vue'
 
   // handle props
 
   interface Props {
+    langCode?: string
     width?: number | string
     height?: number | string
     type?: MapType
@@ -17,6 +19,8 @@
     displayLegend?: boolean
     displayLegendWhenEmpty?: boolean
     formatValueWithSIPrefix?: boolean
+    legendBgColor?: string
+    legendTextColor?: string
     legendValuePrefix?: string
     legendValueSuffix?: string
     defaultStrokeColor?: string
@@ -28,6 +32,7 @@
   }
 
   const props = withDefaults(defineProps<Props>(), {
+    langCode: 'en',
     height: 500,
     width: '100%',
     type: 'world',
@@ -35,6 +40,8 @@
     displayLegend: true,
     displayLegendWhenEmpty: true,
     formatValueWithSIPrefix: false,
+    legendBgColor: undefined,
+    legendTextColor: undefined,
     legendValuePrefix: '',
     legendValueSuffix: '',
     defaultFillColor: 'rgb(236, 236, 236)',
@@ -42,6 +49,18 @@
     defaultStrokeHoverColor: 'rgb(128, 128, 128)',
     defaultStrokeColor: 'rgb(128, 128, 128)',
     baseColor: '#0782c5',
+  })
+
+  onMounted(() => {
+    const registerLocale = async (langCode: string) => {
+      try {
+        countries.registerLocale(locales[langCode])
+      } catch (error) {
+        console.error('Error loading locale:', error)
+      }
+    }
+
+    registerLocale(props.langCode)
   })
 
   const height = computed(() =>
@@ -68,25 +87,34 @@
 
   // handle events
 
+  const currentAreaId = ref<string | null>(null)
+  const currentAreaValue = ref<number | MapDataValue | null>(null)
+
   const emits = defineEmits(['mapItemMouseover', 'mapItemClick'])
 
   onMounted(() => {
-    if (isObject(props.data)) {
-      Object.keys(props.data).forEach((key) => {
-        const el = document.getElementById(`${key.toUpperCase()}`)
-        if (el) {
-          useEventListener(el, 'mouseover', () => {
-            emits('mapItemMouseover', key, props.data[key])
-          })
-          useEventListener(el, 'click', () => {
-            emits('mapItemClick', key, props.data[key])
-          })
-        }
+    const el = document.getElementById('v3mc-map')
+    if (el) {
+      useEventListener(el, 'mouseover', (event) => {
+        const target = event.target as HTMLElement
+        const id = target.getAttribute('id')
+        currentAreaId.value = id
+        currentAreaValue.value = id ? props.data[id] : null
+        emits('mapItemMouseover', id, currentAreaValue.value)
+      })
+      useEventListener(el, 'click', (event) => {
+        const target = event.target as HTMLElement
+        const id = target.getAttribute('id')
+        currentAreaId.value = id
+        currentAreaValue.value = id ? props.data[id] : null
+        emits('mapItemClick', id, currentAreaValue.value)
       })
     }
   })
 
-  // Load svg maps
+  const { x, y } = useMouse()
+
+  // load svg maps
 
   const files = import.meta.glob('../assets/maps/**/*.svg', {
     eager: true,
@@ -104,7 +132,7 @@
     svgMaps[name] = value as string
   }
 
-  // Build map styles
+  // build map styles
 
   const { css } = useStyleTag('', {
     id: `v3mc-map-${Date.now()}`,
@@ -173,17 +201,78 @@
     },
     { deep: true, immediate: true }
   )
+
+  // tooltip
+
+  const tooltipLabel = computed(() => {
+    const customLegendLabel =
+      typeof currentAreaValue.value === 'number'
+        ? undefined
+        : currentAreaValue.value?.legendLabel
+
+    const areaName = currentAreaId.value
+      ? countries.getName(currentAreaId.value, props.langCode)
+      : currentAreaId.value
+
+    return customLegendLabel || areaName || ''
+  })
+
+  const tooltipValue = computed(() => {
+    let value: number | string =
+      (typeof currentAreaValue.value === 'number'
+        ? currentAreaValue.value
+        : currentAreaValue.value?.value) || ''
+
+    if (typeof value !== 'number') return value
+
+    value = props.formatValueWithSIPrefix
+      ? formatNumberWithSIPrefix(value)
+      : value
+
+    value = props.legendValuePrefix + value + props.legendValueSuffix
+
+    return value
+  })
+
+  const displayTooltip = computed(() => {
+    return (
+      props.displayLegend &&
+      (props.displayLegendWhenEmpty || tooltipValue.value) &&
+      tooltipLabel.value
+    )
+  })
+
+  const tooltipX = computed(() => {
+    return `${x.value - 150}px`
+  })
+
+  const tooltipY = computed(() => {
+    return `${y.value - 100}px`
+  })
 </script>
 
 <template>
   <div class="v3mc-container">
-    <div class="v3mc-map" :style="mapStyles" v-html="svgMaps[props.type]"></div>
+    <div
+      id="v3mc-map"
+      class="v3mc-map"
+      :style="mapStyles"
+      v-html="svgMaps[props.type]"></div>
+    <Tooltip
+      v-if="displayTooltip"
+      id="v3mc-tooltip"
+      class="v3mc-tooltip"
+      :label="tooltipLabel"
+      :value="tooltipValue"
+      :bg-color="props.legendBgColor"
+      :text-color="props.legendTextColor"></Tooltip>
   </div>
 </template>
 
 <style scoped>
   .v3mc-container {
     padding: 5px;
+    position: relative;
   }
 
   .v3mc-container,
@@ -204,5 +293,12 @@
   :deep(.v3mc-map > svg > path:hover) {
     fill: v-bind(defaultFillHoverColor);
     stroke: v-bind(defaultStrokeHoverColor);
+  }
+
+  .v3mc-tooltip {
+    position: absolute;
+    z-index: 10;
+    top: v-bind(tooltipY);
+    left: v-bind(tooltipX);
   }
 </style>

@@ -59,7 +59,12 @@
 </script>
 
 <template>
-  <MapChart :data="data" :height="600" :display-legend-when-empty="false" />
+  <MapChart
+    :data="data"
+    :height="600"
+    :display-legend-when-empty="false"
+    legend-value-prefix="$"
+    lang-code="fr" />
 </template>
 
 <style scoped></style>

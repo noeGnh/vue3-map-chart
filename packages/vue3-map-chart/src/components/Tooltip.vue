@@ -19,8 +19,10 @@
 <template>
   <div class="v3mc-tooltip-wrapper">
     <span class="v3mc-tooltip-label"> {{ props.label }} </span>
-    <div class="v3mc-tooltip-divider"></div>
-    <span class="v3mc-tooltip-value"> {{ props.value }} </span>
+    <template v-if="props.value">
+      <div class="v3mc-tooltip-divider"></div>
+      <span class="v3mc-tooltip-value"> {{ props.value }} </span>
+    </template>
   </div>
 </template>
 
