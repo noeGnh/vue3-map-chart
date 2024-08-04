@@ -16,3 +16,7 @@ export interface MapDataValue {
 export interface MapData {
   [key: string]: number | MapDataValue
 }
+
+export interface Options {
+  name: string
+}
