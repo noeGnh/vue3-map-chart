@@ -1,6 +1,6 @@
 {
   "name": "vue3-map-chart-monorepo",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "A monorepo template for developing Vue libraries",
   "author": "Noé Gnanih <noegnanih@gmail.com>",
   "license": "MIT",

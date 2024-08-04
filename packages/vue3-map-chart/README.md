@@ -26,10 +26,6 @@ If you are using pnpm:
 pnpm add vue3-map-chart
 ```
 
-## Credits
-
-This package use SVG maps from [`amCharts`](https://www.amcharts.com/svg-maps)
-
 ## Demo
 
 View the live demo [`here`](https://noegnh.github.io/vue3-map-chart/)
@@ -170,6 +166,10 @@ The key is a country's [ISO 3166 Code](https://en.wikipedia.org/wiki/ISO_3166). 
     @map-item-mouseover="onMapItemMouseover"/>
 </template>
 ```
+
+## Credits
+
+This package use SVG maps from [`amCharts`](https://www.amcharts.com/svg-maps)
 
 ## Contributing
 
