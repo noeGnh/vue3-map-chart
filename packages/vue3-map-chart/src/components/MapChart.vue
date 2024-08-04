@@ -1,11 +1,21 @@
 <script setup lang="ts">
-  import { useEventListener, useMouse, useStyleTag } from '@vueuse/core'
+  import {
+    useEventListener,
+    useMouse,
+    useMouseInElement,
+    useStyleTag,
+  } from '@vueuse/core'
   import countries from 'i18n-iso-countries'
   import type { CSSProperties } from 'vue'
 
   import locales from '../i18n-iso-countries-locales'
   import type { MapData, MapDataValue, MapType } from '../types'
-  import { formatNumberWithSIPrefix, isObject } from '../utils'
+  import {
+    formatNumberWithSIPrefix,
+    getRandomInteger,
+    isObject,
+    isValidIsoCode,
+  } from '../utils'
   import Tooltip from './Tooltip.vue'
 
   // handle props
@@ -18,7 +28,7 @@
     mapStyles?: CSSProperties
     displayLegend?: boolean
     displayLegendWhenEmpty?: boolean
-    formatValueWithSIPrefix?: boolean
+    formatValueWithSiPrefix?: boolean
     forceCursorPointer?: boolean
     legendBgColor?: string
     legendTextColor?: string
@@ -40,7 +50,7 @@
     mapStyles: () => ({}),
     displayLegend: true,
     displayLegendWhenEmpty: true,
-    formatValueWithSIPrefix: false,
+    formatValueWithSiPrefix: false,
     forceCursorPointer: false,
     legendBgColor: undefined,
     legendTextColor: undefined,
@@ -91,30 +101,42 @@
       : 'default'
   })
 
+  const cpntId = getRandomInteger(10000, 99999)
+
   // handle events
 
+  const isOutsideMap = ref(true)
   const currentAreaId = ref<string | null>(null)
   const currentAreaValue = ref<number | MapDataValue | null>(null)
 
   const emits = defineEmits(['mapItemMouseover', 'mapItemClick'])
 
   onMounted(() => {
-    const el = document.getElementById('v3mc-map')
+    const el = document.getElementById(`v3mc-map-${cpntId}`)
     if (el) {
       useEventListener(el, 'mouseover', (event) => {
         const target = event.target as HTMLElement
         const id = target.getAttribute('id')
         currentAreaId.value = id
         currentAreaValue.value = id ? props.data[id] : null
-        emits('mapItemMouseover', id, currentAreaValue.value)
+        if (id && isValidIsoCode(id))
+          emits('mapItemMouseover', id, currentAreaValue.value)
       })
       useEventListener(el, 'click', (event) => {
         const target = event.target as HTMLElement
         const id = target.getAttribute('id')
         currentAreaId.value = id
         currentAreaValue.value = id ? props.data[id] : null
-        emits('mapItemClick', id, currentAreaValue.value)
+        if (id && isValidIsoCode(id))
+          emits('mapItemClick', id, currentAreaValue.value)
       })
+      const { isOutside } = useMouseInElement(el)
+      watch(
+        () => isOutside.value,
+        (value) => {
+          isOutsideMap.value = value
+        }
+      )
     }
   })
 
@@ -141,7 +163,7 @@
   // build map styles
 
   const { css } = useStyleTag('', {
-    id: `v3mc-map-${Date.now()}`,
+    id: `v3mc-map-${cpntId}-styles`,
   })
 
   const buildStyles = () => {
@@ -189,12 +211,12 @@
           opacity = (value - min) / (max - min)
           opacity = opacity == 0 ? 0.01 : opacity
         }
-        css.value += ` #${key.toUpperCase()} { fill: ${
+        css.value += ` #v3mc-map-${cpntId} #${key.toUpperCase()} { fill: ${
           color || props.baseColor
         }; fill-opacity: ${opacity}; cursor: ${
           props.displayLegend ? 'pointer' : 'default'
         }; } `
-        css.value += ` #${key.toUpperCase()}:hover { fill-opacity: ${
+        css.value += ` #v3mc-map-${cpntId} #${key.toUpperCase()}:hover { fill-opacity: ${
           opacity + 0.05
         }; } `
       })
@@ -232,7 +254,7 @@
 
     if (typeof value !== 'number') return value
 
-    value = props.formatValueWithSIPrefix
+    value = props.formatValueWithSiPrefix
       ? formatNumberWithSIPrefix(value)
       : value
 
@@ -243,6 +265,7 @@
 
   const displayTooltip = computed(() => {
     return (
+      !isOutsideMap.value &&
       props.displayLegend &&
       (props.displayLegendWhenEmpty || tooltipValue.value) &&
       tooltipLabel.value
@@ -250,7 +273,7 @@
   })
 
   const tooltipX = computed(() => {
-    return `${x.value - 150}px`
+    return `${x.value - 100}px`
   })
 
   const tooltipY = computed(() => {
@@ -261,13 +284,13 @@
 <template>
   <div class="v3mc-container">
     <div
-      id="v3mc-map"
+      :id="`v3mc-map-${cpntId}`"
       class="v3mc-map"
       :style="mapStyles"
       v-html="svgMaps[props.type]"></div>
     <Tooltip
       v-if="displayTooltip"
-      id="v3mc-tooltip"
+      :id="`v3mc-tooltip-${cpntId}`"
       class="v3mc-tooltip"
       :label="tooltipLabel"
       :value="tooltipValue"
@@ -303,7 +326,7 @@
   }
 
   .v3mc-tooltip {
-    position: absolute;
+    position: fixed;
     z-index: 10;
     top: v-bind(tooltipY);
     left: v-bind(tooltipX);

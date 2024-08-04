@@ -28,3 +28,25 @@ export function formatNumberWithSIPrefix(number: number): string | number {
 
   return scaled.toFixed(1) + suffix
 }
+
+/**
+ * Generates a random integer between the provided minimum and maximum values (inclusive).
+ *
+ * @param {number} min - The minimum value for the random integer.
+ * @param {number} max - The maximum value for the random integer.
+ * @return {number} The randomly generated integer.
+ */
+export function getRandomInteger(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+/**
+ * Checks if the given code is a valid ISO code.
+ *
+ * @param {string} code - The code to be checked.
+ * @return {boolean} Returns true if the code is a valid ISO code, false otherwise.
+ */
+export function isValidIsoCode(code: string): boolean {
+  const isoCodeRegex = /^(?:[A-Z]{2}|[A-Z]{3})$/
+  return isoCodeRegex.test(code)
+}
