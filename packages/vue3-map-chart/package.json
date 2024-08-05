@@ -34,7 +34,7 @@
     "version": "auto-changelog --template keepachangelog --hide-credit -p && git add CHANGELOG.md"
   },
   "peerDependencies": {
-    "vue": "^3.4.27"
+    "vue": "^3.4.0"
   },
   "devDependencies": {
     "@types/jsdom": "^21.1.7",

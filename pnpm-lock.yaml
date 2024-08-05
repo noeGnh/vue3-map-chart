@@ -100,7 +100,7 @@ importers:
   packages/playground:
     dependencies:
       vue:
-        specifier: ^3.4.27
+        specifier: ^3.4.0
         version: 3.4.27(typescript@4.9.5)
       vue3-map-chart:
         specifier: workspace:*
@@ -122,7 +122,7 @@ importers:
         specifier: ^7.11.3
         version: 7.11.3
       vue:
-        specifier: ^3.4.27
+        specifier: ^3.4.0
         version: 3.4.27(typescript@4.9.5)
     devDependencies:
       '@types/jsdom':
