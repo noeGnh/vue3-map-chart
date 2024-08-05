@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v0.0.4](https://github.com/noeGnh/vue3-map-chart/compare/v0.0.3...v0.0.4)
+## [v0.0.5](https://github.com/noeGnh/vue3-map-chart/compare/v0.0.4...v0.0.5)
+
+### Commits
+
+- style: decrease maps stroke width [`9e5d281`](https://github.com/noeGnh/vue3-map-chart/commit/9e5d2816a77ef9a24d4a1a67ecfe4fd5500e01a5)
+
+## [v0.0.4](https://github.com/noeGnh/vue3-map-chart/compare/v0.0.3...v0.0.4) - 2024-08-05
 
 ### Commits
 
