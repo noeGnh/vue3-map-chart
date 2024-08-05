@@ -4807,15 +4807,15 @@ function _createVNode(type, props = null, children = null, patchFlag = 0, dynami
   }
   if (props) {
     props = guardReactiveProps(props);
-    let { class: klass, style } = props;
+    let { class: klass, style: style2 } = props;
     if (klass && !isString(klass)) {
       props.class = normalizeClass(klass);
     }
-    if (isObject$2(style)) {
-      if (isProxy(style) && !isArray(style)) {
-        style = extend({}, style);
+    if (isObject$2(style2)) {
+      if (isProxy(style2) && !isArray(style2)) {
+        style2 = extend({}, style2);
       }
-      props.style = normalizeStyle(style);
+      props.style = normalizeStyle(style2);
     }
   }
   const shapeFlag = isString(type) ? 1 : isSuspense(type) ? 128 : isTeleport(type) ? 64 : isObject$2(type) ? 4 : isFunction(type) ? 2 : 0;
@@ -5426,18 +5426,18 @@ function setVarsOnVNode(vnode, vars) {
 }
 function setVarsOnNode(el2, vars) {
   if (el2.nodeType === 1) {
-    const style = el2.style;
+    const style2 = el2.style;
     let cssText = "";
     for (const key in vars) {
-      style.setProperty(`--${key}`, vars[key]);
+      style2.setProperty(`--${key}`, vars[key]);
       cssText += `--${key}: ${vars[key]};`;
     }
-    style[CSS_VAR_TEXT] = cssText;
+    style2[CSS_VAR_TEXT] = cssText;
   }
 }
 const displayRE = /(^|;)\s*display\s*:/;
 function patchStyle(el2, prev, next) {
-  const style = el2.style;
+  const style2 = el2.style;
   const isCssString = isString(next);
   let hasControlledDisplay = false;
   if (next && !isCssString) {
@@ -5445,14 +5445,14 @@ function patchStyle(el2, prev, next) {
       if (!isString(prev)) {
         for (const key in prev) {
           if (next[key] == null) {
-            setStyle(style, key, "");
+            setStyle(style2, key, "");
           }
         }
       } else {
         for (const prevStyle of prev.split(";")) {
           const key = prevStyle.slice(0, prevStyle.indexOf(":")).trim();
           if (next[key] == null) {
-            setStyle(style, key, "");
+            setStyle(style2, key, "");
           }
         }
       }
@@ -5461,16 +5461,16 @@ function patchStyle(el2, prev, next) {
       if (key === "display") {
         hasControlledDisplay = true;
       }
-      setStyle(style, key, next[key]);
+      setStyle(style2, key, next[key]);
     }
   } else {
     if (isCssString) {
       if (prev !== next) {
-        const cssVarText = style[CSS_VAR_TEXT];
+        const cssVarText = style2[CSS_VAR_TEXT];
         if (cssVarText) {
           next += ";" + cssVarText;
         }
-        style.cssText = next;
+        style2.cssText = next;
         hasControlledDisplay = displayRE.test(next);
       }
     } else if (prev) {
@@ -5478,50 +5478,50 @@ function patchStyle(el2, prev, next) {
     }
   }
   if (vShowOriginalDisplay in el2) {
-    el2[vShowOriginalDisplay] = hasControlledDisplay ? style.display : "";
+    el2[vShowOriginalDisplay] = hasControlledDisplay ? style2.display : "";
     if (el2[vShowHidden]) {
-      style.display = "none";
+      style2.display = "none";
     }
   }
 }
 const importantRE = /\s*!important$/;
-function setStyle(style, name, val) {
+function setStyle(style2, name, val) {
   if (isArray(val)) {
-    val.forEach((v) => setStyle(style, name, v));
+    val.forEach((v) => setStyle(style2, name, v));
   } else {
     if (val == null)
       val = "";
     if (name.startsWith("--")) {
-      style.setProperty(name, val);
+      style2.setProperty(name, val);
     } else {
-      const prefixed = autoPrefix(style, name);
+      const prefixed = autoPrefix(style2, name);
       if (importantRE.test(val)) {
-        style.setProperty(
+        style2.setProperty(
           hyphenate(prefixed),
           val.replace(importantRE, ""),
           "important"
         );
       } else {
-        style[prefixed] = val;
+        style2[prefixed] = val;
       }
     }
   }
 }
 const prefixes = ["Webkit", "Moz", "ms"];
 const prefixCache = {};
-function autoPrefix(style, rawName) {
+function autoPrefix(style2, rawName) {
   const cached = prefixCache[rawName];
   if (cached) {
     return cached;
   }
   let name = camelize(rawName);
-  if (name !== "filter" && name in style) {
+  if (name !== "filter" && name in style2) {
     return prefixCache[rawName] = name;
   }
   name = capitalize(name);
   for (let i = 0; i < prefixes.length; i++) {
     const prefixed = prefixes[i] + name;
-    if (prefixed in style) {
+    if (prefixed in style2) {
       return prefixCache[rawName] = prefixed;
     }
   }
@@ -28669,6 +28669,7 @@ const plugin = {
     app.component((options == null ? void 0 : options.name) || "MapChart", MapChart);
   }
 };
+const style = "";
 const _hoisted_1 = { class: "grid-container" };
 const _hoisted_2 = { class: "cell big" };
 const _hoisted_3 = { class: "cell small" };
