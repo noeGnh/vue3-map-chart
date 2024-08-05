@@ -39,6 +39,57 @@
     fetch(link.href, fetchOpts);
   }
 })();
+const scriptRel = "modulepreload";
+const assetsURL = function(dep) {
+  return "/vue3-map-chart/" + dep;
+};
+const seen = {};
+const __vitePreload = function preload(baseModule, deps, importerUrl) {
+  if (!deps || deps.length === 0) {
+    return baseModule();
+  }
+  const links = document.getElementsByTagName("link");
+  return Promise.all(deps.map((dep) => {
+    dep = assetsURL(dep);
+    if (dep in seen)
+      return;
+    seen[dep] = true;
+    const isCss = dep.endsWith(".css");
+    const cssSelector = isCss ? '[rel="stylesheet"]' : "";
+    const isBaseRelative = !!importerUrl;
+    if (isBaseRelative) {
+      for (let i = links.length - 1; i >= 0; i--) {
+        const link2 = links[i];
+        if (link2.href === dep && (!isCss || link2.rel === "stylesheet")) {
+          return;
+        }
+      }
+    } else if (document.querySelector(`link[href="${dep}"]${cssSelector}`)) {
+      return;
+    }
+    const link = document.createElement("link");
+    link.rel = isCss ? "stylesheet" : scriptRel;
+    if (!isCss) {
+      link.as = "script";
+      link.crossOrigin = "";
+    }
+    link.href = dep;
+    document.head.appendChild(link);
+    if (isCss) {
+      return new Promise((res, rej) => {
+        link.addEventListener("load", res);
+        link.addEventListener("error", () => rej(new Error(`Unable to preload CSS for ${dep}`)));
+      });
+    }
+  })).then(() => baseModule()).catch((err) => {
+    const e = new Event("vite:preloadError", { cancelable: true });
+    e.payload = err;
+    window.dispatchEvent(e);
+    if (!e.defaultPrevented) {
+      throw err;
+    }
+  });
+};
 /**
 * @vue/shared v3.4.27
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
@@ -1429,7 +1480,7 @@ function queuePostFlushCb(cb) {
   }
   queueFlush();
 }
-function flushPreFlushCbs(instance, seen, i = isFlushing ? flushIndex + 1 : 0) {
+function flushPreFlushCbs(instance, seen2, i = isFlushing ? flushIndex + 1 : 0) {
   for (; i < queue.length; i++) {
     const cb = queue[i];
     if (cb && cb.pre) {
@@ -1442,7 +1493,7 @@ function flushPreFlushCbs(instance, seen, i = isFlushing ? flushIndex + 1 : 0) {
     }
   }
 }
-function flushPostFlushCbs(seen) {
+function flushPostFlushCbs(seen2) {
   if (pendingPostFlushCbs.length) {
     const deduped = [...new Set(pendingPostFlushCbs)].sort(
       (a, b) => getId(a) - getId(b)
@@ -1471,7 +1522,7 @@ const comparator = (a, b) => {
   }
   return diff;
 };
-function flushJobs(seen) {
+function flushJobs(seen2) {
   isFlushPending = false;
   isFlushing = true;
   queue.sort(comparator);
@@ -2067,29 +2118,29 @@ function createPathGetter(ctx, path) {
     return cur;
   };
 }
-function traverse(value, depth = Infinity, seen) {
+function traverse(value, depth = Infinity, seen2) {
   if (depth <= 0 || !isObject$2(value) || value["__v_skip"]) {
     return value;
   }
-  seen = seen || /* @__PURE__ */ new Set();
-  if (seen.has(value)) {
+  seen2 = seen2 || /* @__PURE__ */ new Set();
+  if (seen2.has(value)) {
     return value;
   }
-  seen.add(value);
+  seen2.add(value);
   depth--;
   if (isRef(value)) {
-    traverse(value.value, depth, seen);
+    traverse(value.value, depth, seen2);
   } else if (isArray(value)) {
     for (let i = 0; i < value.length; i++) {
-      traverse(value[i], depth, seen);
+      traverse(value[i], depth, seen2);
     }
   } else if (isSet(value) || isMap(value)) {
     value.forEach((v) => {
-      traverse(v, depth, seen);
+      traverse(v, depth, seen2);
     });
   } else if (isPlainObject(value)) {
     for (const key in value) {
-      traverse(value[key], depth, seen);
+      traverse(value[key], depth, seen2);
     }
   }
   return value;
@@ -4807,15 +4858,15 @@ function _createVNode(type, props = null, children = null, patchFlag = 0, dynami
   }
   if (props) {
     props = guardReactiveProps(props);
-    let { class: klass, style: style2 } = props;
+    let { class: klass, style } = props;
     if (klass && !isString(klass)) {
       props.class = normalizeClass(klass);
     }
-    if (isObject$2(style2)) {
-      if (isProxy(style2) && !isArray(style2)) {
-        style2 = extend({}, style2);
+    if (isObject$2(style)) {
+      if (isProxy(style) && !isArray(style)) {
+        style = extend({}, style);
       }
-      props.style = normalizeStyle(style2);
+      props.style = normalizeStyle(style);
     }
   }
   const shapeFlag = isString(type) ? 1 : isSuspense(type) ? 128 : isTeleport(type) ? 64 : isObject$2(type) ? 4 : isFunction(type) ? 2 : 0;
@@ -5426,18 +5477,18 @@ function setVarsOnVNode(vnode, vars) {
 }
 function setVarsOnNode(el2, vars) {
   if (el2.nodeType === 1) {
-    const style2 = el2.style;
+    const style = el2.style;
     let cssText = "";
     for (const key in vars) {
-      style2.setProperty(`--${key}`, vars[key]);
+      style.setProperty(`--${key}`, vars[key]);
       cssText += `--${key}: ${vars[key]};`;
     }
-    style2[CSS_VAR_TEXT] = cssText;
+    style[CSS_VAR_TEXT] = cssText;
   }
 }
 const displayRE = /(^|;)\s*display\s*:/;
 function patchStyle(el2, prev, next) {
-  const style2 = el2.style;
+  const style = el2.style;
   const isCssString = isString(next);
   let hasControlledDisplay = false;
   if (next && !isCssString) {
@@ -5445,14 +5496,14 @@ function patchStyle(el2, prev, next) {
       if (!isString(prev)) {
         for (const key in prev) {
           if (next[key] == null) {
-            setStyle(style2, key, "");
+            setStyle(style, key, "");
           }
         }
       } else {
         for (const prevStyle of prev.split(";")) {
           const key = prevStyle.slice(0, prevStyle.indexOf(":")).trim();
           if (next[key] == null) {
-            setStyle(style2, key, "");
+            setStyle(style, key, "");
           }
         }
       }
@@ -5461,16 +5512,16 @@ function patchStyle(el2, prev, next) {
       if (key === "display") {
         hasControlledDisplay = true;
       }
-      setStyle(style2, key, next[key]);
+      setStyle(style, key, next[key]);
     }
   } else {
     if (isCssString) {
       if (prev !== next) {
-        const cssVarText = style2[CSS_VAR_TEXT];
+        const cssVarText = style[CSS_VAR_TEXT];
         if (cssVarText) {
           next += ";" + cssVarText;
         }
-        style2.cssText = next;
+        style.cssText = next;
         hasControlledDisplay = displayRE.test(next);
       }
     } else if (prev) {
@@ -5478,50 +5529,50 @@ function patchStyle(el2, prev, next) {
     }
   }
   if (vShowOriginalDisplay in el2) {
-    el2[vShowOriginalDisplay] = hasControlledDisplay ? style2.display : "";
+    el2[vShowOriginalDisplay] = hasControlledDisplay ? style.display : "";
     if (el2[vShowHidden]) {
-      style2.display = "none";
+      style.display = "none";
     }
   }
 }
 const importantRE = /\s*!important$/;
-function setStyle(style2, name, val) {
+function setStyle(style, name, val) {
   if (isArray(val)) {
-    val.forEach((v) => setStyle(style2, name, v));
+    val.forEach((v) => setStyle(style, name, v));
   } else {
     if (val == null)
       val = "";
     if (name.startsWith("--")) {
-      style2.setProperty(name, val);
+      style.setProperty(name, val);
     } else {
-      const prefixed = autoPrefix(style2, name);
+      const prefixed = autoPrefix(style, name);
       if (importantRE.test(val)) {
-        style2.setProperty(
+        style.setProperty(
           hyphenate(prefixed),
           val.replace(importantRE, ""),
           "important"
         );
       } else {
-        style2[prefixed] = val;
+        style[prefixed] = val;
       }
     }
   }
 }
 const prefixes = ["Webkit", "Moz", "ms"];
 const prefixCache = {};
-function autoPrefix(style2, rawName) {
+function autoPrefix(style, rawName) {
   const cached = prefixCache[rawName];
   if (cached) {
     return cached;
   }
   let name = camelize(rawName);
-  if (name !== "filter" && name in style2) {
+  if (name !== "filter" && name in style) {
     return prefixCache[rawName] = name;
   }
   name = capitalize(name);
   for (let i = 0; i < prefixes.length; i++) {
     const prefixed = prefixes[i] + name;
-    if (prefixed in style2) {
+    if (prefixed in style) {
       return prefixCache[rawName] = prefixed;
     }
   }
@@ -28477,15 +28528,15 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   setup(__props, { emit: __emit }) {
     var _a;
     useCssVars((_ctx) => ({
-      "5d4110b3": unref(height),
-      "2d218cba": unref(width),
-      "055eeed4": unref(defaultStrokeColor),
-      "74a6f22a": unref(defaultFillColor),
-      "b7aae82a": unref(defaultCursor),
-      "314a0e02": unref(defaultFillHoverColor),
-      "a2476b98": _ctx.defaultStrokeHoverColor,
-      "0b54fd42": unref(tooltipY),
-      "0b54fd41": unref(tooltipX)
+      "aeed2890": unref(height),
+      "2f8f3d15": unref(width),
+      "4f10f7ca": unref(defaultStrokeColor),
+      "6a12c0a0": unref(defaultFillColor),
+      "ab889d74": unref(defaultCursor),
+      "366ad94c": unref(defaultFillHoverColor),
+      "0eceb9cf": _ctx.defaultStrokeHoverColor,
+      "b41aa9f2": unref(tooltipY),
+      "b41aa9f4": unref(tooltipX)
     }));
     const props = __props;
     onMounted(() => {
@@ -28662,14 +28713,13 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-258888f9"]]);
+const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-c7b40fcb"]]);
 const plugin = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   install(app, options) {
     app.component((options == null ? void 0 : options.name) || "MapChart", MapChart);
   }
 };
-const style = "";
 const _hoisted_1 = { class: "grid-container" };
 const _hoisted_2 = { class: "cell big" };
 const _hoisted_3 = { class: "cell small" };
@@ -29130,4 +29180,5 @@ const _export_sfc = (sfc, props) => {
   return target;
 };
 const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-70e0a0b5"]]);
+__vitePreload(() => Promise.resolve({}), true ? ["assets/style-1ac8d4ab.css"] : void 0);
 createApp(App).use(plugin).mount("#app");
