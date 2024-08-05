@@ -41,6 +41,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 
 import Vue3MapChart from 'vue3-map-chart'
+import 'vue3-map-chart/dist/style.css'
 
 createApp(App).use(Vue3MapChart).mount('#app')
 ```
@@ -56,6 +57,7 @@ Alternatively you can also import the component locally:
 ```js
 <script setup>
  import { MapChart } from 'vue3-map-chart'
+ import 'vue3-map-chart/dist/style.css'
 </script>
 ```
 
