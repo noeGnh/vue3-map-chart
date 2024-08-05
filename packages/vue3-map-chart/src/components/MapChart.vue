@@ -314,6 +314,7 @@
   :deep(.v3mc-map > svg) {
     stroke: v-bind(defaultStrokeColor);
     fill: v-bind(defaultFillColor);
+    stroke-width: 0.4px;
   }
 
   :deep(.v3mc-map > svg > path) {
@@ -323,6 +324,7 @@
   :deep(.v3mc-map > svg > path:hover) {
     fill: v-bind(defaultFillHoverColor);
     stroke: v-bind(defaultStrokeHoverColor);
+    stroke-width: 0.5px;
   }
 
   .v3mc-tooltip {
