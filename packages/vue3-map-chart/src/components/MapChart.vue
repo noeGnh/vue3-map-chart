@@ -109,34 +109,29 @@
   const currentAreaId = ref<string | null>(null)
   const currentAreaValue = ref<number | MapDataValue | null>(null)
 
-  const emits = defineEmits(['mapItemMouseover', 'mapItemMouseout', 'mapItemClick'])
+  const emits = defineEmits([
+    'mapItemMouseover',
+    'mapItemMouseout',
+    'mapItemClick',
+  ])
 
   onMounted(() => {
     const el = document.getElementById(`v3mc-map-${cpntId}`)
     if (el) {
-      useEventListener(el, 'mouseover', (event) => {
-        const target = event.target as HTMLElement
+      const emitEvent = (target: HTMLElement, emitId: string) => {
         const id = target.getAttribute('id')
         currentAreaId.value = id
         currentAreaValue.value = id ? props.data[id] : null
-        if (id && isValidIsoCode(id))
-          emits('mapItemMouseover', id, currentAreaValue.value)
+        if (id && isValidIsoCode(id)) emits(emitId, id, currentAreaValue.value)
+      }
+      useEventListener(el, 'mouseover', (event) => {
+        emitEvent(event.target as HTMLElement, 'mapItemMouseover')
       })
       useEventListener(el, 'mouseout', (event) => {
-        const target = event.target as HTMLElement
-        const id = target.getAttribute('id')
-        currentAreaId.value = id
-        currentAreaValue.value = id ? props.data[id] : null
-        if (id && isValidIsoCode(id))
-          emits('mapItemMouseout', id, currentAreaValue.value)
+        emitEvent(event.target as HTMLElement, 'mapItemMouseout')
       })
       useEventListener(el, 'click', (event) => {
-        const target = event.target as HTMLElement
-        const id = target.getAttribute('id')
-        currentAreaId.value = id
-        currentAreaValue.value = id ? props.data[id] : null
-        if (id && isValidIsoCode(id))
-          emits('mapItemClick', id, currentAreaValue.value)
+        emitEvent(event.target as HTMLElement, 'mapItemClick')
       })
       const { isOutside } = useMouseInElement(el)
       watch(

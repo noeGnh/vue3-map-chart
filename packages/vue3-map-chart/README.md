@@ -137,6 +137,9 @@ The key is a country's [ISO 3166 Code](https://en.wikipedia.org/wiki/ISO_3166). 
 - mapItemClick
   - This event is fired when an map area is clicked.
 
+- mapItemMouseout
+  - This event is fired when the mouse leaves a map area.
+
 - mapItemMouseover
   - This event is fired when the mouse passes over the top of an map area.
 
@@ -151,6 +154,10 @@ The key is a country's [ISO 3166 Code](https://en.wikipedia.org/wiki/ISO_3166). 
  }
 
   const onMapItemClick = (areaId, areaValue) => {
+    //
+  }
+
+  const onMapItemMouseout = (areaId, areaValue) => {
     //
   }
 

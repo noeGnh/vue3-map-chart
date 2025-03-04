@@ -231,6 +231,20 @@
   const onMapItemClick = (areaId: string, areaValue: number | MapDataValue) => {
     alert(`${areaId}: ${areaValue}`)
   }
+
+  const onMapItemMouseout = (
+    areaId: string,
+    areaValue: number | MapDataValue
+  ) => {
+    console.log(`Mouseout ${areaId}: ${areaValue}`)
+  }
+
+  const onMapItemMouseover = (
+    areaId: string,
+    areaValue: number | MapDataValue
+  ) => {
+    console.log(`Mouseover ${areaId}: ${areaValue}`)
+  }
 </script>
 
 <template>
@@ -301,7 +315,9 @@
         type="oceania"
         :data="oceaniaData"
         :map-styles="{ height: '100%' }"
-        @map-item-click="onMapItemClick" />
+        @map-item-click="onMapItemClick"
+        @map-item-mouseout="onMapItemMouseout"
+        @map-item-mouseover="onMapItemMouseover" />
     </div>
   </div>
 </template>

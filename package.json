@@ -21,7 +21,8 @@
     "format": "prettier . --write",
     "commit": "git add --all && git commit",
     "commit-push": "git add --all && git commit && git push origin --all",
-    "execute-husky": "npx husky install && npx husky add .husky/pre-commit \"npx --no-install lint-staged\""
+    "execute-husky": "npx husky install && npx husky add .husky/pre-commit \"npx --no-install lint-staged\"",
+    "deploy-playground": "pnpm -F playground run deploy"
   },
   "husky": {
     "hooks": {
