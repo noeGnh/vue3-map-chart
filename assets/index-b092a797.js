@@ -28524,19 +28524,23 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     baseColor: { default: "#0782c5" },
     data: {}
   },
-  emits: ["mapItemMouseover", "mapItemClick"],
+  emits: [
+    "mapItemMouseover",
+    "mapItemMouseout",
+    "mapItemClick"
+  ],
   setup(__props, { emit: __emit }) {
     var _a;
     useCssVars((_ctx) => ({
-      "aeed2890": unref(height),
-      "2f8f3d15": unref(width),
-      "4f10f7ca": unref(defaultStrokeColor),
-      "6a12c0a0": unref(defaultFillColor),
-      "ab889d74": unref(defaultCursor),
-      "366ad94c": unref(defaultFillHoverColor),
-      "0eceb9cf": _ctx.defaultStrokeHoverColor,
-      "b41aa9f2": unref(tooltipY),
-      "b41aa9f4": unref(tooltipX)
+      "5d2c7c9e": unref(height),
+      "7773776f": unref(width),
+      "2aba6c01": unref(defaultStrokeColor),
+      "607e4916": unref(defaultFillColor),
+      "6f54f1a0": unref(defaultCursor),
+      "869a4c98": unref(defaultFillHoverColor),
+      "e4825cae": _ctx.defaultStrokeHoverColor,
+      "83d5cb26": unref(tooltipY),
+      "83d5cb28": unref(tooltipX)
     }));
     const props = __props;
     onMounted(() => {
@@ -28573,21 +28577,21 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     onMounted(() => {
       const el2 = document.getElementById(`v3mc-map-${cpntId}`);
       if (el2) {
-        useEventListener(el2, "mouseover", (event) => {
-          const target = event.target;
+        const emitEvent = (target, emitId) => {
           const id2 = target.getAttribute("id");
           currentAreaId.value = id2;
           currentAreaValue.value = id2 ? props.data[id2] : null;
           if (id2 && isValidIsoCode(id2))
-            emits("mapItemMouseover", id2, currentAreaValue.value);
+            emits(emitId, id2, currentAreaValue.value);
+        };
+        useEventListener(el2, "mouseover", (event) => {
+          emitEvent(event.target, "mapItemMouseover");
+        });
+        useEventListener(el2, "mouseout", (event) => {
+          emitEvent(event.target, "mapItemMouseout");
         });
         useEventListener(el2, "click", (event) => {
-          const target = event.target;
-          const id2 = target.getAttribute("id");
-          currentAreaId.value = id2;
-          currentAreaValue.value = id2 ? props.data[id2] : null;
-          if (id2 && isValidIsoCode(id2))
-            emits("mapItemClick", id2, currentAreaValue.value);
+          emitEvent(event.target, "mapItemClick");
         });
         const { isOutside } = useMouseInElement(el2);
         watch(
@@ -28713,7 +28717,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-c7b40fcb"]]);
+const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-9168d050"]]);
 const plugin = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   install(app, options) {
@@ -29088,6 +29092,12 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const onMapItemClick = (areaId, areaValue) => {
       alert(`${areaId}: ${areaValue}`);
     };
+    const onMapItemMouseout = (areaId, areaValue) => {
+      console.log(`Mouseout ${areaId}: ${areaValue}`);
+    };
+    const onMapItemMouseover = (areaId, areaValue) => {
+      console.log(`Mouseover ${areaId}: ${areaValue}`);
+    };
     return (_ctx, _cache) => {
       const _component_MapChart = resolveComponent("MapChart");
       return openBlock(), createElementBlock("div", _hoisted_1, [
@@ -29163,7 +29173,9 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
             type: "oceania",
             data: oceaniaData,
             "map-styles": { height: "100%" },
-            onMapItemClick
+            onMapItemClick,
+            onMapItemMouseout,
+            onMapItemMouseover
           })
         ])
       ]);
@@ -29171,7 +29183,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
   }
 });
 const App_vue_vue_type_style_index_0_lang = "";
-const App_vue_vue_type_style_index_1_scoped_70e0a0b5_lang = "";
+const App_vue_vue_type_style_index_1_scoped_a616e072_lang = "";
 const _export_sfc = (sfc, props) => {
   const target = sfc.__vccOpts || sfc;
   for (const [key, val] of props) {
@@ -29179,6 +29191,6 @@ const _export_sfc = (sfc, props) => {
   }
   return target;
 };
-const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-70e0a0b5"]]);
-__vitePreload(() => Promise.resolve({}), true ? ["assets/style-1ac8d4ab.css"] : void 0);
+const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-a616e072"]]);
+__vitePreload(() => Promise.resolve({}), true ? ["assets/style-d0823bd4.css"] : void 0);
 createApp(App).use(plugin).mount("#app");
