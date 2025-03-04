@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Implement mapItemMouseout event [`#2`](https://github.com/noeGnh/vue3-map-chart/pull/2)
 
+### Commits
+
+- feat: make minor refactor and update readme [`024bf6f`](https://github.com/noeGnh/vue3-map-chart/commit/024bf6f7d7c641c0e59989f428edf5165b803318)
+
 ## [v0.0.5](https://github.com/noeGnh/vue3-map-chart/compare/v0.0.4...v0.0.5) - 2024-08-05
 
 ### Commits
