@@ -118,7 +118,10 @@
   onMounted(() => {
     const el = document.getElementById(`v3mc-map-${cpntId}`)
     if (el) {
-      const emitEvent = (target: HTMLElement, emitId: string) => {
+      const emitEvent = (
+        target: HTMLElement,
+        emitId: 'mapItemMouseover' | 'mapItemMouseout' | 'mapItemClick'
+      ) => {
         const id = target.getAttribute('id')
         currentAreaId.value = id
         currentAreaValue.value = id ? props.data[id] : null
