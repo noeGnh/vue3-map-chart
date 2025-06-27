@@ -120,7 +120,7 @@
   onMounted(() => {
     const el = document.getElementById(`v3mc-map-${cpntId}`)
     if (el) {
-      const emitEvent = (target: HTMLElement, emitId: string) => {
+      const emitEvent = (target: HTMLElement, emitId: 'mapItemMouseover' | 'mapItemMouseout' | 'mapItemClick') => {
         const id = target.getAttribute('id')
         currentAreaId.value = id
         currentAreaValue.value = id ? props.data[id] : null
@@ -210,11 +210,11 @@
           color = dataValue.color
         }
 
-        if (value === undefined || max === undefined || min === undefined) {
+        if (value === undefined || max === undefined || min === undefined || max === min) {
           opacity = 1
         } else {
-          opacity = (value - min) / (max - min)
-          opacity = opacity == 0 ? props.minOpacity : opacity
+          const factor = (value - min) / (max - min)
+          opacity = props.minOpacity + factor * (1 - props.minOpacity)
         }
         css.value += ` #v3mc-map-${cpntId} #${key.toUpperCase()} { fill: ${
           color || props.baseColor
