@@ -1,7 +1,7 @@
 {
-  "name": "vue3-map-chart",
+  "name": "@granello-dev/vue3-map-chart",
   "description": "A Vue JS Component for displaying dynamic data on a world and continents maps.",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "private": false,
   "author": "Noé Gnanih <noegnanih@gmail.com>",
   "license": "MIT",
