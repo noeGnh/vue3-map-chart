@@ -40,6 +40,7 @@
     defaultFillHoverColor?: string
     baseColor?: string
     data: MapData
+    minOpacity: number
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -61,6 +62,7 @@
     defaultStrokeHoverColor: 'rgb(200, 200, 200)',
     defaultStrokeColor: 'rgb(200, 200, 200)',
     baseColor: '#0782c5',
+    minOpacity: 0.01
   })
 
   onMounted(() => {
@@ -212,7 +214,7 @@
           opacity = 1
         } else {
           opacity = (value - min) / (max - min)
-          opacity = opacity == 0 ? 0.01 : opacity
+          opacity = opacity == 0 ? props.minOpacity : opacity
         }
         css.value += ` #v3mc-map-${cpntId} #${key.toUpperCase()} { fill: ${
           color || props.baseColor
