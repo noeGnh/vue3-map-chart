@@ -112,7 +112,7 @@ The key is a country's [ISO 3166 Code](https://en.wikipedia.org/wiki/ISO_3166). 
 
 | Name                    | Type                                                                                   | Description                                                                     | Default              | Required |
 |-------------------------|----------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|----------------------|----------|
-| data                    |  number / { value?: number, color?: string, legendLabel?: string }                     | See Usage Section above for details                                             | undefined            | Yes      |
+| data                    | number / { value?: number, color?: string, legendLabel?: string }                      | See Usage Section above for details                                             | undefined            | Yes      |
 | type                    | 'world' / 'africa' / 'asia' / 'europe' / 'north-america' / 'south-america' / 'oceania' | Type of map displayed                                                           | 'world'              | No       |
 | baseColor               | string                                                                                 | Color use for data representation                                               | '#0782c5'            | No       |
 | langCode                | string                                                                                 | The language of countries name                                                  | 'en'                 | No       |
@@ -131,6 +131,7 @@ The key is a country's [ISO 3166 Code](https://en.wikipedia.org/wiki/ISO_3166). 
 | defaultFillHoverColor   | string                                                                                 | Default map fill hover color                                                    | 'rgb(226, 226, 226)' | No       |
 | formatValueWithSiPrefix | boolean                                                                                | Formats a number with a magnitude suffix                                        | false                | No       |
 | forceCursorPointer      | boolean                                                                                | Force the cursor to be in pointer mode even when the legend display is disabled | false                | No       |
+| minOpacity              | number                                                                                 | Minimum opacity of areas                                                        | 0.01                 | No       |
 
 ## Events
 
