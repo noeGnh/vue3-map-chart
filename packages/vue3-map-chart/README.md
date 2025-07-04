@@ -1,6 +1,6 @@
 # Vue 3 Map Chart ![npm (scoped)](https://img.shields.io/npm/v/vue3-map-chart)
 
-A Vue JS Component for displaying dynamic data on a world and continents maps.
+A Vue JS Component for displaying dynamic data on a world, continents and countries maps.
 
 <p align="center">
 <img width="600" alt="Demo GIF" src="https://github.com/noeGnh/vue3-map-chart/blob/master/demo.gif"/>
@@ -61,7 +61,7 @@ Alternatively you can also import the component locally:
 </script>
 ```
 
-This component is most useful in creating a heat map for various countries. And will color countries differently based on a props passed.
+This component is most useful for creating heat maps of countries and their subdivisions. It colors each country or subdivision differently based on the props provided.
 
 The component requires a prop of data to be passed to it, which is a JS object formatted like so.
 
@@ -100,7 +100,7 @@ Or if for some reasons you want to customize each country color.
 </script>
 ```
 
-The key is a country's [ISO 3166 Code](https://en.wikipedia.org/wiki/ISO_3166). You can then use the component in your template
+The key must be a valid [ISO 3166-1 country code](https://en.wikipedia.org/wiki/ISO_3166-1) or a [ISO 3166-2 subdivision code](https://en.wikipedia.org/wiki/ISO_3166-2). You can then use the component directly in your template.
 
 ```html
 <template>
@@ -110,27 +110,27 @@ The key is a country's [ISO 3166 Code](https://en.wikipedia.org/wiki/ISO_3166). 
 
 ## Props
 
-| Name                    | Type                                                                                   | Description                                                                     | Default              | Required |
-|-------------------------|----------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|----------------------|----------|
-| data                    |  number / { value?: number, color?: string, legendLabel?: string }                     | See Usage Section above for details                                             | undefined            | Yes      |
+| Name                    | Type                                                                                                        | Description                                                                     | Default              | Required |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | -------------------- | -------- |
+| data                    | number / { value?: number, color?: string, legendLabel?: string }                                           | See Usage Section above for details                                             | undefined            | Yes      |
 | name                    | [MapName](https://github.com/noeGnh/vue3-map-chart/blob/master/packages/vue3-map-chart/src/types/map-names.ts) | Name of map displayed                                                           | 'world'              | No       |
-| baseColor               | string                                                                                 | Color use for data representation                                               | '#0782c5'            | No       |
-| langCode                | string                                                                                 | The language of countries name                                                  | 'en'                 | No       |
-| width                   | number / string                                                                        | Width of map                                                                    | '100%'               | No       |
-| height                  | number / string                                                                        | Height of map                                                                   | 500                  | No       |
-| mapStyles               | CSSProperties                                                                          | Styles applied to map                                                           | {}                   | No       |
-| displayLegend           | boolean                                                                                | Display legend when mouse passes hover area on map                              | true                 | No       |
-| displayLegendWhenEmpty  | boolean                                                                                | Do not display legend when area value is empty                                  | true                 | No       |
-| legendBgColor           | string                                                                                 | Color of legend tooltip box                                                     | 'rgba(0, 0, 0, 0.5)' | No       |
-| legendTextColor         | string                                                                                 | Color of legend text                                                            | '#d8d8d8'            | No       |
-| legendValuePrefix       | string                                                                                 | Prefix added to value displayed on legend                                       | ''                   | No       |
-| legendValueSuffix       | string                                                                                 | Suffix added to value displayed on legend                                       | ''                   | No       |
-| defaultStrokeColor      | string                                                                                 | Default map stroke color                                                        | 'rgb(200, 200, 200)' | No       |
-| defaultStrokeHoverColor | string                                                                                 | Default map stroke hover color                                                  | 'rgb(200, 200, 200)' | No       |
-| defaultFillColor        | string                                                                                 | Default map fill color                                                          | 'rgb(236, 236, 236)' | No       |
-| defaultFillHoverColor   | string                                                                                 | Default map fill hover color                                                    | 'rgb(226, 226, 226)' | No       |
-| formatValueWithSiPrefix | boolean                                                                                | Formats a number with a magnitude suffix                                        | false                | No       |
-| forceCursorPointer      | boolean                                                                                | Force the cursor to be in pointer mode even when the legend display is disabled | false                | No       |
+| baseColor               | string                                                                                                      | Color use for data representation                                               | '#0782c5'            | No       |
+| langCode                | string                                                                                                      | The language of countries name                                                  | 'en'                 | No       |
+| width                   | number / string                                                                                             | Width of map                                                                    | '100%'               | No       |
+| height                  | number / string                                                                                             | Height of map                                                                   | 500                  | No       |
+| mapStyles               | CSSProperties                                                                                               | Styles applied to map                                                           | {}                   | No       |
+| displayLegend           | boolean                                                                                                     | Display legend when mouse passes hover area on map                              | true                 | No       |
+| displayLegendWhenEmpty  | boolean                                                                                                     | Do not display legend when area value is empty                                  | true                 | No       |
+| legendBgColor           | string                                                                                                      | Color of legend tooltip box                                                     | 'rgba(0, 0, 0, 0.5)' | No       |
+| legendTextColor         | string                                                                                                      | Color of legend text                                                            | '#d8d8d8'            | No       |
+| legendValuePrefix       | string                                                                                                      | Prefix added to value displayed on legend                                       | ''                   | No       |
+| legendValueSuffix       | string                                                                                                      | Suffix added to value displayed on legend                                       | ''                   | No       |
+| defaultStrokeColor      | string                                                                                                      | Default map stroke color                                                        | 'rgb(200, 200, 200)' | No       |
+| defaultStrokeHoverColor | string                                                                                                      | Default map stroke hover color                                                  | 'rgb(200, 200, 200)' | No       |
+| defaultFillColor        | string                                                                                                      | Default map fill color                                                          | 'rgb(236, 236, 236)' | No       |
+| defaultFillHoverColor   | string                                                                                                      | Default map fill hover color                                                    | 'rgb(226, 226, 226)' | No       |
+| formatValueWithSiPrefix | boolean                                                                                                     | Formats a number with a magnitude suffix                                        | false                | No       |
+| forceCursorPointer      | boolean                                                                                                     | Force the cursor to be in pointer mode even when the legend display is disabled | false                | No       |
 
 ## Events
 
