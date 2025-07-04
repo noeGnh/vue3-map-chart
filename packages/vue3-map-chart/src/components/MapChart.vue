@@ -24,7 +24,7 @@
     langCode?: string
     width?: number | string
     height?: number | string
-    type?: MapName
+    name?: MapName
     mapStyles?: CSSProperties
     displayLegend?: boolean
     displayLegendWhenEmpty?: boolean
@@ -46,7 +46,7 @@
     langCode: 'en',
     height: 500,
     width: '100%',
-    type: 'world',
+    name: 'world',
     mapStyles: () => ({}),
     displayLegend: true,
     displayLegendWhenEmpty: true,
@@ -293,7 +293,7 @@
       :id="`v3mc-map-${cpntId}`"
       class="v3mc-map"
       :style="mapStyles"
-      v-html="svgMaps[props.type]"></div>
+      v-html="svgMaps[props.name]"></div>
     <Tooltip
       v-if="displayTooltip"
       :id="`v3mc-tooltip-${cpntId}`"

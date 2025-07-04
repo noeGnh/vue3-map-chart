@@ -258,7 +258,7 @@
     </div>
     <div class="cell small">
       <MapChart
-        type="africa"
+        name="africa"
         base-color="#339601"
         legend-value-suffix="&nbsp;%"
         legend-text-color="whitesmoke"
@@ -270,7 +270,7 @@
     </div>
     <div class="cell small">
       <MapChart
-        type="asia"
+        name="asia"
         lang-code="zh"
         base-color="#F7931E"
         :data="asiaData"
@@ -280,7 +280,7 @@
     </div>
     <div class="cell small">
       <MapChart
-        type="europe"
+        name="europe"
         lang-code="fr"
         base-color="#D31F3C"
         legend-value-suffix="&nbsp;€"
@@ -291,7 +291,7 @@
     </div>
     <div class="cell small">
       <MapChart
-        type="north-america"
+        name="north-america"
         base-color="#FFC700"
         legend-value-prefix="$&nbsp;"
         :data="northAmericaData"
@@ -300,7 +300,7 @@
     </div>
     <div class="cell small">
       <MapChart
-        type="south-america"
+        name="south-america"
         base-color="#132D50"
         legend-text-color="black"
         legend-bg-color="rgba(255, 255, 255, 0.8)"
@@ -312,7 +312,7 @@
     </div>
     <div class="cell small">
       <MapChart
-        type="oceania"
+        name="oceania"
         :data="oceaniaData"
         :map-styles="{ height: '100%' }"
         @map-item-click="onMapItemClick"
