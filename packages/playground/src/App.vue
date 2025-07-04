@@ -228,6 +228,129 @@
     }, // Philippines
   }
 
+  const germanyData = {
+    'DE-BW': 58, // Baden-Württemberg
+    'DE-BY': 63, // Bavaria (Bayern)
+    'DE-NW': 75, // North Rhine-Westphalia (Nordrhein-Westfalen)
+    'DE-HE': 40, // Hesse (Hessen)
+    'DE-BE': 54, // Berlin
+    'DE-HH': 50, // Hamburg
+    'DE-SH': 45, // Schleswig-Holstein
+    'DE-NI': 49, // Lower Saxony (Niedersachsen)
+    'DE-SN': 41, // Saxony (Sachsen)
+    'DE-ST': 38, // Saxony-Anhalt (Sachsen-Anhalt)
+    'DE-TH': 36, // Thuringia (Thüringen)
+    'DE-RP': 43, // Rhineland-Palatinate (Rheinland-Pfalz)
+    'DE-SL': 30, // Saarland
+    'DE-BB': 37, // Brandenburg
+    'DE-MV': 34, // Mecklenburg-Vorpommern
+  }
+
+  const brazilData = {
+    'BR-SP': {
+      color: '#1B5E20',
+      legendLabel: 'São Paulo',
+      value: 600,
+    },
+    'BR-RJ': {
+      color: '#4CAF50',
+      legendLabel: 'Rio de Janeiro',
+      value: 300,
+    },
+    'BR-MG': {
+      color: '#388E3C',
+      legendLabel: 'Minas Gerais',
+      value: 250,
+    },
+    'BR-RS': {
+      color: '#66BB6A',
+      legendLabel: 'Rio Grande do Sul',
+      value: 160,
+    },
+    'BR-BA': {
+      color: '#81C784',
+      legendLabel: 'Bahia',
+      value: 140,
+    },
+    'BR-PR': {
+      color: '#43A047',
+      legendLabel: 'Paraná',
+      value: 180,
+    },
+    'BR-PE': {
+      color: '#A5D6A7',
+      legendLabel: 'Pernambuco',
+      value: 110,
+    },
+    'BR-CE': {
+      color: '#C8E6C9',
+      legendLabel: 'Ceará',
+      value: 100,
+    },
+    'BR-PA': {
+      color: '#AED581',
+      legendLabel: 'Pará',
+      value: 90,
+    },
+  }
+
+  const japanData = {
+    'JP-13': {
+      color: '#880E4F',
+      legendLabel: 'Tokyo / Pop: 14M',
+    },
+    'JP-27': {
+      color: '#C2185B',
+      legendLabel: 'Osaka / Pop: 8.8M',
+    },
+    'JP-14': {
+      color: '#AD1457',
+      legendLabel: 'Kanagawa / Pop: 9.2M',
+    },
+    'JP-23': {
+      color: '#D81B60',
+      legendLabel: 'Aichi / Pop: 7.5M',
+    },
+    'JP-11': {
+      color: '#EC407A',
+      legendLabel: 'Saitama / Pop: 7.4M',
+    },
+    'JP-12': {
+      color: '#F06292',
+      legendLabel: 'Chiba / Pop: 6.3M',
+    },
+    'JP-28': {
+      color: '#E91E63',
+      legendLabel: 'Hyogo / Pop: 5.5M',
+    },
+    'JP-40': {
+      color: '#F48FB1',
+      legendLabel: 'Fukuoka / Pop: 5.1M',
+    },
+    'JP-01': {
+      color: '#F8BBD0',
+      legendLabel: 'Hokkaido / Pop: 5.3M',
+    },
+  }
+
+  const egyptData = {
+    'EG-C': 72, // Cairo (Le Caire)
+    'EG-GZ': 65, // Giza (Gizeh)
+    'EG-DK': 60, // Dakahlia
+    'EG-SHR': 59, // Sharqia
+    'EG-MT': 64, // Matruh
+    'EG-JS': 58, // South Sinai (Janub Sina')
+    'EG-BA': 48, // Bani Suwayf
+    'EG-ASN': 52, // Aswan
+    'EG-FYM': 47, // Faiyum
+    'EG-BH': 66, // Beheira
+    'EG-KB': 61, // Qalyubia
+    'EG-MNF': 55, // Monufia
+    'EG-IS': 53, // Ismailia
+    'EG-KFS': 50, // Kafr el-Sheikh
+    'EG-SUZ': 62, // Suez
+  }
+
   const onMapItemClick = (areaId: string, areaValue: number | MapDataValue) => {
     alert(`${areaId}: ${areaValue}`)
   }
@@ -255,6 +378,7 @@
         :map-styles="{ height: '100%' }"
         :display-legend-when-empty="false"
         @map-item-click="onMapItemClick" />
+      <div class="map-label">World</div>
     </div>
     <div class="cell small">
       <MapChart
@@ -267,6 +391,7 @@
         :map-styles="{ height: '100%' }"
         :display-legend-when-empty="false"
         @map-item-click="onMapItemClick" />
+      <div class="map-label">Africa</div>
     </div>
     <div class="cell small">
       <MapChart
@@ -277,6 +402,7 @@
         :map-styles="{ height: '100%' }"
         :display-legend-when-empty="false"
         @map-item-click="onMapItemClick" />
+      <div class="map-label">Asia</div>
     </div>
     <div class="cell small">
       <MapChart
@@ -288,6 +414,7 @@
         :map-styles="{ height: '100%' }"
         :display-legend-when-empty="false"
         @map-item-click="onMapItemClick" />
+      <div class="map-label">Europe</div>
     </div>
     <div class="cell small">
       <MapChart
@@ -297,6 +424,7 @@
         :data="northAmericaData"
         :map-styles="{ height: '100%' }"
         @map-item-click="onMapItemClick" />
+      <div class="map-label">North America</div>
     </div>
     <div class="cell small">
       <MapChart
@@ -309,6 +437,7 @@
         :data="southAmericaData"
         :map-styles="{ height: '100%' }"
         @map-item-click="onMapItemClick" />
+      <div class="map-label">South America</div>
     </div>
     <div class="cell small">
       <MapChart
@@ -318,6 +447,50 @@
         @map-item-click="onMapItemClick"
         @map-item-mouseout="onMapItemMouseout"
         @map-item-mouseover="onMapItemMouseover" />
+      <div class="map-label">Oceania</div>
+    </div>
+    <div class="cell small">
+      <MapChart
+        name="germany"
+        base-color="#3F51B5"
+        legend-value-suffix="&nbsp;%"
+        :data="germanyData"
+        :map-styles="{ height: '100%' }"
+        @map-item-click="onMapItemClick" />
+      <div class="map-label">Germany</div>
+    </div>
+    <div class="cell small">
+      <MapChart
+        name="brazil"
+        :data="brazilData"
+        :map-styles="{ height: '100%' }"
+        legend-value-prefix="GDP: $"
+        legend-value-suffix="B"
+        :display-legend-when-empty="false"
+        @map-item-click="onMapItemClick" />
+      <div class="map-label">Brazil</div>
+    </div>
+    <div class="cell small">
+      <MapChart
+        name="japan"
+        base-color="#E91E63"
+        legend-value-suffix=" ppl"
+        :data="japanData"
+        :map-styles="{ height: '100%' }"
+        @map-item-click="onMapItemClick" />
+      <div class="map-label">Japan</div>
+    </div>
+    <div class="cell small">
+      <MapChart
+        name="egypt"
+        base-color="#000000"
+        legend-value-suffix="°C"
+        legend-bg-color="rgba(0,0,0,0.7)"
+        legend-text-color="white"
+        :data="egyptData"
+        :map-styles="{ height: '100%' }"
+        @map-item-click="onMapItemClick" />
+      <div class="map-label">Egypt</div>
     </div>
   </div>
 </template>
@@ -344,6 +517,7 @@
 
   .cell {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     border: 1px solid #ccc;
@@ -380,6 +554,14 @@
   .small:nth-child(7) {
     grid-column: 2;
     grid-row: 2;
+  }
+
+  .map-label {
+    margin-bottom: 0.5em;
+    font-size: 1.2em;
+    text-align: center;
+    text-decoration: dotted underline;
+    color: dimgray;
   }
 
   @media (max-width: 800px) {

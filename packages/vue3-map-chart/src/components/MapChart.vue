@@ -7,6 +7,7 @@
     useStyleTag,
   } from '@vueuse/core'
   import countries from 'i18n-iso-countries'
+  import iso3166 from 'iso-3166-2'
   import type { CSSProperties } from 'vue'
 
   import locales from '../i18n-iso-countries-locales'
@@ -125,7 +126,16 @@
         const id = target.getAttribute('id')
         currentAreaId.value = id
         currentAreaValue.value = id ? props.data[id] : null
-        if (id && isValidIsoCode(id)) emits(emitId, id, currentAreaValue.value)
+        if (
+          id &&
+          isValidIsoCode(id) &&
+          !!(
+            countries.getName(id, props.langCode) ||
+            iso3166.subdivision(id)?.name
+          )
+        ) {
+          emits(emitId, id, currentAreaValue.value)
+        }
       }
       useEventListener(el, 'mouseover', (event) => {
         emitEvent(event.target as HTMLElement, 'mapItemMouseover')
@@ -215,7 +225,7 @@
           opacity = 1
         } else {
           opacity = (value - min) / (max - min)
-          opacity = opacity == 0 ? 0.01 : opacity
+          opacity = opacity == 0 ? 0.05 : opacity
         }
         css.value += ` #v3mc-map-${cpntId} #${key.toUpperCase()} { fill: ${
           color || props.baseColor
@@ -246,7 +256,9 @@
         : currentAreaValue.value?.legendLabel
 
     const areaName = currentAreaId.value
-      ? countries.getName(currentAreaId.value, props.langCode)
+      ? countries.getName(currentAreaId.value, props.langCode) ||
+        iso3166.subdivision(currentAreaId.value)?.name ||
+        currentAreaId.value
       : currentAreaId.value
 
     return customLegendLabel || areaName || ''

@@ -124,10 +124,16 @@ importers:
       i18n-iso-countries:
         specifier: ^7.11.3
         version: 7.11.3
+      iso-3166-2:
+        specifier: ^1.0.0
+        version: 1.0.0
       vue:
         specifier: ^3.4.0
         version: 3.4.27(typescript@4.9.5)
     devDependencies:
+      '@types/iso-3166-2':
+        specifier: ^1.0.3
+        version: 1.0.3
       '@types/jsdom':
         specifier: ^21.1.7
         version: 21.1.7
@@ -932,6 +938,9 @@ packages:
 
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
+
+  '@types/iso-3166-2@1.0.3':
+    resolution: {integrity: sha512-jOqKFSfZYVJ5ARkXH2V2RrEhLvFds1RVrFGRKKxqLU3jjExlf5LtqdFgXNd19KAMRhgsZSNjedeLDVYlGUemZg==}
 
   '@types/jsdom@21.1.7':
     resolution: {integrity: sha512-yOriVnggzrnQ3a9OKOCxaVuSug3w3/SbOj5i7VwXWZEyUNl3bLF9V3MfxGbZKuwqJOQyRfqXyROBB1CoZLFWzA==}
@@ -2133,6 +2142,9 @@ packages:
 
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
+
+  iso-3166-2@1.0.0:
+    resolution: {integrity: sha512-xLAazfKZzwlsg/Zz/GQGQk3jJez5/2ORrjD3TjSuqz/arMht/xTK49c0GOE3afO/gEd9tHtBVVlfBla01unUng==}
 
   jackspeak@3.4.0:
     resolution: {integrity: sha512-JVYhQnN59LVPFCEcVa2C3CrEKYacvjRfqIQl+h8oi91aLYQVWRYbxjPcv1bUiUy/kLmQaANrYfNMCO3kuEDHfw==}
@@ -3817,6 +3829,8 @@ snapshots:
 
   '@types/estree@1.0.5': {}
 
+  '@types/iso-3166-2@1.0.3': {}
+
   '@types/jsdom@21.1.7':
     dependencies:
       '@types/node': 16.18.98
@@ -5292,6 +5306,8 @@ snapshots:
   isarray@2.0.5: {}
 
   isexe@2.0.0: {}
+
+  iso-3166-2@1.0.0: {}
 
   jackspeak@3.4.0:
     dependencies:

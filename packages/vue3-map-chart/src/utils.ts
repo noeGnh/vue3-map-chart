@@ -47,6 +47,6 @@ export function getRandomInteger(min: number, max: number): number {
  * @return {boolean} Returns true if the code is a valid ISO code, false otherwise.
  */
 export function isValidIsoCode(code: string): boolean {
-  const isoCodeRegex = /^(?:[A-Z]{2}|[A-Z]{3})$/
+  const isoCodeRegex = /^(?:[A-Z]{2,3}|[A-Z]{2}-[A-Z0-9]{1,3})$/
   return isoCodeRegex.test(code)
 }
