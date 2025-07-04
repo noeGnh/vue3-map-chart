@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import type { MapData, MapDataValue, MapName } from '@/types'
   import {
     useEventListener,
     useMouse,
@@ -9,7 +10,6 @@
   import type { CSSProperties } from 'vue'
 
   import locales from '../i18n-iso-countries-locales'
-  import type { MapData, MapDataValue, MapType } from '../types'
   import {
     formatNumberWithSIPrefix,
     getRandomInteger,
@@ -24,7 +24,7 @@
     langCode?: string
     width?: number | string
     height?: number | string
-    type?: MapType
+    type?: MapName
     mapStyles?: CSSProperties
     displayLegend?: boolean
     displayLegendWhenEmpty?: boolean

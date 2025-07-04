@@ -1,7 +1,7 @@
+import type { Options } from '@/types'
 import type { App } from 'vue'
 
 import MapChart from './components/MapChart.vue'
-import type { Options } from './types'
 
 export { MapChart }
 

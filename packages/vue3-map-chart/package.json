@@ -25,13 +25,14 @@
   "scripts": {
     "dev-server": "pnpm --parallel vite",
     "dev-types": "vue-tsc  --noEmit -p tsconfig.app.json --watch",
-    "build": "yarn build-lib && yarn build-types",
+    "build": "pnpm generate:svg-map-type && pnpm build-lib && pnpm build-types",
     "build-lib": "vite build",
     "build-types": "vue-tsc --emitDeclarationOnly --declaration -p tsconfig.app.json",
     "lint": "eslint 'src/**/*.{ts,vue}'",
     "test": "vitest",
     "test-ci": "vitest --run",
-    "version": "auto-changelog --template keepachangelog --hide-credit -p && git add CHANGELOG.md"
+    "version": "auto-changelog --template keepachangelog --hide-credit -p && git add CHANGELOG.md",
+    "generate:svg-map-type": "tsx scripts/generate-svg-map-type.ts"
   },
   "peerDependencies": {
     "vue": "^3.4.0"
@@ -39,6 +40,8 @@
   "devDependencies": {
     "@types/jsdom": "^21.1.7",
     "auto-changelog": "^2.4.0",
+    "fast-glob": "^3.3.3",
+    "tsx": "^4.20.3",
     "vite": "^4.1.0",
     "vite-svg-loader": "^5.1.0",
     "vitest": "^0.28.3"
