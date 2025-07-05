@@ -1,31 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- (c) ammap.com | SVG map of Equatorial Guinea - Low -->
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
-	<defs>
-		<style type="text/css">
-			.land
-			{
-				fill: #CCCCCC;
-				fill-opacity: 1;
-				stroke:white;
-				stroke-opacity: 1;
-				stroke-width:0.5;
-			}
-		</style>
-
-		<amcharts:ammap projection="mercator" leftLongitude="5.4172940254" topLatitude="3.989000082" rightLongitude="11.3598632812" bottomLatitude="-1.6619999409"></amcharts:ammap>
-
-		<!-- All areas are listed in the line below. You can use this list in your script. -->
-		<!--{id:"GQ-BS"},{id:"GQ-BN"},{id:"GQ-WN"},{id:"GQ-LI"},{id:"GQ-KN"},{id:"GQ-CS"},{id:"GQ-AN"}-->
-
-	</defs>
-	<g>
-		<path id="GQ-BS" title="Bioko Sur" class="land" d="M437.75,25.51L420.36,17.92L394.52,47.61L398.34,70.5L428.67,79L453.48,34.46L437.75,25.51z"/>
-		<path id="GQ-BN" title="Bioko Norte" class="land" d="M430.94,0L420.36,17.92L437.75,25.51L453.48,34.46L461.76,1.43L430.94,0z"/>
-		<path id="GQ-WN" title="Wele-Nzás" class="land" d="M732.82,256.47L684.87,258.6L692.92,304.47L749.73,306.46L720.99,343.1L747.34,386.6L799.46,386.77L798.85,284.13L755.01,284.08L746.06,251.88L732.82,256.47z"/>
-		<path id="GQ-LI" title="Litoral" class="land" d="M519.35,402.66L515.5,395.56L514.77,400.23L519.35,402.66zM608.39,223.05L581.68,200.79L585.87,255.8L557.54,296.47L576.73,302.68L555.72,306.58L521.08,361.23L554.33,380.65L573,368.01L602.17,396.8L612.54,386.69L651.14,367.12L628.07,317.87L601,305.9L639.07,223.51L608.39,223.05z"/>
-		<path id="GQ-KN" title="Kié-Ntem" class="land" d="M798.85,284.13L797.46,223.49L669.81,223.5L675.65,257.6L684.87,258.6L732.82,256.47L746.06,251.88L755.01,284.08L798.85,284.13z"/>
-		<path id="GQ-CS" title="Centro Sur" class="land" d="M675.65,257.6L669.81,223.5L639.07,223.51L601,305.9L628.07,317.87L651.14,367.12L612.54,386.69L747.34,386.6L720.99,343.1L749.73,306.46L692.92,304.47L684.87,258.6L675.65,257.6z"/>
-		<path id="GQ-AN" title="Annobón" class="land" d="M0.92,733.06L1.5,724.68L0.54,730.34L0.92,733.06z"/>
-	</g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" version="1.1" viewBox="0 0 512 512">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <g id="_x3C_defs">
+    <amcharts:ammap bottomLatitude="-1.6619999409" leftLongitude="5.4172940254" projection="mercator" rightLongitude="11.3598632812" topLatitude="3.989000082"/>
+  </g>
+  <g>
+    <path id="GQ-BS" d="M68,44.9l-20.4-8.9-30.3,34.8,4.5,26.8,35.5,10,29.1-52.2-18.4-10.5Z"/>
+    <path id="GQ-BN" d="M60,15l-12.4,21,20.4,8.9,18.4,10.5,9.7-38.7-36.1-1.7Z"/>
+    <path id="GQ-WN" d="M413.6,315.4l-56.2,2.5,9.4,53.7,66.5,2.3-33.7,42.9,30.9,50.9,61,.2-.7-120.2h-51.3c0,0-10.5-37.8-10.5-37.8l-15.5,5.4Z"/>
+    <path id="GQ-LI" d="M163.6,486.6l-4.5-8.3-.9,5.5,5.4,2.8ZM267.9,276.2l-31.3-26.1,4.9,64.4-33.2,47.6,22.5,7.3-24.6,4.6-40.6,64,38.9,22.7,21.9-14.8,34.2,33.7,12.1-11.8,45.2-22.9-27-57.7-31.7-14,44.6-96.5-35.9-.5Z"/>
+    <path id="GQ-KN" d="M490.9,347.7l-1.6-71h-149.5s6.8,39.9,6.8,39.9l10.8,1.2,56.2-2.5,15.5-5.4,10.5,37.7h51.3Z"/>
+    <path id="GQ-CS" d="M346.6,316.7l-6.8-39.9h-36s-44.6,96.5-44.6,96.5l31.7,14,27,57.7-45.2,22.9h157.9c0-.1-30.9-51-30.9-51l33.7-42.9-66.5-2.3-9.4-53.7-10.8-1.2Z"/>
+    <path id="GQ-AN" d="M-443.6,873.5l.7-9.8-1.1,6.6.4,3.2Z"/>
+  </g>
 </svg>

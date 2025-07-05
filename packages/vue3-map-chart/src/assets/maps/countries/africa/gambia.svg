@@ -1,30 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- (c) ammap.com | SVG map of Gambia - Low -->
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
-	<defs>
-		<style type="text/css">
-			.land
-			{
-				fill: #CCCCCC;
-				fill-opacity: 1;
-				stroke:white;
-				stroke-opacity: 1;
-				stroke-width:0.5;
-			}
-		</style>
-
-		<amcharts:ammap projection="mercator" leftLongitude="-16.8136312" topLatitude="13.8249497" rightLongitude="-13.7928726" bottomLatitude="13.0379673"></amcharts:ammap>
-
-		<!-- All areas are listed in the line below. You can use this list in your script. -->
-		<!--{id:"GM-N"},{id:"GM-W"},{id:"GM-L"},{id:"GM-B"},{id:"GM-U"},{id:"GM-M"}-->
-
-	</defs>
-	<g>
-		<path id="GM-N" title="North Bank" class="land" d="M406.41,87.94L390.82,76.56L388.95,52.49L354.49,48.35L349.15,64.27L72.97,63.23L74.26,90.82L88.29,109.51L83.44,125.27L118.21,131.3L184.11,99.26L282.52,96.41L339.11,79.19L393.24,98.68L406.41,87.94z"/>
-		<path id="GM-W" title="West Coast" class="land" d="M22.07,205.22L43.29,178.23L265.73,180.26L268.1,155.33L181.55,145.71L172.5,152.68L161.34,153.3L153.3,134.56L105.13,147.74L121.58,164.44L110.56,166.3L107.93,151.61L74.97,142.47L63.94,118.18L35.12,131.05L19.62,112.77L1.94,130.85L22.07,205.22z"/>
-		<path id="GM-L" title="Lower River" class="land" d="M438.33,70.6L406.94,87.94L396.18,103.01L342.47,84.27L321.98,99.2L178.92,106.31L161.47,132.16L168.84,152.45L181.55,145.71L268.1,155.33L272.66,130.51L412.99,119.48L438.33,70.6z"/>
-		<path id="GM-B" title="Banjul" class="land" d="M63.94,118.18L65.21,97.41L41.88,87.94L19.62,112.77L35.12,131.05L63.94,118.18z"/>
-		<path id="GM-U" title="Upper River" class="land" d="M604.92,135.05L653.44,158.82L697.69,160.49L777.41,137.37L798.06,120.05L792.73,93.26L759.69,66.32L659.14,99.87L628.74,82.36L604.92,135.05z"/>
-		<path id="GM-M" title="Central River" class="land" d="M466.14,0L415.59,21.03L382.01,12.93L354.49,48.35L388.95,52.49L390.82,76.56L406.41,87.94L406.94,87.94L438.33,70.6L449.9,62.4L557.4,125.28L604.92,135.05L628.74,82.36L607.44,48.55L585.18,42.37L554.93,55.46L518.3,10.46L466.14,0z"/>
-	</g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" version="1.1" viewBox="0 0 512 512">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <g id="_x3C_defs">
+    <amcharts:ammap bottomLatitude="13.0379673" leftLongitude="-16.8136312" projection="mercator" rightLongitude="-13.7928726" topLatitude="13.8249497"/>
+  </g>
+  <g>
+    <path id="GM-N" d="M260,246.8l-9.8-7.2-1.2-15.1-21.7-2.6-3.4,10-173.8-.7.8,17.4,8.8,11.8-3.1,9.9,21.9,3.8,41.5-20.2,61.9-1.8,35.6-10.8,34.1,12.3,8.3-6.8Z"/>
+    <path id="GM-W" d="M18.1,320.6l13.4-17,140,1.3,1.5-15.7-54.5-6.1-5.7,4.4-7,.4-5.1-11.8-30.3,8.3,10.4,10.5-6.9,1.2-1.7-9.2-20.7-5.8-6.9-15.3-18.1,8.1-9.8-11.5-11.1,11.4,12.7,46.8Z"/>
+    <path id="GM-L" d="M280.1,235.9l-19.8,10.9-6.8,9.5-33.8-11.8-12.9,9.4-90,4.5-11,16.3,4.6,12.8,8-4.2,54.5,6.1,2.9-15.6,88.3-6.9,15.9-30.8Z"/>
+    <path id="GM-B" d="M44.5,265.8l.8-13.1-14.7-6-14,15.6,9.8,11.5,18.1-8.1Z"/>
+    <path id="GM-U" d="M385,276.4l30.5,15,27.8,1.1,50.2-14.6,13-10.9-3.4-16.9-20.8-17-63.3,21.1-19.1-11-15,33.2Z"/>
+    <path id="GM-M" d="M297.6,191.4l-31.8,13.2-21.1-5.1-17.3,22.3,21.7,2.6,1.2,15.1,9.8,7.2h.3l19.8-10.9,7.3-5.2,67.7,39.6,29.9,6.1,15-33.2-13.4-21.3-14-3.9-19,8.2-23.1-28.3-32.8-6.6Z"/>
+  </g>
 </svg>

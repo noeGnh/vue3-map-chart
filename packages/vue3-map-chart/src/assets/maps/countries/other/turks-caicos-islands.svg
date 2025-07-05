@@ -1,30 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- (c) ammap.com | SVG map of Turks and Caicos Islands -  Low -->
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
-	<defs>
-		<style type="text/css">
-			.land
-			{
-				fill: #CCCCCC;
-				fill-opacity: 1;
-				stroke:white;
-				stroke-opacity: 1;
-				stroke-width:0.5;
-			}
-		</style>
-
-		<amcharts:ammap projection="mercator" leftLongitude="-72.679901" topLatitude="22.163099" rightLongitude="-71.074357" bottomLatitude="20.955341"></amcharts:ammap>
-
-		<!-- All areas are listed in the line below. You can use this list in your script. -->
-		<!--{id:"TC-06"},{id:"TC-03"},{id:"TC-02"},{id:"TC-01"},{id:"TC-04"},{id:"TC-05"}-->
-
-	</defs>
-	<g>
-		<path id="TC-06" title="Salt Cay" class="land" d="M751.29,390.83L749.01,410.32L761.52,394.85L751.29,390.83z"/>
-		<path id="TC-03" title="Grand Turk" class="land" d="M793.62,281.64L789.61,333.63L799.05,307.89L793.62,281.64z"/>
-		<path id="TC-02" title="South Caicos and East Caicos" class="land" d="M500.58,420.53L504.37,410.55L504.03,401.61L500.58,420.53zM581.71,271.08L581.07,246.25L557.87,290.62L577.54,294.05L581.71,271.08zM603.9,185.91L608.44,169.58L591.29,147.15L535.03,120.88L526.61,129.15L603.9,185.91z"/>
-		<path id="TC-01" title="Providenciales and West Caicos" class="land" d="M18.24,198.29L29.21,157.48L13.08,159.91L0.95,207.59L18.24,198.29zM103.27,66.59L89.99,60.1L85.98,99.18L102.09,85.76L84.63,120.98L98.85,118.35L98.42,103.09L122.62,116.12L119.02,124.24L106.12,116.12L112.75,132.26L146.75,111.78L146.75,120.88L170.24,120.83L187.45,103.09L191.1,116.12L211.59,94.84L198.64,82.55L179,99.18L148.22,104.02L103.27,66.59z"/>
-		<path id="TC-04" title="North Caicos" class="land" d="M274.69,0L263.6,11.55L272.03,33.29L289.75,36.29L315.92,9.22L311.98,57.25L347.16,79.35L369.13,72.36L342,57.51L337.48,5.41L274.69,0z"/>
-		<path id="TC-05" title="Middle Caicos" class="land" d="M401.33,107.49L437.76,103.04L462.13,125.22L470.2,116.12L494.38,133.86L474.24,85.76L502.79,116.12L474.55,73.19L397.47,74.38L373.12,64.03L382.05,105.21L401.33,107.49z"/>
-	</g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" version="1.1" viewBox="0 0 512 512">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <g id="_x3C_defs">
+    <amcharts:ammap bottomLatitude="20.955341" leftLongitude="-72.679901" projection="mercator" rightLongitude="-71.074357" topLatitude="22.163099"/>
+  </g>
+  <g>
+    <path id="TC-06" d="M477.6,369.9l-1.4,12.3,7.9-9.8-6.5-2.5Z"/>
+    <path id="TC-03" d="M504.3,301l-2.5,32.8,6-16.2-3.4-16.6Z"/>
+    <path id="TC-02" d="M319.4,388.6l2.4-6.3-.2-5.6-2.2,11.9ZM370.6,294.4l-.4-15.7-14.6,28,12.4,2.2,2.6-14.5ZM384.6,240.6l2.9-10.3-10.8-14.1-35.5-16.6-5.3,5.2,48.8,35.8Z"/>
+    <path id="TC-01" d="M15.2,248.4l6.9-25.7-10.2,1.5-7.7,30.1,10.9-5.9ZM68.8,165.4l-8.4-4.1-2.5,24.7,10.2-8.5-11,22.2,9-1.7-.3-9.6,15.3,8.2-2.3,5.1-8.1-5.1,4.2,10.2,21.4-12.9v5.7h14.8s10.9-11.2,10.9-11.2l2.3,8.2,12.9-13.4-8.2-7.8-12.4,10.5-19.4,3.1-28.4-23.6Z"/>
+    <path id="TC-04" d="M177,123.4l-7,7.3,5.3,13.7,11.2,1.9,16.5-17.1-2.5,30.3,22.2,13.9,13.9-4.4-17.1-9.4-2.9-32.9-39.6-3.4Z"/>
+    <path id="TC-05" d="M256.8,191.2l23-2.8,15.4,14,5.1-5.7,15.3,11.2-12.7-30.3,18,19.2-17.8-27.1-48.6.8-15.4-6.5,5.6,26,12.2,1.4Z"/>
+  </g>
 </svg>

@@ -1,31 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- (c) ammap.com | SVG map of Grenada - Low -->
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
-	<defs>
-		<style type="text/css">
-			.land
-			{
-				fill: #CCCCCC;
-				fill-opacity: 1;
-				stroke:white;
-				stroke-opacity: 1;
-				stroke-width:0.5;
-			}
-		</style>
-
-		<amcharts:ammap projection="mercator" leftLongitude="-61.805900" topLatitude="12.536700" rightLongitude="-61.374699" bottomLatitude="11.982905"></amcharts:ammap>
-
-		<!-- All areas are listed in the line below. You can use this list in your script. -->
-		<!--{id:"GD-06"},{id:"GD-05"},{id:"GD-04"},{id:"GD-03"},{id:"GD-02"},{id:"GD-01"},{id:"GD-10"}-->
-
-	</defs>
-	<g>
-		<path id="GD-06" title="Saint Patrick" class="land" d="M368.49,710.31L362.97,616.44L320.43,589.6L234.38,590.91L213.39,616.52L264.86,705.34L368.49,710.31zM408.4,460.62L399.68,431.4L373.61,467.17L397.28,482.96L408.4,460.62z"/>
-		<path id="GD-05" title="Saint Mark" class="land" d="M264.86,705.34L213.39,616.52L148.51,695.72L251.92,746.68L264.86,705.34z"/>
-		<path id="GD-04" title="Saint John" class="land" d="M251.92,746.68L148.51,695.72L77.95,844.2L205.04,842.59L251.92,746.68z"/>
-		<path id="GD-03" title="Saint George" class="land" d="M188.23,1059.76L211.74,1014.47L185.64,948.39L224.44,895.49L205.04,842.59L77.95,844.2L80.99,992.47L0.38,1048.64L66.35,1058.62L120.02,1033.68L188.23,1059.76z"/>
-		<path id="GD-02" title="Saint David" class="land" d="M326.67,926.72L260.01,885.57L224.44,895.49L185.64,948.39L211.74,1014.47L312.75,976.85L326.67,926.72z"/>
-		<path id="GD-01" title="Saint Andrew" class="land" d="M368.49,710.31L264.86,705.34L251.92,746.68L205.04,842.59L224.44,895.49L260.01,885.57L326.67,926.72L368.49,710.31z"/>
-		<path id="GD-10" title="Carriacou and Petite Martinique" class="land" d="M799.62,19.17L773.71,34.16L791.47,43.01L799.62,19.17zM712.77,0L635.68,109.03L593.21,96.09L578.74,123.61L605.45,123.61L578.74,179.87L678.14,140.81L712.77,151.13L722.05,69.55L712.77,0z"/>
-	</g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" version="1.1" viewBox="0 0 512 512">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <g id="_x3C_defs">
+    <amcharts:ammap bottomLatitude="11.982905" leftLongitude="-61.805900" projection="mercator" rightLongitude="-61.374699" topLatitude="12.536700"/>
+  </g>
+  <g>
+    <path id="GD-06" d="M241.3,340.1l-2.6-43.8-19.8-12.5-40.1.6-9.8,11.9,24,41.4,48.3,2.3ZM259.9,223.7l-4.1-13.6-12.2,16.7,11,7.4,5.2-10.4Z"/>
+    <path id="GD-05" d="M193,337.8l-24-41.4-30.2,36.9,48.2,23.8,6-19.3Z"/>
+    <path id="GD-04" d="M187,357.1l-48.2-23.8-32.9,69.2,59.3-.8,21.9-44.7Z"/>
+    <path id="GD-03" d="M157.3,503l11-21.1-12.2-30.8,18.1-24.7-9-24.7-59.3.8,1.4,69.1-37.6,26.2,30.8,4.7,25-11.6,31.8,12.2Z"/>
+    <path id="GD-02" d="M221.8,441l-31.1-19.2-16.6,4.6-18.1,24.7,12.2,30.8,47.1-17.5,6.5-23.4Z"/>
+    <path id="GD-01" d="M241.3,340.1l-48.3-2.3-6,19.3-21.9,44.7,9,24.7,16.6-4.6,31.1,19.2,19.5-100.9Z"/>
+    <path id="GD-10" d="M442.3,17.9l-12.1,7,8.3,4.1,3.8-11.1ZM401.8,9l-35.9,50.8-19.8-6-6.7,12.8h12.5l-12.5,26.2,46.3-18.2,16.1,4.8,4.3-38-4.3-32.4Z"/>
+  </g>
 </svg>

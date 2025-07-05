@@ -1,25 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- (c) ammap.com | SVG map of Pitcairn Islands - Low -->
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
-	<defs>
-		<style type="text/css">
-			.land
-			{
-				fill: #CCCCCC;
-				fill-opacity: 1;
-				stroke:white;
-				stroke-opacity: 1;
-				stroke-width:0.5;
-			}
-		</style>
-
-		<amcharts:ammap projection="mercator" leftLongitude="-130.1289367676" topLatitude="-24.3120593938" rightLongitude="-128.2818603516" bottomLatitude="-25.0843551349"></amcharts:ammap>
-		
-		<!-- All areas are listed in the line below. You can use this list in your script. -->
-		<!--{id:"PN"}-->
-
-	</defs>
-	<g>
-		<path id="PN" title="Pitcairn Islands" class="land" d="M8.3,359.33L16.31,357.38L6.83,350.19L1.11,354.33L8.3,359.33zM795.13,0L776.86,3.67L772.42,11.78L771.38,21.92L780.05,37L798.89,42.69L792.7,8.97L795.13,0z"/>
-	</g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" version="1.1" viewBox="0 0 512 512">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <g id="_x3C_defs">
+    <amcharts:ammap bottomLatitude="-25.0843551349" leftLongitude="-130.1289367676" projection="mercator" rightLongitude="-128.2818603516" topLatitude="-24.3120593938"/>
+  </g>
+  <path id="PN" d="M8.6,369.5l5.1-1.2-6-4.5-3.6,2.6,4.5,3.2ZM505.6,142.5l-11.5,2.3-2.8,5.1-.7,6.4,5.5,9.5,11.9,3.6-3.9-21.3,1.5-5.7Z"/>
 </svg>

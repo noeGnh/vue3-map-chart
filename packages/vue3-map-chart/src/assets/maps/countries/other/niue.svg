@@ -1,25 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- (c) ammap.com | SVG map of Niue - Low -->
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
-	<defs>
-		<style type="text/css">
-			.land
-			{
-				fill: #CCCCCC;
-				fill-opacity: 1;
-				stroke:white;
-				stroke-opacity: 1;
-				stroke-width:0.5;
-			}
-		</style>
-
-		<amcharts:ammap projection="mercator" leftLongitude="-169.9497923" topLatitude="-18.9526261" rightLongitude="-169.7743249" bottomLatitude="-19.1554807"></amcharts:ammap>
-
-		<!-- All areas are listed in the line below. You can use this list in your script. -->
-		<!--{id:"NU"}-->
-
-	</defs>
-	<g>
-		<path id="NU" title="Niue" class="land" d="M246.18,896.56L799.55,523.94L597.3,14.37L474.05,0L260.93,0L80.22,244.68L115.74,365.41L0.45,616.77L126.22,677.57L80.22,830.41L246.18,896.56z"/>
-	</g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" version="1.1" viewBox="0 0 512 512">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <g id="_x3C_defs">
+    <amcharts:ammap bottomLatitude="-19.1554807" leftLongitude="-169.9497923" projection="mercator" rightLongitude="-169.7743249" topLatitude="-18.9526261"/>
+  </g>
+  <path id="NU" d="M169.9,507l309.8-208.6L366.5,13l-69-8h-119.3l-101.2,137,19.9,67.6-64.6,140.7,70.4,34-25.8,85.6,92.9,37Z"/>
 </svg>

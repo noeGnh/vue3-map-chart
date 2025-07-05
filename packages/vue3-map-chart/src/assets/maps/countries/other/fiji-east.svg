@@ -1,26 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- (c) ammap.com | SVG map of Fiji East - Low -->
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
-	<defs>
-		<style type="text/css">
-			.land
-			{
-				fill: #CCCCCC;
-				fill-opacity: 1;
-				stroke:white;
-				stroke-opacity: 1;
-				stroke-width:0.5;
-			}
-		</style>
-
-		<amcharts:ammap projection="mercator" leftLongitude="-180.000" topLatitude="-14.500" rightLongitude="-178.250" bottomLatitude="-23.500"></amcharts:ammap>
-
-		<!-- All areas are listed in the line below. You can use this list in your script. -->
-		<!--{id:"FJ-N"},{id:"FJ-E"}-->
-
-	</defs>
-	<g>
-		<path id="FJ-N" title="Northern" class="land" d="M57.16,2016.3L82,1973.76L54.68,1929.96L0.09,1980.49L0.09,2062.87L57.16,2016.3zM0.09,1866.57L34.76,1846.35L27.89,1837.08L45.57,1814.98L3.91,1836.28L0.09,1842.85L0.09,1866.57z"/>
-		<path id="FJ-E" title="Eastern" class="land" d="M640.09,3069.87L630.32,3066.42L623.45,3074.42L622.02,3083.46L650.17,3097.31L651.8,3087.82L637.12,3085.02L627.25,3071.74L640.09,3069.87zM475.1,3000.55L463.15,2980.13L461.52,3007.78L475.1,3000.55zM83.32,2979.87L66.89,2978.03L63.07,3016.8L72.18,2989.96L85.31,3007.62L94.66,2993.02L83.32,2979.87zM549.61,2660.39L555.9,2640.44L537.84,2625.9L513.13,2647.07L549.61,2660.39zM432.05,2546.85L430.29,2529.71L409.46,2529.86L432.05,2546.85zM768.26,2527.54L779.29,2506.94L738.64,2492.2L732.24,2520.09L768.26,2527.54zM319.68,2433.48L311.98,2416.24L295.93,2424.06L301.1,2438.15L319.68,2433.48zM383.53,2297.69L384.58,2282.04L370.67,2277.49L367.65,2292.57L383.53,2297.69zM452.9,2216.72L484.11,2179.27L435.56,2148.84L438.6,2165L462.95,2177.79L444.13,2220.2L452.9,2216.72z"/>
-	</g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" version="1.1" viewBox="0 0 512 512">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <g id="_x3C_defs">
+    <amcharts:ammap bottomLatitude="-23.500" leftLongitude="-180.000" projection="mercator" rightLongitude="-178.250" topLatitude="-14.500"/>
+  </g>
+  <g>
+    <path id="FJ-N" d="M128.2,86.9l9.5-16.4-10.5-16.8-21,19.4v31.7l21.9-17.9h.1ZM106.2,29.4l13.3-7.8-2.6-3.6,6.8-8.5-16,8.2-1.5,2.5v9.1h0Z"/>
+    <path id="FJ-E" d="M352.3,491.9l-3.8-1.3-2.6,3.1-.5,3.5,10.8,5.3.6-3.6-5.6-1.1-3.8-5.1,4.9-.7h0ZM288.8,465.3l-4.6-7.9-.6,10.6,5.2-2.8h0ZM138.2,457.3l-6.3-.7-1.5,14.9,3.5-10.3,5,6.8,3.6-5.6-4.4-5.1h0ZM317.5,334.5l2.4-7.7-6.9-5.6-9.5,8.1,14,5.1h0ZM272.3,290.9l-.7-6.6h-8l8.7,6.6ZM401.5,283.4l4.2-7.9-15.6-5.7-2.5,10.7,13.8,2.9h.1ZM229.1,247.3l-3-6.6-6.2,3,2,5.4,7.1-1.8h0ZM253.6,195.1l.4-6-5.3-1.7-1.2,5.8,6.1,2h0ZM280.3,164l12-14.4-18.7-11.7,1.2,6.2,9.4,4.9-7.2,16.3,3.4-1.3h0Z"/>
+  </g>
 </svg>

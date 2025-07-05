@@ -1,25 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- (c) ammap.com | SVG map of Reunion - Low -->
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
-	<defs>
-		<style type="text/css">
-			.land
-			{
-				fill: #CCCCCC;
-				fill-opacity: 1;
-				stroke:white;
-				stroke-opacity: 1;
-				stroke-width:0.5;
-			}
-		</style>
-
-		<amcharts:ammap projection="mercator" leftLongitude="55.2164053" topLatitude="-20.8717557" rightLongitude="55.8365536" bottomLatitude="-21.389622"></amcharts:ammap>
-
-		<!-- All areas are listed in the line below. You can use this list in your script. -->
-		<!--{id:"RE"}-->
-
-	</defs>
-	<g>
-		<path id="RE" title="Reunion" class="land" d="M302.6,0L239.34,11.07L135.95,75.39L139.52,88.21L87.23,74.5L78.37,176.39L0.56,227.94L5.95,287L90.63,400.5L82.34,459.06L98.6,496.51L158.7,567.17L222.83,581.79L263,623.7L345.88,665.51L432.26,696.71L478.09,692.79L508.33,714.5L722.24,684.4L763.75,644.39L756.22,537.73L799.44,399.85L787.55,376.42L730.88,349.04L673.5,274.27L628.35,201.68L620.68,128.51L562.55,63.13L485.5,33.54L331.12,18.84L302.6,0z"/>
-	</g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" version="1.1" viewBox="0 0 512 512">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <g id="_x3C_defs">
+    <amcharts:ammap bottomLatitude="-21.389622" leftLongitude="55.2164053" projection="mercator" rightLongitude="55.8365536" topLatitude="-20.8717557"/>
+  </g>
+  <path id="RE" d="M195,32.2l-39.6,6.9-64.8,40.3,2.2,8-32.8-8.6-5.6,63.8L5.8,175l3.4,37,53,71.1-5.2,36.7,10.2,23.5,37.6,44.3,40.2,9.2,25.2,26.3,51.9,26.2,54.1,19.5,28.7-2.5,18.9,13.6,134-18.9,26-25.1-4.7-66.8,27.1-86.4-7.4-14.7-35.5-17.2-35.9-46.8-28.3-45.5-4.8-45.8-36.4-41-48.3-18.5-96.7-9.2-17.9-11.8Z"/>
 </svg>

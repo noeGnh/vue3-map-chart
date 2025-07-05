@@ -1,27 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- (c) ammap.com | SVG map of Wallis and Futuna - Low -->
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
-	<defs>
-		<style type="text/css">
-			.land
-			{
-				fill: #CCCCCC;
-				fill-opacity: 1;
-				stroke:white;
-				stroke-opacity: 1;
-				stroke-width:0.5;
-			}
-		</style>
-
-		<amcharts:ammap projection="mercator" leftLongitude="-178.181752" topLatitude="-13.18332" rightLongitude="-176.16248411" bottomLatitude="-14.3621243"></amcharts:ammap>
-
-		<!-- All areas are listed in the line below. You can use this list in your script. -->
-		<!--{id:"WF-AL"},{id:"WF-UV"},{id:"WF-SG"}-->
-
-	</defs>
-	<g>
-		<path id="WF-AL" title="Alo" class="land" d="M63.45,466.71L81.85,454.47L71.48,450.79L62.93,447.54L46.6,459.52L63.45,466.71zM23.79,440.53L54.72,443.05L22.15,417.5L23.79,440.53z"/>
-		<path id="WF-UV" title="Uvea" class="land" d="M787.57,0L770.48,32.53L776.98,51.9L786.01,56.28L799.14,21.96L787.57,0z"/>
-		<path id="WF-SG" title="Sigave" class="land" d="M22.15,417.5L3.84,408.33L0.86,414.57L12.14,437.32L23.79,440.53L22.15,417.5z"/>
-	</g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" version="1.1" viewBox="0 0 512 512">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <g id="_x3C_defs">
+    <amcharts:ammap bottomLatitude="-14.3621243" leftLongitude="-178.181752" projection="mercator" rightLongitude="-176.16248411" topLatitude="-13.18332"/>
+  </g>
+  <g>
+    <path id="WF-AL" d="M44.3,402.8l11.6-7.7-6.5-2.3-5.4-2-10.3,7.5,10.6,4.5ZM19.4,386.3l19.5,1.6-20.5-16.1,1,14.5Z"/>
+    <path id="WF-UV" d="M499.8,109.2l-10.8,20.5,4.1,12.2,5.7,2.8,8.3-21.6-7.3-13.8Z"/>
+    <path id="WF-SG" d="M18.3,371.8l-11.5-5.8-1.9,3.9,7.1,14.3,7.3,2-1-14.5Z"/>
+  </g>
 </svg>

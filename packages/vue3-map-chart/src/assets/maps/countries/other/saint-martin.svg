@@ -1,25 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- (c) ammap.com | SVG map of Saint Martin - Low -->
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
-	<defs>
-		<style type="text/css">
-			.land
-			{
-				fill: #CCCCCC;
-				fill-opacity: 1;
-				stroke:white;
-				stroke-opacity: 1;
-				stroke-width:0.5;
-			}
-		</style>
-
-		<amcharts:ammap projection="mercator" leftLongitude="-63.154640198" topLatitude="18.126277924" rightLongitude="-62.971248627" bottomLatitude="18.046288191"></amcharts:ammap>
-
-		<!-- All areas are listed in the line below. You can use this list in your script. -->
-		<!--{id:"MF"}-->
-
-	</defs>
-	<g>
-		<path id="MF" title="Saint Martin" class="land" d="M798.91,0L726.12,23.2L737.15,49.83L798.91,0zM254.43,365.34L339.65,352.18L396.87,286.28L500.3,323.79L610.69,324.56L592.75,255.65L629.58,193.56L571.45,147.82L560.44,90.36L596.88,75.06L562.25,4.21L504.23,8.16L496.85,50.09L442.46,27.14L413.4,111.51L359.01,103.6L295.42,178.15L317.11,220.2L238.98,294.73L168.01,266.06L24.59,237.53L1.09,292.81L68.44,336.77L185.46,332.86L254.43,365.34z"/>
-	</g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" version="1.1" viewBox="0 0 512 512">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <g id="_x3C_defs">
+    <amcharts:ammap bottomLatitude="18.046288191" leftLongitude="-63.154640198" projection="mercator" rightLongitude="-62.971248627" topLatitude="18.126277924"/>
+  </g>
+  <path id="MF" d="M508.2,140.5l-46,14.7,7,16.8,39.1-31.5ZM164,371.5l53.9-8.3,36.2-41.7,65.4,23.7,69.8.5-11.3-43.6,23.3-39.3-36.8-28.9-7-36.3,23-9.7-21.9-44.8-36.7,2.5-4.7,26.5-34.4-14.5-18.4,53.3-34.4-5-40.2,47.1,13.7,26.6-49.4,47.1-44.9-18.1-90.7-18-14.9,35,42.6,27.8,74-2.5,43.6,20.5Z"/>
 </svg>

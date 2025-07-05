@@ -1,25 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- (c) ammap.com | SVG map of Martinique - Low -->
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
-	<defs>
-		<style type="text/css">
-			.land
-			{
-				fill: #CCCCCC;
-				fill-opacity: 1;
-				stroke:white;
-				stroke-opacity: 1;
-				stroke-width:0.5;
-			}
-		</style>
-
-		<amcharts:ammap projection="mercator" leftLongitude="-61.229118" topLatitude="14.878716" rightLongitude="-60.810528" bottomLatitude="14.388647"></amcharts:ammap>
-
-		<!-- All areas are listed in the line below. You can use this list in your script. -->
-		<!--{id:"MQ"}-->
-
-	</defs>
-	<g>
-		<path id="MQ" title="Martinique" class="land" d="M682.01,946.6L799.58,837.92L757.13,602.57L551.32,425.28L610.3,351.73L558.47,255.81L664.99,201.3L504.81,256.55L163.7,0L0.42,61.44L117.44,424.21L250.19,547.37L397.02,533.57L437,630L222.37,727.73L293.28,828.4L686.06,809.68L682.01,946.6z"/>
-	</g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" version="1.1" viewBox="0 0 512 512">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <g id="_x3C_defs">
+    <amcharts:ammap bottomLatitude="14.388647" leftLongitude="-61.229118" projection="mercator" rightLongitude="-60.810528" topLatitude="14.878716"/>
+  </g>
+  <path id="MQ" d="M405.3,506.5l62.2-57.5-22.5-124.6-108.9-93.8,31.2-38.9-27.4-50.8,56.4-28.9-84.8,29.2L130.9,5.5,44.5,38l61.9,192,70.3,65.2,77.7-7.3,21.2,51-113.6,51.7,37.5,53.3,207.9-9.9-2.1,72.5Z"/>
 </svg>
