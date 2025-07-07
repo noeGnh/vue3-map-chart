@@ -44,6 +44,7 @@
     "auto-changelog": "^2.4.0",
     "fast-glob": "^3.3.3",
     "rollup-plugin-visualizer": "^6.0.3",
+    "svgo": "^4.0.0",
     "tsx": "^4.20.3",
     "vite": "^4.1.0",
     "vite-svg-loader": "^5.1.0",
