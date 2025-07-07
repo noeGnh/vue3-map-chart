@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import type { MapData, MapDataValue, MapName } from '@/types'
+  import type { MapData, MapDataValue } from '@/types'
   import {
     useEventListener,
     useMouse,
@@ -25,7 +25,6 @@
     langCode?: string
     width?: number | string
     height?: number | string
-    name?: MapName
     mapStyles?: CSSProperties
     displayLegend?: boolean
     displayLegendWhenEmpty?: boolean
@@ -47,7 +46,6 @@
     langCode: 'en',
     height: 500,
     width: '100%',
-    name: 'world',
     mapStyles: () => ({}),
     displayLegend: true,
     displayLegendWhenEmpty: true,
@@ -158,23 +156,28 @@
 
   const { x, y } = useMouse()
 
-  // load svg maps
+  // load svg map
+  const slots = useSlots()
+  const svgMap = ref<string | null>(null)
 
-  const files = import.meta.glob('../assets/maps/**/*.svg', {
-    eager: true,
-    as: 'raw',
-  })
+  const loadSvgMap = async (): Promise<void> => {
+    if (slots.default) {
+      const slotContent = slots.default()
 
-  const svgMaps: { [key: string]: string } = {}
-
-  for (const [key, value] of Object.entries(files)) {
-    var svgMapName = key.replace(/^\.\/(.*)\.\w+$/, '$1')
-
-    const parts = svgMapName.split('/')
-
-    const name = parts[parts.length - 1]?.split('.')[0]
-    svgMaps[name] = value as string
+      svgMap.value = slotContent[0].type as string
+    } else {
+      console.warn('No map found')
+      svgMap.value = ''
+    }
   }
+
+  watch(
+    () => slots.default,
+    () => {
+      loadSvgMap()
+    },
+    { immediate: true, deep: true }
+  )
 
   // build map styles
 
@@ -305,7 +308,7 @@
       :id="`v3mc-map-${cpntId}`"
       class="v3mc-map"
       :style="mapStyles"
-      v-html="svgMaps[props.name]"></div>
+      v-html="svgMap"></div>
     <Tooltip
       v-if="displayTooltip"
       :id="`v3mc-tooltip-${cpntId}`"

@@ -1,4 +1,15 @@
 <script setup lang="ts">
+  import {
+    AfricaMap,
+    AsiaMap,
+    BrazilMap,
+    EgyptMap,
+    EuropeMap,
+    NorthAmericaMap,
+    OceaniaMap,
+    SouthAmericaMap,
+    WorldMap,
+  } from 'vue3-map-chart'
   import type { MapDataValue } from 'vue3-map-chart/types/types'
 
   const worldData = {
@@ -377,12 +388,13 @@
         :data="worldData"
         :map-styles="{ height: '100%' }"
         :display-legend-when-empty="false"
-        @map-item-click="onMapItemClick" />
+        @map-item-click="onMapItemClick">
+        <WorldMap />
+      </MapChart>
       <div class="map-label">World</div>
     </div>
     <div class="cell small">
       <MapChart
-        name="africa"
         base-color="#339601"
         legend-value-suffix="&nbsp;%"
         legend-text-color="whitesmoke"
@@ -390,45 +402,49 @@
         :data="africaData"
         :map-styles="{ height: '100%' }"
         :display-legend-when-empty="false"
-        @map-item-click="onMapItemClick" />
+        @map-item-click="onMapItemClick">
+        <AfricaMap />
+      </MapChart>
       <div class="map-label">Africa</div>
     </div>
     <div class="cell small">
       <MapChart
-        name="asia"
         lang-code="zh"
         base-color="#F7931E"
         :data="asiaData"
         :map-styles="{ height: '100%' }"
         :display-legend-when-empty="false"
-        @map-item-click="onMapItemClick" />
+        @map-item-click="onMapItemClick">
+        <AsiaMap />
+      </MapChart>
       <div class="map-label">Asia</div>
     </div>
     <div class="cell small">
       <MapChart
-        name="europe"
         lang-code="fr"
         base-color="#D31F3C"
         legend-value-suffix="&nbsp;€"
         :data="europeData"
         :map-styles="{ height: '100%' }"
         :display-legend-when-empty="false"
-        @map-item-click="onMapItemClick" />
+        @map-item-click="onMapItemClick">
+        <EuropeMap />
+      </MapChart>
       <div class="map-label">Europe</div>
     </div>
     <div class="cell small">
       <MapChart
-        name="north-america"
         base-color="#FFC700"
         legend-value-prefix="$&nbsp;"
         :data="northAmericaData"
         :map-styles="{ height: '100%' }"
-        @map-item-click="onMapItemClick" />
+        @map-item-click="onMapItemClick">
+        <NorthAmericaMap />
+      </MapChart>
       <div class="map-label">North America</div>
     </div>
     <div class="cell small">
       <MapChart
-        name="south-america"
         base-color="#132D50"
         legend-text-color="black"
         legend-bg-color="rgba(255, 255, 255, 0.8)"
@@ -436,60 +452,67 @@
         format-value-with-si-prefix
         :data="southAmericaData"
         :map-styles="{ height: '100%' }"
-        @map-item-click="onMapItemClick" />
+        @map-item-click="onMapItemClick">
+        <SouthAmericaMap />
+      </MapChart>
       <div class="map-label">South America</div>
     </div>
     <div class="cell small">
       <MapChart
-        name="oceania"
         :data="oceaniaData"
         :map-styles="{ height: '100%' }"
         @map-item-click="onMapItemClick"
         @map-item-mouseout="onMapItemMouseout"
-        @map-item-mouseover="onMapItemMouseover" />
+        @map-item-mouseover="onMapItemMouseover">
+        <OceaniaMap />
+      </MapChart>
       <div class="map-label">Oceania</div>
     </div>
     <div class="cell small">
       <MapChart
-        name="germany"
         base-color="#3F51B5"
         legend-value-suffix="&nbsp;%"
         :data="germanyData"
         :map-styles="{ height: '100%' }"
-        @map-item-click="onMapItemClick" />
+        @map-item-click="onMapItemClick">
+        <GermanyMap />
+      </MapChart>
       <div class="map-label">Germany</div>
     </div>
     <div class="cell small">
       <MapChart
-        name="brazil"
         :data="brazilData"
         :map-styles="{ height: '100%' }"
         legend-value-prefix="GDP: $"
         legend-value-suffix="B"
         :display-legend-when-empty="false"
-        @map-item-click="onMapItemClick" />
+        @map-item-click="onMapItemClick">
+        <BrazilMap />
+      </MapChart>
       <div class="map-label">Brazil</div>
     </div>
     <div class="cell small">
       <MapChart
-        name="japan"
         base-color="#E91E63"
         legend-value-suffix=" ppl"
         :data="japanData"
         :map-styles="{ height: '100%' }"
-        @map-item-click="onMapItemClick" />
+        @map-item-click="onMapItemClick">
+        <JapanMap />
+      </MapChart>
       <div class="map-label">Japan</div>
     </div>
     <div class="cell small">
       <MapChart
-        name="egypt"
         base-color="#000000"
         legend-value-suffix="°C"
         legend-bg-color="rgba(0,0,0,0.7)"
         legend-text-color="white"
         :data="egyptData"
         :map-styles="{ height: '100%' }"
-        @map-item-click="onMapItemClick" />
+        @map-item-click="onMapItemClick">
+        <EgyptMap />
+      </MapChart>
       <div class="map-label">Egypt</div>
     </div>
   </div>

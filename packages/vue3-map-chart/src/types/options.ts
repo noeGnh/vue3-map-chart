@@ -1,3 +1,6 @@
+import type { Component } from 'vue'
+
 export interface Options {
-  name: string
+  name?: string
+  maps?: Record<string, Component>
 }
