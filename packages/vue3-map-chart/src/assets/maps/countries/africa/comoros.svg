@@ -1,12 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" version="1.1" viewBox="0 0 512 512">
-  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
-  <g id="_x3C_defs">
-    <amcharts:ammap bottomLatitude="-12.4138" leftLongitude="43.2194" projection="mercator" rightLongitude="44.5417" topLatitude="-11.3646"/>
-  </g>
-  <g>
-    <path id="KM-AN" d="M500.9,455.9l6.7-57.9-23.8-66.1-21.2,8.3-14.7,37.2-64.2-7.8,68.7,35.8,48.5,50.5Z"/>
-    <path id="KM-GC" d="M57.3,56.1l-30.4,7.2L4.3,208.5l20.4,30.6,64,40.5,23.3-19.4-12.2-23.7-34.3-84.9,6.8-80.3-15-15.2Z"/>
-    <path id="KM-MO" d="M223.5,427.5l-58.7-27.9,11.3,45.4,74.1,7.4-26.7-24.9Z"/>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" id="Layer_1" viewBox="0 0 512 512"><g id="_x3C_defs"><amcharts:ammap bottomLatitude="-12.414" leftLongitude="43.219" projection="mercator" rightLongitude="44.542" topLatitude="-11.365"/></g><g><path id="KM-AN" d="m500.9 455.9 6.7-57.9-23.8-66.1-21.2 8.3-14.7 37.2-64.2-7.8 68.7 35.8z"/><path id="KM-GC" d="m57.3 56.1-30.4 7.2L4.3 208.5l20.4 30.6 64 40.5 23.3-19.4-12.2-23.7-34.3-84.9 6.8-80.3z"/><path id="KM-MO" d="m223.5 427.5-58.7-27.9 11.3 45.4 74.1 7.4z"/></g></svg>

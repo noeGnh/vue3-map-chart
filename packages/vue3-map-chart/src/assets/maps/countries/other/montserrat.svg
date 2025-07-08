@@ -1,8 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" version="1.1" viewBox="0 0 512 512">
-  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
-  <g id="_x3C_defs">
-    <amcharts:ammap bottomLatitude="16.6746959" leftLongitude="-62.2415171" projection="mercator" rightLongitude="-62.1441758" topLatitude="16.8240519"/>
-  </g>
-  <path id="MS" d="M392.5,507.4l8.4-228.4L305.3,27.2,209.6,4.6h0l-98.4,335.3,39.5,142.2,241.9,25.3h0Z"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" id="Layer_1" viewBox="0 0 512 512"><g id="_x3C_defs"><amcharts:ammap bottomLatitude="16.675" leftLongitude="-62.242" projection="mercator" rightLongitude="-62.144" topLatitude="16.824"/></g><path id="MS" d="m392.5 507.4 8.4-228.4-95.6-251.8-95.7-22.6-98.4 335.3 39.5 142.2 241.9 25.3Z"/></svg>

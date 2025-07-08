@@ -1,12 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" version="1.1" viewBox="0 0 512 512">
-  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
-  <g id="_x3C_defs">
-    <amcharts:ammap bottomLatitude="17.6760820473" leftLongitude="-65.041809082" projection="mercator" rightLongitude="-64.5651928" topLatitude="18.3822211208"/>
-  </g>
-  <g>
-    <path id="VI-ST" d="M159.4,17l15.5,13.9-39.2-5.9-35.4,14.4,10.5,10,61-.4,33.6,23.9,4.7-6.9,20.4-1.9-71-47Z"/>
-    <path id="VI-SJ" d="M320.2,46.7l26.2,4.3-55.9-25.1-35.1,30.8,62.8,17,1.9-27Z"/>
-    <path id="VI-SC" d="M194.8,495l216.8-46.7-46.2-12.7-38,17.3-52.9-32.4-43.3,18.8-24.4-7.5-12.1,63.1Z"/>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" id="Layer_1" viewBox="0 0 512 512"><g id="_x3C_defs"><amcharts:ammap bottomLatitude="17.676" leftLongitude="-65.042" projection="mercator" rightLongitude="-64.565" topLatitude="18.382"/></g><g><path id="VI-ST" d="m159.4 17 15.5 13.9-39.2-5.9-35.4 14.4 10.5 10 61-.4 33.6 23.9 4.7-6.9 20.4-1.9-71-47Z"/><path id="VI-SJ" d="m320.2 46.7 26.2 4.3-55.9-25.1-35.1 30.8 62.8 17 1.9-27Z"/><path id="VI-SC" d="m194.8 495 216.8-46.7-46.2-12.7-38 17.3-52.9-32.4-43.3 18.8-24.4-7.5-12.1 63.1Z"/></g></svg>
