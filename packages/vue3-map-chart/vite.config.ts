@@ -1,6 +1,6 @@
 /// <reference types="vitest"/>
 import vue from '@vitejs/plugin-vue'
-import { visualizer } from 'rollup-plugin-visualizer'
+// import { visualizer } from 'rollup-plugin-visualizer'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { fileURLToPath } from 'url'
@@ -11,13 +11,13 @@ export default defineConfig({
   plugins: [
     vue(),
     svgLoader(),
-    visualizer({
+    /* visualizer({
       filename: 'dist/stats.html',
       open: true,
       gzipSize: true,
       brotliSize: true,
       template: 'treemap',
-    }),
+    }), */
     Components({
       dts: true,
       extensions: ['vue', 'md'],

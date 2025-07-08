@@ -28,7 +28,7 @@ pnpm add vue3-map-chart
 
 ## Demo
 
-View the live demo [`here`](https://noegnh.github.io/vue3-map-chart/)
+View the live demo [`here`](https://noegnh.github.io/vue3-map-chart/) and demo source code [`here`](https://github.com/noeGnh/vue3-map-chart/blob/master/packages/playground/).
 
 ## Usage
 
@@ -52,11 +52,21 @@ If needed rename component to use:
 createApp(App).use(Vue3MapChart, { name: 'MyMapChart' }).mount('#app') // use in template <MyMapChart />
 ```
 
-Alternatively you can also import the component locally:
+If needed register some maps globally:
+
+```js
+import Vue3MapChart, { GermanyMap, JapanMap } from 'vue3-map-chart'
+
+createApp(App).use(Vue3MapChart, { maps: { GermanyMap, 'Japan': JapanMap } }).mount('#app')
+```
+
+Map list can be found [`here`](https://github.com/noeGnh/vue3-map-chart/blob/master/packages/vue3-map-chart/map-list.txt)
+
+Alternatively you can also import the components locally:
 
 ```js
 <script setup>
- import { MapChart } from 'vue3-map-chart'
+ import { MapChart, AfricaMap, AsiaMap, BrazilMap, EgyptMap, EuropeMap, NorthAmericaMap } from 'vue3-map-chart'
  import 'vue3-map-chart/dist/style.css'
 </script>
 ```
@@ -67,7 +77,7 @@ The component requires a prop of data to be passed to it, which is a JS object f
 
 ```js
 <script setup>
- import { MapChart } from 'vue3-map-chart'
+ import { MapChart, WorldMap } from 'vue3-map-chart'
 
  const data = {
     DE: 95,
@@ -81,7 +91,7 @@ Or if for some reasons you want to customize each country color.
 
 ```js
 <script setup>
- import { MapChart } from 'vue3-map-chart'
+ import { MapChart, WorldMap } from 'vue3-map-chart'
 
  const data = {
     AU: {
@@ -100,11 +110,13 @@ Or if for some reasons you want to customize each country color.
 </script>
 ```
 
-The key must be a valid [ISO 3166-1 country code](https://en.wikipedia.org/wiki/ISO_3166-1) or a [ISO 3166-2 subdivision code](https://en.wikipedia.org/wiki/ISO_3166-2). You can then use the component directly in your template.
+The key must be a valid [ISO 3166-1 country code](https://en.wikipedia.org/wiki/ISO_3166-1) or a [ISO 3166-2 subdivision code](https://en.wikipedia.org/wiki/ISO_3166-2). You can then use the component directly in your template and pass the map you want to display as a default slot.
 
 ```html
 <template>
- <MapChart :data="data" />
+ <MapChart :data="data">
+    <WorldMap />
+ </MapChart>
 </template>
 ```
 
@@ -113,7 +125,6 @@ The key must be a valid [ISO 3166-1 country code](https://en.wikipedia.org/wiki/
 | Name                    | Type                                                                                                        | Description                                                                     | Default              | Required |
 | ----------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | -------------------- | -------- |
 | data                    | number / { value?: number, color?: string, legendLabel?: string }                                           | See Usage Section above for details                                             | undefined            | Yes      |
-| name                    | [MapName](https://github.com/noeGnh/vue3-map-chart/blob/master/packages/vue3-map-chart/src/types/map-names.ts) | Name of map displayed                                                           | 'world'              | No       |
 | baseColor               | string                                                                                                      | Color use for data representation                                               | '#0782c5'            | No       |
 | langCode                | string                                                                                                      | The language of countries name, subdivisions name is not supported                                                  | 'en'                 | No       |
 | width                   | number / string                                                                                             | Width of map                                                                    | '100%'               | No       |
@@ -132,6 +143,12 @@ The key must be a valid [ISO 3166-1 country code](https://en.wikipedia.org/wiki/
 | formatValueWithSiPrefix | boolean                                                                                                     | Formats a number with a magnitude suffix                                        | false                | No       |
 | forceCursorPointer      | boolean                                                                                                     | Force the cursor to be in pointer mode even when the legend display is disabled | false                | No       |
 
+## Slots
+
+| Name | Description |
+| ---- | ----------- |
+| default | The map you want to display. |
+
 ## Events
 
 - mapItemClick
@@ -145,7 +162,7 @@ The key must be a valid [ISO 3166-1 country code](https://en.wikipedia.org/wiki/
 
 ```js
 <script setup>
- import { MapChart } from 'vue3-map-chart'
+ import { MapChart, WorldMap } from 'vue3-map-chart'
 
  const data = {
     US: 43,
@@ -172,7 +189,9 @@ The key must be a valid [ISO 3166-1 country code](https://en.wikipedia.org/wiki/
  <MapChart
     :data="data"
     @map-item-click="onMapItemClick"
-    @map-item-mouseover="onMapItemMouseover"/>
+    @map-item-mouseover="onMapItemMouseover">
+    <WorldMap />
+ </MapChart>
 </template>
 ```
 

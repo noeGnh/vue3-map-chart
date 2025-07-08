@@ -1,5 +1,5 @@
 import vue from '@vitejs/plugin-vue'
-import { visualizer } from 'rollup-plugin-visualizer'
+// import { visualizer } from 'rollup-plugin-visualizer'
 import AutoImport from 'unplugin-auto-import/vite'
 import { defineConfig } from 'vite'
 
@@ -8,13 +8,13 @@ export default defineConfig({
   base: process.env.NODE_ENV === 'production' ? '/vue3-map-chart' : '/',
   plugins: [
     vue(),
-    visualizer({
+    /* visualizer({
       filename: 'dist/stats.html',
       open: true, // open in browser
       gzipSize: true,
       brotliSize: true,
       template: 'treemap', // or 'sunburst', 'network'
-    }),
+    }), */
     AutoImport({
       // targets to transform
       include: [
