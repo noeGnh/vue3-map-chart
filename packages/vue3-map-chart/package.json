@@ -33,7 +33,8 @@
     "test-ci": "vitest --run",
     "version": "auto-changelog --template keepachangelog --hide-credit -p && git add CHANGELOG.md",
     "generate:svg-map-type": "tsx scripts/generate-svg-map-type.ts",
-    "generate:svg-map-exports": "tsx scripts/generate-svg-map-exports.ts"
+    "generate:svg-map-exports": "tsx scripts/generate-svg-map-exports.ts",
+    "optimize-svgs": "tsx scripts/optimize-svgs.ts"
   },
   "peerDependencies": {
     "vue": "^3.4.0"
