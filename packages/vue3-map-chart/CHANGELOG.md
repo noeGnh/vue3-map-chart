@@ -5,7 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v0.0.6](https://github.com/noeGnh/vue3-map-chart/compare/v0.0.5...v0.0.6)
+## [v0.1.0](https://github.com/noeGnh/vue3-map-chart/compare/v0.0.6...v0.1.0)
+
+### Commits
+
+- chore: maps adjustment [`6e883e7`](https://github.com/noeGnh/vue3-map-chart/commit/6e883e798fa78943bf90afcfb3ab76c04b1ceeb1)
+- chore: add raw countries svgs [`18e2f0b`](https://github.com/noeGnh/vue3-map-chart/commit/18e2f0bfa79715b24c8e828c821d6544a87b1f58)
+- perf: optimize all maps [`fd8fca7`](https://github.com/noeGnh/vue3-map-chart/commit/fd8fca73f05f91c474942d8b24e28cb38a1a1fcc)
+
+## [v0.0.6](https://github.com/noeGnh/vue3-map-chart/compare/v0.0.5...v0.0.6) - 2025-03-04
 
 ### Merged
 
