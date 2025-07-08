@@ -197,7 +197,7 @@ The key must be a valid [ISO 3166-1 country code](https://en.wikipedia.org/wiki/
 
 ## Credits
 
-This package use SVG maps from [`amCharts`](https://www.amcharts.com/svg-maps)
+This package uses SVG maps from [`amCharts`](https://www.amcharts.com/)
 
 ## Contributing
 
@@ -209,4 +209,4 @@ Detailed changes for each release are documented in the [release notes](https://
 
 ## License
 
-[MIT](https://github.com/noeGnh/vue3-map-chart/blob/master/LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/noeGnh/vue3-map-chart/blob/master/LICENSE)

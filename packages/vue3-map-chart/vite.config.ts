@@ -72,7 +72,16 @@ export default defineConfig({
         }
       },
     },
-    minify: false,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: false,
+        drop_debugger: true,
+      },
+      format: {
+        comments: false,
+      },
+    },
     rollupOptions: {
       external: ['vue'],
       output: {
