@@ -29541,5 +29541,5 @@ const _export_sfc = (sfc, props) => {
   return target;
 };
 const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-e8d58fc6"]]);
-__vitePreload(() => Promise.resolve({}), true ? ["assets/style-147ed2c9.css"] : void 0);
+__vitePreload(() => Promise.resolve({}), true ? ["assets/style-39555de2.css"] : void 0);
 createApp(App).use(plugin, { maps: { GermanyMap: germany, JapanMap: japan } }).mount("#app");
