@@ -172,7 +172,6 @@
 
         const type = slotContent[0].type as { name: string; template: string }
 
-        console.log(typeof type == 'object')
         if (typeof type == 'object') {
           const fetchData = async () => {
             const svgUrl = `https://raw.githubusercontent.com/noeGnh/vue3-map-chart/master/packages/vue3-map-chart/src/assets/maps/${type.template}`
@@ -199,8 +198,8 @@
 
             if (isCacheValid) {
               svgMap.value = svg
-            } else fetchData()
-          } else fetchData()
+            } else await fetchData()
+          } else await fetchData()
         }
       } else {
         svgMap.value = ''
