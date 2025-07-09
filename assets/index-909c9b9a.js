@@ -2145,6 +2145,36 @@ function traverse(value, depth = Infinity, seen2) {
   }
   return value;
 }
+function withDirectives(vnode, directives) {
+  if (currentRenderingInstance === null) {
+    return vnode;
+  }
+  const instance = getExposeProxy(currentRenderingInstance) || currentRenderingInstance.proxy;
+  const bindings = vnode.dirs || (vnode.dirs = []);
+  for (let i = 0; i < directives.length; i++) {
+    let [dir, value, arg, modifiers = EMPTY_OBJ] = directives[i];
+    if (dir) {
+      if (isFunction(dir)) {
+        dir = {
+          mounted: dir,
+          updated: dir
+        };
+      }
+      if (dir.deep) {
+        traverse(value);
+      }
+      bindings.push({
+        dir,
+        instance,
+        value,
+        oldValue: void 0,
+        arg,
+        modifiers
+      });
+    }
+  }
+  return vnode;
+}
 function invokeDirectiveHook(vnode, prevVNode, instance, name) {
   const bindings = vnode.dirs;
   const oldBindings = prevVNode && prevVNode.dirs;
@@ -5473,6 +5503,45 @@ function patchClass(el2, value, isSVG) {
 }
 const vShowOriginalDisplay = Symbol("_vod");
 const vShowHidden = Symbol("_vsh");
+const vShow = {
+  beforeMount(el2, { value }, { transition }) {
+    el2[vShowOriginalDisplay] = el2.style.display === "none" ? "" : el2.style.display;
+    if (transition && value) {
+      transition.beforeEnter(el2);
+    } else {
+      setDisplay(el2, value);
+    }
+  },
+  mounted(el2, { value }, { transition }) {
+    if (transition && value) {
+      transition.enter(el2);
+    }
+  },
+  updated(el2, { value, oldValue }, { transition }) {
+    if (!value === !oldValue)
+      return;
+    if (transition) {
+      if (value) {
+        transition.beforeEnter(el2);
+        setDisplay(el2, true);
+        transition.enter(el2);
+      } else {
+        transition.leave(el2, () => {
+          setDisplay(el2, false);
+        });
+      }
+    } else {
+      setDisplay(el2, value);
+    }
+  },
+  beforeUnmount(el2, { value }) {
+    setDisplay(el2, value);
+  }
+};
+function setDisplay(el2, value) {
+  el2.style.display = value ? el2[vShowOriginalDisplay] : "none";
+  el2[vShowHidden] = !value;
+}
 const CSS_VAR_TEXT = Symbol("");
 function useCssVars(getter) {
   const instance = getCurrentInstance();
@@ -28605,12 +28674,9 @@ const _export_sfc$1 = (sfc, props) => {
   return target;
 };
 const Tooltip = /* @__PURE__ */ _export_sfc$1(_sfc_main$1, [["__scopeId", "data-v-e8982a39"]]);
-const _withScopeId$2 = (n) => (pushScopeId("data-v-e95d561a"), n = n(), popScopeId(), n);
+const _withScopeId$2 = (n) => (pushScopeId("data-v-5aeaac59"), n = n(), popScopeId(), n);
 const _hoisted_1$2 = { class: "v3mc-container" };
-const _hoisted_2$2 = {
-  key: 0,
-  class: "v3mc-tiny-loader-wrapper"
-};
+const _hoisted_2$2 = { class: "v3mc-tiny-loader-wrapper" };
 const _hoisted_3$2 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", { class: "v3mc-tiny-loader" }, null, -1));
 const _hoisted_4$2 = ["id", "innerHTML"];
 const _sfc_main$2 = /* @__PURE__ */ defineComponent({
@@ -28643,16 +28709,16 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   ],
   setup(__props, { emit: __emit }) {
     useCssVars((_ctx) => ({
-      "53abe511": unref(height),
-      "5c0896c8": unref(width),
-      "8b8c8018": unref(defaultStrokeColor),
-      "4f97fdc9": unref(defaultFillColor),
-      "2057b1cd": unref(defaultCursor),
-      "a205c63e": unref(defaultFillHoverColor),
-      "1684fd96": _ctx.defaultStrokeHoverColor,
-      "125c3220": unref(tooltipY),
-      "125c321f": unref(tooltipX),
-      "ef209d34": unref(loaderColor)
+      "59626acb": unref(height),
+      "ae3ee0bc": unref(width),
+      "3c837eae": unref(defaultStrokeColor),
+      "28d62303": unref(defaultFillColor),
+      "5067b25a": unref(defaultCursor),
+      "72c72be7": unref(defaultFillHoverColor),
+      "1007631c": _ctx.defaultStrokeHoverColor,
+      "f6ef9d4c": unref(tooltipY),
+      "f6ef9d4e": unref(tooltipX),
+      "532ca028": unref(loaderColor)
     }));
     const props = __props;
     onMounted(() => {
@@ -28846,19 +28912,23 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     });
     return (_ctx, _cache) => {
       return openBlock(), createElementBlock("div", _hoisted_1$2, [
-        unref(isLoading) ? (openBlock(), createElementBlock("div", _hoisted_2$2, [
+        withDirectives(createBaseVNode("div", _hoisted_2$2, [
           renderSlot(_ctx.$slots, "loader", {}, () => [
             _hoisted_3$2
           ], true)
-        ])) : (openBlock(), createElementBlock("div", {
-          key: 1,
+        ], 512), [
+          [vShow, unref(isLoading)]
+        ]),
+        withDirectives(createBaseVNode("div", {
           id: `v3mc-map-${unref(cpntId)}`,
           class: "v3mc-map",
           style: normalizeStyle(_ctx.mapStyles),
           innerHTML: unref(svgMap)
-        }, null, 12, _hoisted_4$2)),
+        }, null, 12, _hoisted_4$2), [
+          [vShow, !unref(isLoading)]
+        ]),
         unref(displayTooltip) ? (openBlock(), createBlock(Tooltip, {
-          key: 2,
+          key: 0,
           id: `v3mc-tooltip-${unref(cpntId)}`,
           class: "v3mc-tooltip",
           label: unref(tooltipLabel),
@@ -28870,7 +28940,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-e95d561a"]]);
+const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-5aeaac59"]]);
 const plugin = {
   install(app, options) {
     app.component((options == null ? void 0 : options.name) || "MapChart", MapChart);
@@ -29627,5 +29697,5 @@ const _export_sfc = (sfc, props) => {
   return target;
 };
 const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-fd9a9fc4"]]);
-__vitePreload(() => Promise.resolve({}), true ? ["assets/style-08c92e07.css"] : void 0);
+__vitePreload(() => Promise.resolve({}), true ? ["assets/style-899462f3.css"] : void 0);
 createApp(App).use(plugin, { maps: { GermanyMap, JapanMap } }).mount("#app");
