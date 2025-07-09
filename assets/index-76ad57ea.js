@@ -28605,7 +28605,7 @@ const _export_sfc$1 = (sfc, props) => {
   return target;
 };
 const Tooltip = /* @__PURE__ */ _export_sfc$1(_sfc_main$1, [["__scopeId", "data-v-e8982a39"]]);
-const _withScopeId$2 = (n) => (pushScopeId("data-v-18f1935a"), n = n(), popScopeId(), n);
+const _withScopeId$2 = (n) => (pushScopeId("data-v-e95d561a"), n = n(), popScopeId(), n);
 const _hoisted_1$2 = { class: "v3mc-container" };
 const _hoisted_2$2 = {
   key: 0,
@@ -28643,16 +28643,16 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   ],
   setup(__props, { emit: __emit }) {
     useCssVars((_ctx) => ({
-      "076a1ff5": unref(height),
-      "19d88d38": unref(width),
-      "45ba7650": unref(defaultStrokeColor),
-      "5a04ebad": unref(defaultFillColor),
-      "38dfa32e": unref(defaultCursor),
-      "39ad3d7d": unref(defaultFillHoverColor),
-      "94a1319c": _ctx.defaultStrokeHoverColor,
-      "611177f8": unref(tooltipY),
-      "611177fa": unref(tooltipX),
-      "0cd2b5fc": unref(loaderColor)
+      "53abe511": unref(height),
+      "5c0896c8": unref(width),
+      "8b8c8018": unref(defaultStrokeColor),
+      "4f97fdc9": unref(defaultFillColor),
+      "2057b1cd": unref(defaultCursor),
+      "a205c63e": unref(defaultFillHoverColor),
+      "1684fd96": _ctx.defaultStrokeHoverColor,
+      "125c3220": unref(tooltipY),
+      "125c321f": unref(tooltipX),
+      "ef209d34": unref(loaderColor)
     }));
     const props = __props;
     onMounted(() => {
@@ -28726,7 +28726,6 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
         if (slots.default) {
           const slotContent = slots.default();
           const type = slotContent[0].type;
-          console.log(typeof type == "object");
           if (typeof type == "object") {
             const fetchData = async () => {
               const svgUrl = `https://raw.githubusercontent.com/noeGnh/vue3-map-chart/master/packages/vue3-map-chart/src/assets/maps/${type.template}`;
@@ -28746,9 +28745,9 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
               if (isCacheValid) {
                 svgMap.value = svg;
               } else
-                fetchData();
+                await fetchData();
             } else
-              fetchData();
+              await fetchData();
           }
         } else {
           svgMap.value = "";
@@ -28871,7 +28870,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-18f1935a"]]);
+const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-e95d561a"]]);
 const plugin = {
   install(app, options) {
     app.component((options == null ? void 0 : options.name) || "MapChart", MapChart);
@@ -29628,5 +29627,5 @@ const _export_sfc = (sfc, props) => {
   return target;
 };
 const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-fd9a9fc4"]]);
-__vitePreload(() => Promise.resolve({}), true ? ["assets/style-f94a5988.css"] : void 0);
+__vitePreload(() => Promise.resolve({}), true ? ["assets/style-08c92e07.css"] : void 0);
 createApp(App).use(plugin, { maps: { GermanyMap, JapanMap } }).mount("#app");
