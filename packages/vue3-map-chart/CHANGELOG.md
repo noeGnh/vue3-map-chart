@@ -5,7 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v0.1.0](https://github.com/noeGnh/vue3-map-chart/compare/v0.0.6...v0.1.0)
+## [v0.1.1](https://github.com/noeGnh/vue3-map-chart/compare/v0.1.0...v0.1.1)
+
+### Commits
+
+- feat: make lite version of the plugin [`a82301a`](https://github.com/noeGnh/vue3-map-chart/commit/a82301a7c6e8f869ad2b6fee2c0bf675f34801f5)
+- fix: minor fixes on lite version [`4dc2336`](https://github.com/noeGnh/vue3-map-chart/commit/4dc2336d708df072022c152ab7330c5e844b5283)
+
+## [v0.1.0](https://github.com/noeGnh/vue3-map-chart/compare/v0.0.6...v0.1.0) - 2025-07-08
 
 ### Commits
 
