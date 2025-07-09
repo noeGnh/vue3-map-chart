@@ -15,6 +15,12 @@
     {
       "path": "./packages/vue3-map-chart/tsconfig.vitest.json"
     },
+    {
+      "path": "./packages/vue3-map-chart-lite/tsconfig.app.json"
+    },
+    {
+      "path": "./packages/vue3-map-chart-lite/tsconfig.vitest.json"
+    },
     // Playground
     {
       "path": "./packages/playground/tsconfig.app.json"

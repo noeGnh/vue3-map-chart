@@ -1,0 +1,433 @@
+<script setup lang="ts">
+  import type { MapData, MapDataValue } from '@/types'
+  import {
+    useEventListener,
+    useMouse,
+    useMouseInElement,
+    useStyleTag,
+  } from '@vueuse/core'
+  import countries from 'i18n-iso-countries'
+  import iso3166 from 'iso-3166-2'
+  import type { CSSProperties } from 'vue'
+
+  import locales from '../i18n-iso-countries-locales'
+  import {
+    formatNumberWithSIPrefix,
+    getRandomInteger,
+    isObject,
+    isValidIsoCode,
+  } from '../utils'
+  import Tooltip from './Tooltip.vue'
+
+  // handle props
+
+  interface Props {
+    langCode?: string
+    width?: number | string
+    height?: number | string
+    mapStyles?: CSSProperties
+    displayLegend?: boolean
+    displayLegendWhenEmpty?: boolean
+    formatValueWithSiPrefix?: boolean
+    forceCursorPointer?: boolean
+    legendBgColor?: string
+    legendTextColor?: string
+    legendValuePrefix?: string
+    legendValueSuffix?: string
+    defaultStrokeColor?: string
+    defaultStrokeHoverColor?: string
+    defaultFillColor?: string
+    defaultFillHoverColor?: string
+    baseColor?: string
+    loaderColor?: string
+    data: MapData
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    langCode: 'en',
+    height: 500,
+    width: '100%',
+    mapStyles: () => ({}),
+    displayLegend: true,
+    displayLegendWhenEmpty: true,
+    formatValueWithSiPrefix: false,
+    forceCursorPointer: false,
+    legendBgColor: undefined,
+    legendTextColor: undefined,
+    legendValuePrefix: '',
+    legendValueSuffix: '',
+    defaultFillColor: 'rgb(236, 236, 236)',
+    defaultFillHoverColor: 'rgb(226, 226, 226)',
+    defaultStrokeHoverColor: 'rgb(200, 200, 200)',
+    defaultStrokeColor: 'rgb(200, 200, 200)',
+    baseColor: '#0782c5',
+    loaderColor: '#3498db',
+  })
+
+  onMounted(() => {
+    const registerLocale = async (langCode: string) => {
+      try {
+        countries.registerLocale(locales[langCode])
+      } catch (error) {
+        console.error('Error loading locale:', error)
+      }
+    }
+
+    registerLocale(props.langCode)
+  })
+
+  const height = computed(() =>
+    typeof props.height === 'string' ? props.height : `${props.height}px`
+  )
+
+  const width = computed(() =>
+    typeof props.width === 'string' ? props.width : `${props.width}px`
+  )
+
+  const loaderColor = computed(() => props.loaderColor)
+
+  const defaultFillColor = computed(() => props.defaultFillColor)
+
+  const defaultFillHoverColor = computed(() =>
+    props.displayLegend && props.displayLegendWhenEmpty
+      ? props.defaultFillHoverColor
+      : props.defaultFillColor
+  )
+
+  const defaultStrokeColor = computed(() => props.defaultStrokeColor)
+
+  const defaultCursor = computed(() => {
+    if (props.forceCursorPointer) return 'pointer'
+
+    return props.displayLegend && props.displayLegendWhenEmpty
+      ? 'pointer'
+      : 'default'
+  })
+
+  const cpntId = getRandomInteger(10000, 99999)
+
+  // handle events
+
+  const isOutsideMap = ref(true)
+  const currentAreaId = ref<string | null>(null)
+  const currentAreaValue = ref<number | MapDataValue | null>(null)
+
+  const emits = defineEmits([
+    'mapItemMouseover',
+    'mapItemMouseout',
+    'mapItemClick',
+  ])
+
+  onMounted(() => {
+    const el = document.getElementById(`v3mc-map-${cpntId}`)
+    if (el) {
+      const emitEvent = (
+        target: HTMLElement,
+        emitId: 'mapItemMouseover' | 'mapItemMouseout' | 'mapItemClick'
+      ) => {
+        const id = target.getAttribute('id')
+        currentAreaId.value = id
+        currentAreaValue.value = id ? props.data[id] : null
+        if (
+          id &&
+          isValidIsoCode(id) &&
+          !!(
+            countries.getName(id, props.langCode) ||
+            iso3166.subdivision(id)?.name
+          )
+        ) {
+          emits(emitId, id, currentAreaValue.value)
+        }
+      }
+      useEventListener(el, 'mouseover', (event) => {
+        emitEvent(event.target as HTMLElement, 'mapItemMouseover')
+      })
+      useEventListener(el, 'mouseout', (event) => {
+        emitEvent(event.target as HTMLElement, 'mapItemMouseout')
+      })
+      useEventListener(el, 'click', (event) => {
+        emitEvent(event.target as HTMLElement, 'mapItemClick')
+      })
+      const { isOutside } = useMouseInElement(el)
+      watch(
+        () => isOutside.value,
+        (value) => {
+          isOutsideMap.value = value
+        }
+      )
+    }
+  })
+
+  const { x, y } = useMouse()
+
+  // load svg map
+  const slots = useSlots()
+  const svgMap = ref<string | null>(null)
+  const isLoading = ref(false)
+
+  const loadSvgMap = async (): Promise<void> => {
+    try {
+      if (slots.default) {
+        const slotContent = slots.default()
+
+        const type = slotContent[0].type as { name: string; template: string }
+
+        console.log(typeof type == 'object')
+        if (typeof type == 'object') {
+          const fetchData = async () => {
+            const svgUrl = `https://raw.githubusercontent.com/noeGnh/vue3-map-chart/master/packages/vue3-map-chart/src/assets/maps/${type.template}`
+
+            isLoading.value = true
+
+            const response = await fetch(svgUrl)
+
+            svgMap.value = await response.text()
+
+            const cacheData = {
+              svg: svgMap.value,
+              timestamp: Date.now(),
+            }
+            localStorage.setItem(type.name, JSON.stringify(cacheData))
+          }
+
+          const cachedData = localStorage.getItem(type.name)
+          if (cachedData) {
+            const { svg, timestamp } = JSON.parse(cachedData)
+
+            const isCacheValid =
+              Date.now() - timestamp < 28 * 24 * 60 * 60 * 1000
+
+            if (isCacheValid) {
+              svgMap.value = svg
+            } else fetchData()
+          } else fetchData()
+        }
+      } else {
+        svgMap.value = ''
+        console.warn('No map found')
+      }
+    } catch (error) {
+      svgMap.value = ''
+      console.error('Error loading map:', error)
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  watch(
+    () => slots.default,
+    () => {
+      loadSvgMap()
+    },
+    { immediate: true, deep: true }
+  )
+
+  // build map styles
+
+  const { css } = useStyleTag('', {
+    id: `v3mc-map-${cpntId}-styles`,
+  })
+
+  const buildStyles = () => {
+    if (isObject(props.data)) {
+      let min: number | undefined
+      let max: number | undefined
+      Object.keys(props.data).forEach((key) => {
+        const dataValue = props.data[key]
+
+        if (typeof dataValue === 'number') {
+          if (min === undefined || dataValue < min) {
+            min = dataValue
+          }
+
+          if (max === undefined || dataValue > max) {
+            max = dataValue
+          }
+        } else if (isObject(dataValue)) {
+          const value = dataValue.value || 0
+
+          if (min === undefined || value < min) {
+            min = value
+          }
+
+          if (max === undefined || value > max) {
+            max = value
+          }
+        }
+      })
+
+      Object.keys(props.data).forEach((key) => {
+        const dataValue = props.data[key]
+
+        let value, color, opacity
+        if (typeof dataValue === 'number') {
+          value = dataValue
+        } else if (isObject(dataValue)) {
+          value = dataValue.value
+          color = dataValue.color
+        }
+
+        if (value === undefined || max === undefined || min === undefined) {
+          opacity = 1
+        } else {
+          opacity = (value - min) / (max - min)
+          opacity = opacity == 0 ? 0.05 : opacity
+        }
+        css.value += ` #v3mc-map-${cpntId} #${key.toUpperCase()} { fill: ${
+          color || props.baseColor
+        }; fill-opacity: ${opacity}; cursor: ${
+          props.displayLegend ? 'pointer' : 'default'
+        }; } `
+        css.value += ` #v3mc-map-${cpntId} #${key.toUpperCase()}:hover { fill-opacity: ${
+          opacity + 0.05
+        }; } `
+      })
+    }
+  }
+
+  watch(
+    () => props.data,
+    () => {
+      buildStyles()
+    },
+    { deep: true, immediate: true }
+  )
+
+  // tooltip
+
+  const tooltipLabel = computed(() => {
+    const customLegendLabel =
+      typeof currentAreaValue.value === 'number'
+        ? undefined
+        : currentAreaValue.value?.legendLabel
+
+    const areaName = currentAreaId.value
+      ? countries.getName(currentAreaId.value, props.langCode) ||
+        iso3166.subdivision(currentAreaId.value)?.name ||
+        currentAreaId.value
+      : currentAreaId.value
+
+    return customLegendLabel || areaName || ''
+  })
+
+  const tooltipValue = computed(() => {
+    let value: number | string =
+      (typeof currentAreaValue.value === 'number'
+        ? currentAreaValue.value
+        : currentAreaValue.value?.value) || ''
+
+    if (typeof value !== 'number') return value
+
+    value = props.formatValueWithSiPrefix
+      ? formatNumberWithSIPrefix(value)
+      : value
+
+    value = props.legendValuePrefix + value + props.legendValueSuffix
+
+    return value
+  })
+
+  const displayTooltip = computed(() => {
+    return (
+      !isOutsideMap.value &&
+      props.displayLegend &&
+      (props.displayLegendWhenEmpty || tooltipValue.value) &&
+      tooltipLabel.value
+    )
+  })
+
+  const tooltipX = computed(() => {
+    return `${x.value - 100}px`
+  })
+
+  const tooltipY = computed(() => {
+    return `${y.value - 100}px`
+  })
+</script>
+
+<template>
+  <div class="v3mc-container">
+    <div v-if="isLoading" class="v3mc-tiny-loader-wrapper">
+      <slot name="loader">
+        <div class="v3mc-tiny-loader"></div>
+      </slot>
+    </div>
+    <div
+      v-else
+      :id="`v3mc-map-${cpntId}`"
+      class="v3mc-map"
+      :style="mapStyles"
+      v-html="svgMap"></div>
+    <Tooltip
+      v-if="displayTooltip"
+      :id="`v3mc-tooltip-${cpntId}`"
+      class="v3mc-tooltip"
+      :label="tooltipLabel"
+      :value="tooltipValue"
+      :bg-color="props.legendBgColor"
+      :text-color="props.legendTextColor"></Tooltip>
+  </div>
+</template>
+
+<style scoped>
+  .v3mc-container {
+    padding: 5px;
+    position: relative;
+  }
+
+  .v3mc-container,
+  :deep(.v3mc-map > svg) {
+    height: v-bind(height);
+    width: v-bind(width);
+  }
+
+  :deep(.v3mc-map > svg) {
+    stroke: v-bind(defaultStrokeColor);
+    fill: v-bind(defaultFillColor);
+    stroke-width: 0.4px;
+  }
+
+  :deep(.v3mc-map > svg > path) {
+    cursor: v-bind(defaultCursor);
+  }
+
+  :deep(.v3mc-map > svg > path:hover) {
+    fill: v-bind(defaultFillHoverColor);
+    stroke: v-bind(defaultStrokeHoverColor);
+    stroke-width: 0.5px;
+  }
+
+  .v3mc-tooltip {
+    position: fixed;
+    z-index: 10;
+    top: v-bind(tooltipY);
+    left: v-bind(tooltipX);
+  }
+
+  .v3mc-tiny-loader-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .v3mc-tiny-loader {
+    width: 20px;
+    height: 20px;
+    margin: 0 auto;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid v-bind(loaderColor);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>

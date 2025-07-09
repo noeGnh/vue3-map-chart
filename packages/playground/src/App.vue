@@ -9,8 +9,8 @@
     OceaniaMap,
     SouthAmericaMap,
     WorldMap,
-  } from 'vue3-map-chart'
-  import type { MapDataValue } from 'vue3-map-chart/types/types'
+  } from 'vue3-map-chart-lite'
+  import type { MapDataValue } from 'vue3-map-chart-lite/types/types'
 
   const worldData = {
     US: 13,

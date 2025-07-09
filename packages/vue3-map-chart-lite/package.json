@@ -1,0 +1,88 @@
+{
+  "name": "vue3-map-chart-lite",
+  "description": "Vue 3 component for rendering interactive SVG maps of the world, continents, and countries with dynamic data.",
+  "version": "0.1.0",
+  "private": false,
+  "author": "Noé Gnanih <noegnanih@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./*": "./*"
+  },
+  "typings": "types/index.d.ts",
+  "files": [
+    "dist",
+    "types",
+    "README.md"
+  ],
+  "scripts": {
+    "dev-server": "pnpm --parallel vite",
+    "dev-types": "vue-tsc  --noEmit -p tsconfig.app.json --watch",
+    "build": "pnpm generate:svg-map-exports && pnpm build-lib && pnpm build-types",
+    "build-lib": "vite build",
+    "build-types": "rm -f *.tsbuildinfo && vue-tsc --emitDeclarationOnly --declaration -p tsconfig.app.json",
+    "lint": "eslint 'src/**/*.{ts,vue}'",
+    "test": "vitest",
+    "test-ci": "vitest --run",
+    "version": "auto-changelog --template keepachangelog --hide-credit -p && git add CHANGELOG.md",
+    "generate:svg-map-exports": "tsx scripts/generate-svg-map-exports.ts"
+  },
+  "peerDependencies": {
+    "vue": "^3.4.0"
+  },
+  "devDependencies": {
+    "@types/iso-3166-2": "^1.0.3",
+    "@types/jsdom": "^21.1.7",
+    "auto-changelog": "^2.4.0",
+    "fast-glob": "^3.3.3",
+    "rollup-plugin-visualizer": "^6.0.3",
+    "tsx": "^4.20.3",
+    "vite": "^4.1.0",
+    "vitest": "^0.28.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/noeGnh/vue3-map-chart"
+  },
+  "keywords": [
+    "vue",
+    "vue3",
+    "vuejs",
+    "map",
+    "maps",
+    "svg-map",
+    "interactive-map",
+    "data-visualization",
+    "chart",
+    "dashboard",
+    "component",
+    "vue-component",
+    "frontend",
+    "geography",
+    "country-map",
+    "world-map",
+    "vector-map",
+    "lightweight-map",
+    "vue-map-component",
+    "custom-map"
+  ],
+  "bugs": {
+    "url": "https://github.com/noeGnh/vue3-map-chart/issues"
+  },
+  "homepage": "https://github.com/noeGnh/vue3-map-chart#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@vueuse/core": "^10.11.0",
+    "i18n-iso-countries": "^7.11.3",
+    "iso-3166-2": "^1.0.0"
+  }
+}

@@ -8,22 +8,24 @@ A Vue JS Component for displaying dynamic data on a world, continents and countr
 
 ## Installation
 
+There are two versions of this package: `vue3-map-chart` and `vue3-map-chart-lite`. The `vue3-map-chart-lite` version loads maps dynamically from a CDN at runtime, so they are not bundled with your application. This keeps your build lightweight, ideal for users who only need a few maps or want to reduce initial load time. On the other hand, the full `vue3-map-chart` version includes all maps locally, offering faster access and offline support at the cost of a larger bundle size.
+
 If you are using npm:
 
 ```sh
-npm i vue3-map-chart
+npm i vue3-map-chart # or: npm i vue3-map-chart-lite
 ```
 
 If you are using yarn:
 
 ```sh
-yarn add vue3-map-chart
+yarn add vue3-map-chart # or: yarn add vue3-map-chart-lite
 ```
 
 If you are using pnpm:
 
 ```sh
-pnpm add vue3-map-chart
+pnpm add vue3-map-chart # or: pnpm add vue3-map-chart-lite
 ```
 
 ## Demo
@@ -142,12 +144,14 @@ The key must be a valid [ISO 3166-1 country code](https://en.wikipedia.org/wiki/
 | defaultFillHoverColor   | string                                                                                                      | Default map fill hover color                                                    | 'rgb(226, 226, 226)' | No       |
 | formatValueWithSiPrefix | boolean                                                                                                     | Formats a number with a magnitude suffix                                        | false                | No       |
 | forceCursorPointer      | boolean                                                                                                     | Force the cursor to be in pointer mode even when the legend display is disabled | false                | No       |
+| loaderColor      | string                                                                                                     | Color of the loader (Only for lite version) | '#3498db'                | No       |
 
 ## Slots
 
 | Name | Description |
 | ---- | ----------- |
 | default | The map you want to display. |
+| loader | Custom loader to display while the map is loading. (Only for lite version) |
 
 ## Events
 

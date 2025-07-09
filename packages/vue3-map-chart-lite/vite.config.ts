@@ -1,20 +1,28 @@
+/// <reference types="vitest"/>
 import vue from '@vitejs/plugin-vue'
 // import { visualizer } from 'rollup-plugin-visualizer'
 import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { fileURLToPath } from 'url'
 import { defineConfig } from 'vite'
 
-process.env.NODE_ENV
 export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? '/vue3-map-chart' : '/',
   plugins: [
     vue(),
     /* visualizer({
       filename: 'dist/stats.html',
-      open: true, // open in browser
+      open: true,
       gzipSize: true,
       brotliSize: true,
-      template: 'treemap', // or 'sunburst', 'network'
+      template: 'treemap',
     }), */
+    Components({
+      dts: true,
+      extensions: ['vue', 'md'],
+      include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
+      resolvers: [],
+      dirs: ['src/components'],
+    }),
     AutoImport({
       // targets to transform
       include: [
@@ -44,29 +52,45 @@ export default defineConfig({
       },
     }),
   ],
-  resolve: {
-    alias: {
-      'vue3-map-chart':
-        process.env.NODE_ENV === 'production'
-          ? 'vue3-map-chart'
-          : 'vue3-map-chart/src/index.ts',
-      'vue3-map-chart-lite':
-        process.env.NODE_ENV === 'production'
-          ? 'vue3-map-chart-lite'
-          : 'vue3-map-chart-lite/src/index.ts',
-    },
-    dedupe: ['vue'],
-  },
   build: {
-    minify: false,
+    lib: {
+      name: 'Vue3MapChart',
+      entry: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
+      formats: ['es', 'cjs', 'iife'],
+      fileName: (format) => {
+        switch (format) {
+          case 'es':
+            return 'index.mjs'
+          case 'cjs':
+            return 'index.cjs'
+          case 'iife':
+            return 'index.js'
+          default:
+            return 'index.js'
+        }
+      },
+    },
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: false,
+        drop_debugger: true,
+      },
+      format: {
+        comments: false,
+      },
+    },
     rollupOptions: {
-      //
+      external: ['vue'],
+      output: {
+        exports: 'named',
+        globals: {
+          vue: 'Vue',
+        },
+      },
     },
   },
-  optimizeDeps: {
-    exclude: ['vue3-map-chart', 'vue3-map-chart-lite'],
-  },
-  server: {
-    port: 4320,
+  test: {
+    environment: 'jsdom',
   },
 })
