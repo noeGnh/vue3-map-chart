@@ -346,13 +346,13 @@
 
 <template>
   <div class="v3mc-container">
-    <div v-if="isLoading" class="v3mc-tiny-loader-wrapper">
+    <div v-show="isLoading" class="v3mc-tiny-loader-wrapper">
       <slot name="loader">
         <div class="v3mc-tiny-loader"></div>
       </slot>
     </div>
     <div
-      v-else
+      v-show="!isLoading"
       :id="`v3mc-map-${cpntId}`"
       class="v3mc-map"
       :style="mapStyles"
