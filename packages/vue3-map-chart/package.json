@@ -54,7 +54,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/noeGnh/vue3-map-chart"
+    "url": "git+https://github.com/noeGnh/vue3-map-chart.git"
   },
   "keywords": [
     "vue",
