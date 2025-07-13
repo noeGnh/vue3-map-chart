@@ -145,6 +145,8 @@ The key must be a valid [ISO 3166-1 country code](https://en.wikipedia.org/wiki/
 | formatValueWithSiPrefix | boolean                                                                                                     | Formats a number with a magnitude suffix                                        | false                | No       |
 | forceCursorPointer      | boolean                                                                                                     | Force the cursor to be in pointer mode even when the legend display is disabled | false                | No       |
 | loaderColor      | string                                                                                                     | Color of the loader (Only for lite version) | '#3498db'                | No       |
+| custom-map-svg     | string                    | Raw SVG string (imported with `?raw` or defined inline). When provided, overrides the built-in maps. See [example](#example-using-a-custom-svg-map) | undefined | No |
+| custom-map-labels  | Record<string, string>    | Maps SVG `id`s to display names for tooltips. Used with `custom-map-svg`. See [example](#example-using-a-custom-svg-map) | undefined | No |
 
 ## Slots
 
@@ -198,6 +200,36 @@ The key must be a valid [ISO 3166-1 country code](https://en.wikipedia.org/wiki/
  </MapChart>
 </template>
 ```
+
+## Example: Using a custom SVG map
+
+```ts
+// Import SVG as raw string using vite-plugin-svg-loader
+import myMapSvg from './maps/my-map.svg?raw'
+
+const labels = {
+  region1: 'North Zone',
+  region2: 'East District',
+}
+
+const data = {
+  region1: 150,
+  region2: 300,
+}
+```
+
+```html
+<template>
+  <MapChart
+    :custom-map-svg="myMapSvg"
+    :custom-map-labels="labels"
+    :data="data"
+  />
+</template>
+```
+
+> Each `code` in the `data` array must match an `id` attribute in the SVG’s `<path>` elements.
+> Tooltips will display labels from `custom-map-labels` if available.
 
 ## Credits
 

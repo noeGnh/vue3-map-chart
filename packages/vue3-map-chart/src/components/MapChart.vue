@@ -15,6 +15,7 @@
     formatNumberWithSIPrefix,
     getRandomInteger,
     isObject,
+    isSVG,
     isValidIsoCode,
   } from '../utils'
   import Tooltip from './Tooltip.vue'
@@ -39,6 +40,8 @@
     defaultFillColor?: string
     defaultFillHoverColor?: string
     baseColor?: string
+    customMapSvg?: string
+    customMapLabels?: Record<string, string>
     data: MapData
   }
 
@@ -60,6 +63,8 @@
     defaultStrokeHoverColor: 'rgb(200, 200, 200)',
     defaultStrokeColor: 'rgb(200, 200, 200)',
     baseColor: '#0782c5',
+    customMapSvg: '',
+    customMapLabels: () => ({}),
   })
 
   onMounted(() => {
@@ -161,6 +166,11 @@
   const svgMap = ref<string | null>(null)
 
   const loadSvgMap = async (): Promise<void> => {
+    if (props.customMapSvg && isSVG(props.customMapSvg)) {
+      svgMap.value = props.customMapSvg
+      return
+    }
+
     if (slots.default) {
       const slotContent = slots.default()
 
@@ -258,13 +268,20 @@
         ? undefined
         : currentAreaValue.value?.legendLabel
 
+    const customMapLabel =
+      props.customMapLabels &&
+      currentAreaId.value &&
+      props.customMapLabels[currentAreaId.value]
+        ? props.customMapLabels[currentAreaId.value]
+        : undefined
+
     const areaName = currentAreaId.value
       ? countries.getName(currentAreaId.value, props.langCode) ||
         iso3166.subdivision(currentAreaId.value)?.name ||
         currentAreaId.value
       : currentAreaId.value
 
-    return customLegendLabel || areaName || ''
+    return customLegendLabel || customMapLabel || areaName || ''
   })
 
   const tooltipValue = computed(() => {

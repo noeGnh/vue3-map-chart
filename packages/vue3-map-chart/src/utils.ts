@@ -50,3 +50,31 @@ export function isValidIsoCode(code: string): boolean {
   const isoCodeRegex = /^(?:[A-Z]{2,3}|[A-Z]{2}-[A-Z0-9]{1,3})$/
   return isoCodeRegex.test(code)
 }
+
+/**
+ * Checks if the given string is a valid SVG document.
+ *
+ * @param {string} input - The string to be checked.
+ * @return {boolean} Returns true if the string is a valid SVG document, false otherwise.
+ */
+export function isSVG(input: string): boolean {
+  const svgRegex = /^\s*<svg\b[^>]*>.*<\/svg>\s*$/is
+
+  try {
+    if (svgRegex.test(input)) {
+      const parser = new DOMParser()
+      const doc = parser.parseFromString(input, 'image/svg+xml')
+
+      const parserErrors = doc.getElementsByTagName('parsererror')
+      if (parserErrors.length > 0) {
+        return false
+      }
+
+      const svgElements = doc.getElementsByTagName('svg')
+      return svgElements.length > 0 && svgElements[0].parentNode === doc
+    }
+    return false
+  } catch (e) {
+    return false
+  }
+}
