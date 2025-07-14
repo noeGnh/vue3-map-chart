@@ -5945,6 +5945,7 @@ function toValue(r) {
 }
 const isClient = typeof window !== "undefined" && typeof document !== "undefined";
 typeof WorkerGlobalScope !== "undefined" && globalThis instanceof WorkerGlobalScope;
+const notNullish = (val) => val != null;
 const toString = Object.prototype.toString;
 const isObject$1 = (val) => toString.call(val) === "[object Object]";
 const noop = () => {
@@ -6015,6 +6016,161 @@ function useEventListener(...args) {
   };
   tryOnScopeDispose(stop);
   return stop;
+}
+function useMounted() {
+  const isMounted = ref(false);
+  const instance = getCurrentInstance();
+  if (instance) {
+    onMounted(() => {
+      isMounted.value = true;
+    }, instance);
+  }
+  return isMounted;
+}
+function useSupported(callback) {
+  const isMounted = useMounted();
+  return computed(() => {
+    isMounted.value;
+    return Boolean(callback());
+  });
+}
+function useMutationObserver(target, callback, options = {}) {
+  const { window: window2 = defaultWindow, ...mutationOptions } = options;
+  let observer;
+  const isSupported = useSupported(() => window2 && "MutationObserver" in window2);
+  const cleanup = () => {
+    if (observer) {
+      observer.disconnect();
+      observer = void 0;
+    }
+  };
+  const targets = computed(() => {
+    const value = toValue(target);
+    const items = (Array.isArray(value) ? value : [value]).map(unrefElement).filter(notNullish);
+    return new Set(items);
+  });
+  const stopWatch = watch(
+    () => targets.value,
+    (targets2) => {
+      cleanup();
+      if (isSupported.value && targets2.size) {
+        observer = new MutationObserver(callback);
+        targets2.forEach((el2) => observer.observe(el2, mutationOptions));
+      }
+    },
+    { immediate: true, flush: "post" }
+  );
+  const takeRecords = () => {
+    return observer == null ? void 0 : observer.takeRecords();
+  };
+  const stop = () => {
+    cleanup();
+    stopWatch();
+  };
+  tryOnScopeDispose(stop);
+  return {
+    isSupported,
+    stop,
+    takeRecords
+  };
+}
+function useResizeObserver(target, callback, options = {}) {
+  const { window: window2 = defaultWindow, ...observerOptions } = options;
+  let observer;
+  const isSupported = useSupported(() => window2 && "ResizeObserver" in window2);
+  const cleanup = () => {
+    if (observer) {
+      observer.disconnect();
+      observer = void 0;
+    }
+  };
+  const targets = computed(() => Array.isArray(target) ? target.map((el2) => unrefElement(el2)) : [unrefElement(target)]);
+  const stopWatch = watch(
+    targets,
+    (els) => {
+      cleanup();
+      if (isSupported.value && window2) {
+        observer = new ResizeObserver(callback);
+        for (const _el of els)
+          _el && observer.observe(_el, observerOptions);
+      }
+    },
+    { immediate: true, flush: "post" }
+  );
+  const stop = () => {
+    cleanup();
+    stopWatch();
+  };
+  tryOnScopeDispose(stop);
+  return {
+    isSupported,
+    stop
+  };
+}
+function useElementBounding(target, options = {}) {
+  const {
+    reset = true,
+    windowResize = true,
+    windowScroll = true,
+    immediate = true
+  } = options;
+  const height = ref(0);
+  const bottom = ref(0);
+  const left = ref(0);
+  const right = ref(0);
+  const top = ref(0);
+  const width = ref(0);
+  const x = ref(0);
+  const y = ref(0);
+  function update() {
+    const el2 = unrefElement(target);
+    if (!el2) {
+      if (reset) {
+        height.value = 0;
+        bottom.value = 0;
+        left.value = 0;
+        right.value = 0;
+        top.value = 0;
+        width.value = 0;
+        x.value = 0;
+        y.value = 0;
+      }
+      return;
+    }
+    const rect = el2.getBoundingClientRect();
+    height.value = rect.height;
+    bottom.value = rect.bottom;
+    left.value = rect.left;
+    right.value = rect.right;
+    top.value = rect.top;
+    width.value = rect.width;
+    x.value = rect.x;
+    y.value = rect.y;
+  }
+  useResizeObserver(target, update);
+  watch(() => unrefElement(target), (ele) => !ele && update());
+  useMutationObserver(target, update, {
+    attributeFilter: ["style", "class"]
+  });
+  if (windowScroll)
+    useEventListener("scroll", update, { capture: true, passive: true });
+  if (windowResize)
+    useEventListener("resize", update, { passive: true });
+  tryOnMounted(() => {
+    if (immediate)
+      update();
+  });
+  return {
+    height,
+    bottom,
+    left,
+    right,
+    top,
+    width,
+    x,
+    y,
+    update
+  };
 }
 const UseMouseBuiltinExtractors = {
   page: (event) => [event.pageX, event.pageY],
@@ -28695,7 +28851,7 @@ const _export_sfc$1 = (sfc, props) => {
   return target;
 };
 const Tooltip = /* @__PURE__ */ _export_sfc$1(_sfc_main$1, [["__scopeId", "data-v-14df540e"]]);
-const _withScopeId$2 = (n) => (pushScopeId("data-v-16eef034"), n = n(), popScopeId(), n);
+const _withScopeId$2 = (n) => (pushScopeId("data-v-8b4a401f"), n = n(), popScopeId(), n);
 const _hoisted_1$2 = { class: "v3mc-container" };
 const _hoisted_2$2 = { class: "v3mc-tiny-loader-wrapper" };
 const _hoisted_3$2 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", { class: "v3mc-tiny-loader" }, null, -1));
@@ -28733,16 +28889,16 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   ],
   setup(__props, { emit: __emit }) {
     useCssVars((_ctx) => ({
-      "79078e0d": unref(height),
-      "3648fc20": unref(width),
-      "7453cef0": unref(defaultStrokeColor),
-      "65a19bc5": unref(defaultFillColor),
-      "55b73551": unref(defaultCursor),
-      "e51a4736": unref(defaultFillHoverColor),
-      "2e88ec1a": _ctx.defaultStrokeHoverColor,
-      "4f718c1c": unref(tooltipY),
-      "4f718c1b": unref(tooltipX),
-      "3fbb742c": unref(loaderColor)
+      "0f6ce3c5": unref(mapHeight),
+      "70f3e130": unref(mapWidth),
+      "2b36e9b0": unref(defaultStrokeColor),
+      "12a405fd": unref(defaultFillColor),
+      "938093ce": unref(defaultCursor),
+      "1a1bd5a6": unref(defaultFillHoverColor),
+      "311d12e2": _ctx.defaultStrokeHoverColor,
+      "6be93720": unref(tooltipTop),
+      "775d604c": unref(tooltipLeft),
+      "68e458b2": unref(loaderColor)
     }));
     const props = __props;
     onMounted(() => {
@@ -28755,10 +28911,10 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
       };
       registerLocale(props.langCode);
     });
-    const height = computed(
+    const mapHeight = computed(
       () => typeof props.height === "string" ? props.height : `${props.height}px`
     );
-    const width = computed(
+    const mapWidth = computed(
       () => typeof props.width === "string" ? props.width : `${props.width}px`
     );
     const loaderColor = computed(() => props.loaderColor);
@@ -28807,7 +28963,6 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
         );
       }
     });
-    const { x, y } = useMouse();
     const slots = useSlots();
     const svgMap = ref(null);
     const isLoading = ref(false);
@@ -28933,11 +29088,22 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     const displayTooltip = computed(() => {
       return !isOutsideMap.value && props.displayLegend && (props.displayLegendWhenEmpty || tooltipValue.value) && tooltipLabel.value;
     });
-    const tooltipX = computed(() => {
-      return `${x.value - 100}px`;
+    const tooltip = ref();
+    const { x: mouseX, y: mouseY } = useMouse();
+    const { width: tooltipWidth, height: tooltipHeight } = useElementBounding(tooltip);
+    const tooltipLeft = computed(() => {
+      let left = mouseX.value + 12;
+      if (left + tooltipWidth.value > window.innerWidth) {
+        left = mouseX.value - tooltipWidth.value - 12;
+      }
+      return `${left}px`;
     });
-    const tooltipY = computed(() => {
-      return `${y.value < 100 ? y.value + 25 : y.value - 100}px`;
+    const tooltipTop = computed(() => {
+      let top = mouseY.value + 12;
+      if (top + tooltipHeight.value > window.innerHeight) {
+        top = mouseY.value - tooltipHeight.value - 12;
+      }
+      return `${top}px`;
     });
     return (_ctx, _cache) => {
       return openBlock(), createElementBlock("div", _hoisted_1$2, [
@@ -28959,6 +29125,8 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
         unref(displayTooltip) ? (openBlock(), createBlock(Tooltip, {
           key: 0,
           id: `v3mc-tooltip-${unref(cpntId)}`,
+          ref_key: "tooltip",
+          ref: tooltip,
           class: "v3mc-tooltip",
           label: unref(tooltipLabel),
           value: unref(tooltipValue),
@@ -28970,7 +29138,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-16eef034"]]);
+const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-8b4a401f"]]);
 const plugin = {
   install(app, options) {
     app.component((options == null ? void 0 : options.name) || "MapChart", MapChart);
@@ -29732,5 +29900,5 @@ const _export_sfc = (sfc, props) => {
   return target;
 };
 const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-64d0339b"]]);
-__vitePreload(() => Promise.resolve({}), true ? ["assets/style-8dfdb1db.css"] : void 0);
+__vitePreload(() => Promise.resolve({}), true ? ["assets/style-5a8546d7.css"] : void 0);
 createApp(App).use(plugin, { maps: { GermanyMap, JapanMap } }).mount("#app");
