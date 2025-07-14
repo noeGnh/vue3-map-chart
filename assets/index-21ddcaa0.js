@@ -28692,7 +28692,7 @@ const _export_sfc$1 = (sfc, props) => {
   return target;
 };
 const Tooltip = /* @__PURE__ */ _export_sfc$1(_sfc_main$1, [["__scopeId", "data-v-e8982a39"]]);
-const _withScopeId$2 = (n) => (pushScopeId("data-v-36b06443"), n = n(), popScopeId(), n);
+const _withScopeId$2 = (n) => (pushScopeId("data-v-52f175b9"), n = n(), popScopeId(), n);
 const _hoisted_1$2 = { class: "v3mc-container" };
 const _hoisted_2$2 = { class: "v3mc-tiny-loader-wrapper" };
 const _hoisted_3$2 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", { class: "v3mc-tiny-loader" }, null, -1));
@@ -28729,16 +28729,16 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   ],
   setup(__props, { emit: __emit }) {
     useCssVars((_ctx) => ({
-      "089ca70b": unref(height),
-      "7164693c": unref(width),
-      "3b055aee": unref(defaultStrokeColor),
-      "6aa20f43": unref(defaultFillColor),
-      "3221a293": unref(defaultCursor),
-      "867630b2": unref(defaultFillHoverColor),
-      "5cf5a248": _ctx.defaultStrokeHoverColor,
-      "4e245d9a": unref(tooltipY),
-      "4e245d99": unref(tooltipX),
-      "6b6b1bac": unref(loaderColor)
+      "3660bc3a": unref(height),
+      "552ad453": unref(width),
+      "6c60219d": unref(defaultStrokeColor),
+      "4c0cb5b2": unref(defaultFillColor),
+      "4ae32a84": unref(defaultCursor),
+      "2f7bee98": unref(defaultFillHoverColor),
+      "72963d8d": _ctx.defaultStrokeHoverColor,
+      "1b37e309": unref(tooltipY),
+      "1b37e308": unref(tooltipX),
+      "5e1febdd": unref(loaderColor)
     }));
     const props = __props;
     onMounted(() => {
@@ -28801,8 +28801,8 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
         });
         useEventListener(el2, "touchstart", () => {
           tapTimeout = setTimeout(() => {
-            showTooltipOnTouch.value = !showTooltipOnTouch.value;
-          }, 500);
+            showTooltipOnTouch.value = !!(!isOutsideMap.value && props.displayLegend && (props.displayLegendWhenEmpty || tooltipValue.value) && tooltipLabel.value);
+          }, 100);
         });
         useEventListener(el2, "touchend", () => {
           clearTimeout(tapTimeout);
@@ -28980,7 +28980,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-36b06443"]]);
+const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-52f175b9"]]);
 const plugin = {
   install(app, options) {
     app.component((options == null ? void 0 : options.name) || "MapChart", MapChart);
@@ -29003,7 +29003,7 @@ const EgyptMap = { name: "EgyptMap", template: "countries/africa/egypt.svg" };
 const JapanMap = { name: "JapanMap", template: "countries/asia/japan.svg" };
 const GermanyMap = { name: "GermanyMap", template: "countries/europe/germany.svg" };
 const BrazilMap = { name: "BrazilMap", template: "countries/south-america/brazil.svg" };
-const _withScopeId = (n) => (pushScopeId("data-v-fd9a9fc4"), n = n(), popScopeId(), n);
+const _withScopeId = (n) => (pushScopeId("data-v-296e8914"), n = n(), popScopeId(), n);
 const _hoisted_1 = { class: "grid-container" };
 const _hoisted_2 = { class: "cell big" };
 const _hoisted_3 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "map-label" }, "World", -1));
@@ -29533,8 +29533,12 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       "EG-SUZ": 62
       // Suez
     };
+    const isTouchDevice = computed(
+      () => "ontouchstart" in window || navigator.maxTouchPoints > 0
+    );
     const onMapItemClick = (areaId, areaValue) => {
-      alert(`${areaId}: ${areaValue}`);
+      if (!isTouchDevice.value)
+        alert(`${areaId}: ${areaValue}`);
     };
     const onMapItemMouseout = (areaId, areaValue) => {
       console.log(`Mouseout ${areaId}: ${areaValue}`);
@@ -29728,7 +29732,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
   }
 });
 const App_vue_vue_type_style_index_0_lang = "";
-const App_vue_vue_type_style_index_1_scoped_fd9a9fc4_lang = "";
+const App_vue_vue_type_style_index_1_scoped_296e8914_lang = "";
 const _export_sfc = (sfc, props) => {
   const target = sfc.__vccOpts || sfc;
   for (const [key, val] of props) {
@@ -29736,6 +29740,6 @@ const _export_sfc = (sfc, props) => {
   }
   return target;
 };
-const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-fd9a9fc4"]]);
-__vitePreload(() => Promise.resolve({}), true ? ["assets/style-ad763e98.css"] : void 0);
+const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-296e8914"]]);
+__vitePreload(() => Promise.resolve({}), true ? ["assets/style-f5b4f4f3.css"] : void 0);
 createApp(App).use(plugin, { maps: { GermanyMap, JapanMap } }).mount("#app");
