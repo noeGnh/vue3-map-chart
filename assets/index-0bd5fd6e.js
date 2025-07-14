@@ -28652,7 +28652,7 @@ function isSVG(input) {
     return false;
   }
 }
-const _withScopeId$1 = (n) => (pushScopeId("data-v-e8982a39"), n = n(), popScopeId(), n);
+const _withScopeId$1 = (n) => (pushScopeId("data-v-14df540e"), n = n(), popScopeId(), n);
 const _hoisted_1$1 = { class: "v3mc-tooltip-wrapper" };
 const _hoisted_2$1 = { class: "v3mc-tooltip-label" };
 const _hoisted_3$1 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("div", { class: "v3mc-tooltip-divider" }, null, -1));
@@ -28663,16 +28663,19 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
     label: {},
     value: {},
     bgColor: { default: "rgba(0, 0, 0, 0.5)" },
-    textColor: { default: "#d8d8d8" }
+    textColor: { default: "#fff" },
+    dividerColor: { default: "rgba(255, 255, 255, 0.5)" }
   },
   setup(__props) {
     useCssVars((_ctx) => ({
-      "bb2e32be": unref(bgColor),
-      "42c7e9f9": unref(textColor)
+      "37f998cf": unref(bgColor),
+      "92166eb2": unref(textColor),
+      "88de908e": unref(dividerColor)
     }));
     const props = __props;
     const bgColor = computed(() => props.bgColor);
     const textColor = computed(() => props.textColor);
+    const dividerColor = computed(() => props.dividerColor);
     return (_ctx, _cache) => {
       return openBlock(), createElementBlock("div", _hoisted_1$1, [
         createBaseVNode("span", _hoisted_2$1, toDisplayString(props.label), 1),
@@ -28691,8 +28694,8 @@ const _export_sfc$1 = (sfc, props) => {
   }
   return target;
 };
-const Tooltip = /* @__PURE__ */ _export_sfc$1(_sfc_main$1, [["__scopeId", "data-v-e8982a39"]]);
-const _withScopeId$2 = (n) => (pushScopeId("data-v-a1e023ab"), n = n(), popScopeId(), n);
+const Tooltip = /* @__PURE__ */ _export_sfc$1(_sfc_main$1, [["__scopeId", "data-v-14df540e"]]);
+const _withScopeId$2 = (n) => (pushScopeId("data-v-16eef034"), n = n(), popScopeId(), n);
 const _hoisted_1$2 = { class: "v3mc-container" };
 const _hoisted_2$2 = { class: "v3mc-tiny-loader-wrapper" };
 const _hoisted_3$2 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", { class: "v3mc-tiny-loader" }, null, -1));
@@ -28710,6 +28713,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     forceCursorPointer: { type: Boolean, default: false },
     legendBgColor: { default: void 0 },
     legendTextColor: { default: void 0 },
+    legendDividerColor: { default: void 0 },
     legendValuePrefix: { default: "" },
     legendValueSuffix: { default: "" },
     defaultStrokeColor: { default: "rgb(200, 200, 200)" },
@@ -28723,24 +28727,22 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     data: {}
   },
   emits: [
-    "mapItemTouchstart",
-    "mapItemTouchend",
     "mapItemMouseover",
     "mapItemMouseout",
     "mapItemClick"
   ],
   setup(__props, { emit: __emit }) {
     useCssVars((_ctx) => ({
-      "bf277c4c": unref(height),
-      "1ec81ab3": unref(width),
-      "4230373d": unref(defaultStrokeColor),
-      "77b4995c": unref(defaultFillColor),
-      "778410e4": unref(defaultCursor),
-      "5cff1610": unref(defaultFillHoverColor),
-      "b4daa826": _ctx.defaultStrokeHoverColor,
-      "307880a9": unref(tooltipY),
-      "307880a8": unref(tooltipX),
-      "eef22b86": unref(loaderColor)
+      "79078e0d": unref(height),
+      "3648fc20": unref(width),
+      "7453cef0": unref(defaultStrokeColor),
+      "65a19bc5": unref(defaultFillColor),
+      "55b73551": unref(defaultCursor),
+      "e51a4736": unref(defaultFillHoverColor),
+      "2e88ec1a": _ctx.defaultStrokeHoverColor,
+      "4f718c1c": unref(tooltipY),
+      "4f718c1b": unref(tooltipX),
+      "3fbb742c": unref(loaderColor)
     }));
     const props = __props;
     onMounted(() => {
@@ -28787,12 +28789,6 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
             emits(emitId, id2, currentAreaValue.value);
           }
         };
-        useEventListener(el2, "touchstart", (event) => {
-          emitEvent(event.target, "mapItemTouchstart");
-        });
-        useEventListener(el2, "touchend", (event) => {
-          emitEvent(event.target, "mapItemTouchend");
-        });
         useEventListener(el2, "mouseover", (event) => {
           emitEvent(event.target, "mapItemMouseover");
         });
@@ -28934,7 +28930,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
       value = props.legendValuePrefix + value + props.legendValueSuffix;
       return value;
     });
-    const showTooltipOnHover = computed(() => {
+    const displayTooltip = computed(() => {
       return !isOutsideMap.value && props.displayLegend && (props.displayLegendWhenEmpty || tooltipValue.value) && tooltipLabel.value;
     });
     const tooltipX = computed(() => {
@@ -28960,20 +28956,21 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
         }, null, 12, _hoisted_4$2), [
           [vShow, !unref(isLoading)]
         ]),
-        unref(showTooltipOnHover) ? (openBlock(), createBlock(Tooltip, {
+        unref(displayTooltip) ? (openBlock(), createBlock(Tooltip, {
           key: 0,
           id: `v3mc-tooltip-${unref(cpntId)}`,
           class: "v3mc-tooltip",
           label: unref(tooltipLabel),
           value: unref(tooltipValue),
           "bg-color": props.legendBgColor,
-          "text-color": props.legendTextColor
-        }, null, 8, ["id", "label", "value", "bg-color", "text-color"])) : createCommentVNode("", true)
+          "text-color": props.legendTextColor,
+          "divider-color": props.legendDividerColor
+        }, null, 8, ["id", "label", "value", "bg-color", "text-color", "divider-color"])) : createCommentVNode("", true)
       ]);
     };
   }
 });
-const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-a1e023ab"]]);
+const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-16eef034"]]);
 const plugin = {
   install(app, options) {
     app.component((options == null ? void 0 : options.name) || "MapChart", MapChart);
@@ -28996,7 +28993,7 @@ const EgyptMap = { name: "EgyptMap", template: "countries/africa/egypt.svg" };
 const JapanMap = { name: "JapanMap", template: "countries/asia/japan.svg" };
 const GermanyMap = { name: "GermanyMap", template: "countries/europe/germany.svg" };
 const BrazilMap = { name: "BrazilMap", template: "countries/south-america/brazil.svg" };
-const _withScopeId = (n) => (pushScopeId("data-v-296e8914"), n = n(), popScopeId(), n);
+const _withScopeId = (n) => (pushScopeId("data-v-64d0339b"), n = n(), popScopeId(), n);
 const _hoisted_1 = { class: "grid-container" };
 const _hoisted_2 = { class: "cell big" };
 const _hoisted_3 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "map-label" }, "World", -1));
@@ -29629,6 +29626,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
             "base-color": "#132D50",
             "legend-text-color": "black",
             "legend-bg-color": "rgba(255, 255, 255, 0.8)",
+            "legend-divider-color": "#333",
             "legend-value-suffix": " km2",
             "format-value-with-si-prefix": "",
             data: southAmericaData,
@@ -29725,7 +29723,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
   }
 });
 const App_vue_vue_type_style_index_0_lang = "";
-const App_vue_vue_type_style_index_1_scoped_296e8914_lang = "";
+const App_vue_vue_type_style_index_1_scoped_64d0339b_lang = "";
 const _export_sfc = (sfc, props) => {
   const target = sfc.__vccOpts || sfc;
   for (const [key, val] of props) {
@@ -29733,6 +29731,6 @@ const _export_sfc = (sfc, props) => {
   }
   return target;
 };
-const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-296e8914"]]);
-__vitePreload(() => Promise.resolve({}), true ? ["assets/style-91eb124a.css"] : void 0);
+const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-64d0339b"]]);
+__vitePreload(() => Promise.resolve({}), true ? ["assets/style-8dfdb1db.css"] : void 0);
 createApp(App).use(plugin, { maps: { GermanyMap, JapanMap } }).mount("#app");
