@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import type { MapData, MapDataValue } from '@/types'
   import {
+    useElementBounding,
     useEventListener,
     useMouse,
     useMouseInElement,
@@ -33,6 +34,7 @@
     forceCursorPointer?: boolean
     legendBgColor?: string
     legendTextColor?: string
+    legendDividerColor?: string
     legendValuePrefix?: string
     legendValueSuffix?: string
     defaultStrokeColor?: string
@@ -57,6 +59,7 @@
     forceCursorPointer: false,
     legendBgColor: undefined,
     legendTextColor: undefined,
+    legendDividerColor: undefined,
     legendValuePrefix: '',
     legendValueSuffix: '',
     defaultFillColor: 'rgb(236, 236, 236)',
@@ -81,11 +84,11 @@
     registerLocale(props.langCode)
   })
 
-  const height = computed(() =>
+  const mapHeight = computed(() =>
     typeof props.height === 'string' ? props.height : `${props.height}px`
   )
 
-  const width = computed(() =>
+  const mapWidth = computed(() =>
     typeof props.width === 'string' ? props.width : `${props.width}px`
   )
 
@@ -162,8 +165,6 @@
       )
     }
   })
-
-  const { x, y } = useMouse()
 
   // load svg map
   const slots = useSlots()
@@ -352,12 +353,29 @@
     )
   })
 
-  const tooltipX = computed(() => {
-    return `${x.value - 100}px`
+  const tooltip = ref()
+  const { x: mouseX, y: mouseY } = useMouse()
+  const { width: tooltipWidth, height: tooltipHeight } =
+    useElementBounding(tooltip)
+
+  const tooltipLeft = computed(() => {
+    let left = mouseX.value + 12
+
+    if (left + tooltipWidth.value > window.innerWidth) {
+      left = mouseX.value - tooltipWidth.value - 12
+    }
+
+    return `${left}px`
   })
 
-  const tooltipY = computed(() => {
-    return `${y.value - 100}px`
+  const tooltipTop = computed(() => {
+    let top = mouseY.value + 12
+
+    if (top + tooltipHeight.value > window.innerHeight) {
+      top = mouseY.value - tooltipHeight.value - 12
+    }
+
+    return `${top}px`
   })
 </script>
 
@@ -377,11 +395,13 @@
     <Tooltip
       v-if="displayTooltip"
       :id="`v3mc-tooltip-${cpntId}`"
+      ref="tooltip"
       class="v3mc-tooltip"
       :label="tooltipLabel"
       :value="tooltipValue"
       :bg-color="props.legendBgColor"
-      :text-color="props.legendTextColor"></Tooltip>
+      :text-color="props.legendTextColor"
+      :divider-color="props.legendDividerColor" />
   </div>
 </template>
 
@@ -393,8 +413,8 @@
 
   .v3mc-container,
   :deep(.v3mc-map > svg) {
-    height: v-bind(height);
-    width: v-bind(width);
+    height: v-bind(mapHeight);
+    width: v-bind(mapWidth);
   }
 
   :deep(.v3mc-map > svg) {
@@ -416,8 +436,8 @@
   .v3mc-tooltip {
     position: fixed;
     z-index: 10;
-    top: v-bind(tooltipY);
-    left: v-bind(tooltipX);
+    top: v-bind(tooltipTop);
+    left: v-bind(tooltipLeft);
   }
 
   .v3mc-tiny-loader-wrapper {

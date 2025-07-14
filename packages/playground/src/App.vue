@@ -362,8 +362,12 @@
     'EG-SUZ': 62, // Suez
   }
 
+  const isTouchDevice = computed(
+    () => 'ontouchstart' in window || navigator.maxTouchPoints > 0
+  )
+
   const onMapItemClick = (areaId: string, areaValue: number | MapDataValue) => {
-    alert(`${areaId}: ${areaValue}`)
+    if (!isTouchDevice.value) alert(`${areaId}: ${areaValue}`)
   }
 
   const onMapItemMouseout = (
@@ -448,6 +452,7 @@
         base-color="#132D50"
         legend-text-color="black"
         legend-bg-color="rgba(255, 255, 255, 0.8)"
+        legend-divider-color="#333"
         legend-value-suffix="&nbsp;km2"
         format-value-with-si-prefix
         :data="southAmericaData"
@@ -587,7 +592,7 @@
     color: dimgray;
   }
 
-  @media (max-width: 800px) {
+  @media (max-width: 1024px) {
     .grid-container {
       grid-template-columns: repeat(2, 1fr);
       grid-template-rows: repeat(4, auto);
@@ -599,29 +604,39 @@
       grid-row: 1 / 2;
     }
 
+    .small {
+      grid-column: 1 / 3 !important;
+    }
+
     .small:nth-child(2) {
-      grid-column: 1;
       grid-row: 2;
     }
     .small:nth-child(3) {
-      grid-column: 2;
-      grid-row: 2;
+      grid-row: 3;
     }
     .small:nth-child(4) {
-      grid-column: 1;
-      grid-row: 3;
+      grid-row: 4;
     }
     .small:nth-child(5) {
-      grid-column: 2;
-      grid-row: 3;
+      grid-row: 5;
     }
     .small:nth-child(6) {
-      grid-column: 1;
-      grid-row: 4;
+      grid-row: 6;
     }
     .small:nth-child(7) {
-      grid-column: 2;
-      grid-row: 4;
+      grid-row: 7;
+    }
+    .small:nth-child(8) {
+      grid-row: 8;
+    }
+    .small:nth-child(9) {
+      grid-row: 9;
+    }
+    .small:nth-child(10) {
+      grid-row: 10;
+    }
+    .small:nth-child(11) {
+      grid-row: 11;
     }
   }
 </style>

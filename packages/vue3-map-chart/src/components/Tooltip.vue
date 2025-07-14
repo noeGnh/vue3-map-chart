@@ -4,16 +4,20 @@
     value: string
     bgColor?: string
     textColor?: string
+    dividerColor?: string
   }
 
   const props = withDefaults(defineProps<Props>(), {
     bgColor: 'rgba(0, 0, 0, 0.5)',
-    textColor: '#d8d8d8',
+    textColor: '#fff',
+    dividerColor: 'rgba(255, 255, 255, 0.5)',
   })
 
   const bgColor = computed(() => props.bgColor)
 
   const textColor = computed(() => props.textColor)
+
+  const dividerColor = computed(() => props.dividerColor)
 </script>
 
 <template>
@@ -37,14 +41,14 @@
   }
 
   .v3mc-tooltip-label {
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 20px;
   }
 
   .v3mc-tooltip-divider {
     flex: 1;
     height: 0.5px;
-    background-color: #333;
+    background-color: v-bind(dividerColor);
     margin: 5px 0;
   }
 
