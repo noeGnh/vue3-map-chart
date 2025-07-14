@@ -5488,14 +5488,14 @@ const nodeOps = {
   }
 };
 const vtcKey = Symbol("_vtc");
-function patchClass(el2, value, isSVG) {
+function patchClass(el2, value, isSVG2) {
   const transitionClasses = el2[vtcKey];
   if (transitionClasses) {
     value = (value ? [value, ...transitionClasses] : [...transitionClasses]).join(" ");
   }
   if (value == null) {
     el2.removeAttribute("class");
-  } else if (isSVG) {
+  } else if (isSVG2) {
     el2.setAttribute("class", value);
   } else {
     el2.className = value;
@@ -5696,8 +5696,8 @@ function autoPrefix(style, rawName) {
   return rawName;
 }
 const xlinkNS = "http://www.w3.org/1999/xlink";
-function patchAttr(el2, key, value, isSVG, instance) {
-  if (isSVG && key.startsWith("xlink:")) {
+function patchAttr(el2, key, value, isSVG2, instance) {
+  if (isSVG2 && key.startsWith("xlink:")) {
     if (value == null) {
       el2.removeAttributeNS(xlinkNS, key.slice(6, key.length));
     } else {
@@ -5831,16 +5831,16 @@ function patchStopImmediatePropagation(e, value) {
 const isNativeOn = (key) => key.charCodeAt(0) === 111 && key.charCodeAt(1) === 110 && // lowercase letter
 key.charCodeAt(2) > 96 && key.charCodeAt(2) < 123;
 const patchProp = (el2, key, prevValue, nextValue, namespace, prevChildren, parentComponent, parentSuspense, unmountChildren) => {
-  const isSVG = namespace === "svg";
+  const isSVG2 = namespace === "svg";
   if (key === "class") {
-    patchClass(el2, nextValue, isSVG);
+    patchClass(el2, nextValue, isSVG2);
   } else if (key === "style") {
     patchStyle(el2, prevValue, nextValue);
   } else if (isOn(key)) {
     if (!isModelListener(key)) {
       patchEvent(el2, key, prevValue, nextValue, parentComponent);
     }
-  } else if (key[0] === "." ? (key = key.slice(1), true) : key[0] === "^" ? (key = key.slice(1), false) : shouldSetAsProp(el2, key, nextValue, isSVG)) {
+  } else if (key[0] === "." ? (key = key.slice(1), true) : key[0] === "^" ? (key = key.slice(1), false) : shouldSetAsProp(el2, key, nextValue, isSVG2)) {
     patchDOMProp(
       el2,
       key,
@@ -5856,11 +5856,11 @@ const patchProp = (el2, key, prevValue, nextValue, namespace, prevChildren, pare
     } else if (key === "false-value") {
       el2._falseValue = nextValue;
     }
-    patchAttr(el2, key, nextValue, isSVG);
+    patchAttr(el2, key, nextValue, isSVG2);
   }
 };
-function shouldSetAsProp(el2, key, value, isSVG) {
-  if (isSVG) {
+function shouldSetAsProp(el2, key, value, isSVG2) {
+  if (isSVG2) {
     if (key === "innerHTML" || key === "textContent") {
       return true;
     }
@@ -28634,6 +28634,24 @@ function isValidIsoCode(code) {
   const isoCodeRegex = /^(?:[A-Z]{2,3}|[A-Z]{2}-[A-Z0-9]{1,3})$/;
   return isoCodeRegex.test(code);
 }
+function isSVG(input) {
+  const svgRegex = /^\s*<svg\b[^>]*>.*<\/svg>\s*$/is;
+  try {
+    if (svgRegex.test(input)) {
+      const parser = new DOMParser();
+      const doc2 = parser.parseFromString(input, "image/svg+xml");
+      const parserErrors = doc2.getElementsByTagName("parsererror");
+      if (parserErrors.length > 0) {
+        return false;
+      }
+      const svgElements = doc2.getElementsByTagName("svg");
+      return svgElements.length > 0 && svgElements[0].parentNode === doc2;
+    }
+    return false;
+  } catch (e) {
+    return false;
+  }
+}
 const _withScopeId$1 = (n) => (pushScopeId("data-v-e8982a39"), n = n(), popScopeId(), n);
 const _hoisted_1$1 = { class: "v3mc-tooltip-wrapper" };
 const _hoisted_2$1 = { class: "v3mc-tooltip-label" };
@@ -28674,7 +28692,7 @@ const _export_sfc$1 = (sfc, props) => {
   return target;
 };
 const Tooltip = /* @__PURE__ */ _export_sfc$1(_sfc_main$1, [["__scopeId", "data-v-e8982a39"]]);
-const _withScopeId$2 = (n) => (pushScopeId("data-v-5aeaac59"), n = n(), popScopeId(), n);
+const _withScopeId$2 = (n) => (pushScopeId("data-v-36b06443"), n = n(), popScopeId(), n);
 const _hoisted_1$2 = { class: "v3mc-container" };
 const _hoisted_2$2 = { class: "v3mc-tiny-loader-wrapper" };
 const _hoisted_3$2 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", { class: "v3mc-tiny-loader" }, null, -1));
@@ -28700,6 +28718,8 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     defaultFillHoverColor: { default: "rgb(226, 226, 226)" },
     baseColor: { default: "#0782c5" },
     loaderColor: { default: "#3498db" },
+    customMapSvg: { default: "" },
+    customMapLabels: { default: () => ({}) },
     data: {}
   },
   emits: [
@@ -28709,16 +28729,16 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   ],
   setup(__props, { emit: __emit }) {
     useCssVars((_ctx) => ({
-      "59626acb": unref(height),
-      "ae3ee0bc": unref(width),
-      "3c837eae": unref(defaultStrokeColor),
-      "28d62303": unref(defaultFillColor),
-      "5067b25a": unref(defaultCursor),
-      "72c72be7": unref(defaultFillHoverColor),
-      "1007631c": _ctx.defaultStrokeHoverColor,
-      "f6ef9d4c": unref(tooltipY),
-      "f6ef9d4e": unref(tooltipX),
-      "532ca028": unref(loaderColor)
+      "089ca70b": unref(height),
+      "7164693c": unref(width),
+      "3b055aee": unref(defaultStrokeColor),
+      "6aa20f43": unref(defaultFillColor),
+      "3221a293": unref(defaultCursor),
+      "867630b2": unref(defaultFillHoverColor),
+      "5cf5a248": _ctx.defaultStrokeHoverColor,
+      "4e245d9a": unref(tooltipY),
+      "4e245d99": unref(tooltipX),
+      "6b6b1bac": unref(loaderColor)
     }));
     const props = __props;
     onMounted(() => {
@@ -28748,10 +28768,15 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
         return "pointer";
       return props.displayLegend && props.displayLegendWhenEmpty ? "pointer" : "default";
     });
+    const isTouchDevice = computed(
+      () => "ontouchstart" in window || navigator.maxTouchPoints > 0
+    );
     const cpntId = getRandomInteger(1e4, 99999);
     const isOutsideMap = ref(true);
+    const showTooltipOnTouch = ref(false);
     const currentAreaId = ref(null);
     const currentAreaValue = ref(null);
+    let tapTimeout;
     const emits = __emit;
     onMounted(() => {
       const el2 = document.getElementById(`v3mc-map-${cpntId}`);
@@ -28774,6 +28799,14 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
         useEventListener(el2, "click", (event) => {
           emitEvent(event.target, "mapItemClick");
         });
+        useEventListener(el2, "touchstart", () => {
+          tapTimeout = setTimeout(() => {
+            showTooltipOnTouch.value = !showTooltipOnTouch.value;
+          }, 500);
+        });
+        useEventListener(el2, "touchend", () => {
+          clearTimeout(tapTimeout);
+        });
         const { isOutside } = useMouseInElement(el2);
         watch(
           () => isOutside.value,
@@ -28788,6 +28821,10 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     const svgMap = ref(null);
     const isLoading = ref(false);
     const loadSvgMap = async () => {
+      if (props.customMapSvg && isSVG(props.customMapSvg)) {
+        svgMap.value = props.customMapSvg;
+        return;
+      }
       try {
         if (slots.default) {
           const slotContent = slots.default();
@@ -28889,8 +28926,9 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     const tooltipLabel = computed(() => {
       var _a, _b;
       const customLegendLabel = typeof currentAreaValue.value === "number" ? void 0 : (_a = currentAreaValue.value) == null ? void 0 : _a.legendLabel;
+      const customMapLabel = props.customMapLabels && currentAreaId.value && props.customMapLabels[currentAreaId.value] ? props.customMapLabels[currentAreaId.value] : void 0;
       const areaName = currentAreaId.value ? countries$1d.getName(currentAreaId.value, props.langCode) || ((_b = iso3166.subdivision(currentAreaId.value)) == null ? void 0 : _b.name) || currentAreaId.value : currentAreaId.value;
-      return customLegendLabel || areaName || "";
+      return customLegendLabel || customMapLabel || areaName || "";
     });
     const tooltipValue = computed(() => {
       var _a;
@@ -28901,14 +28939,16 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
       value = props.legendValuePrefix + value + props.legendValueSuffix;
       return value;
     });
-    const displayTooltip = computed(() => {
+    const showTooltipOnHover = computed(() => {
+      if (isTouchDevice.value)
+        return false;
       return !isOutsideMap.value && props.displayLegend && (props.displayLegendWhenEmpty || tooltipValue.value) && tooltipLabel.value;
     });
     const tooltipX = computed(() => {
       return `${x.value - 100}px`;
     });
     const tooltipY = computed(() => {
-      return `${y.value - 100}px`;
+      return `${y.value < 100 ? y.value + 25 : y.value - 100}px`;
     });
     return (_ctx, _cache) => {
       return openBlock(), createElementBlock("div", _hoisted_1$2, [
@@ -28927,7 +28967,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
         }, null, 12, _hoisted_4$2), [
           [vShow, !unref(isLoading)]
         ]),
-        unref(displayTooltip) ? (openBlock(), createBlock(Tooltip, {
+        unref(showTooltipOnHover) || unref(showTooltipOnTouch) ? (openBlock(), createBlock(Tooltip, {
           key: 0,
           id: `v3mc-tooltip-${unref(cpntId)}`,
           class: "v3mc-tooltip",
@@ -28940,7 +28980,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-5aeaac59"]]);
+const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-36b06443"]]);
 const plugin = {
   install(app, options) {
     app.component((options == null ? void 0 : options.name) || "MapChart", MapChart);
@@ -29697,5 +29737,5 @@ const _export_sfc = (sfc, props) => {
   return target;
 };
 const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-fd9a9fc4"]]);
-__vitePreload(() => Promise.resolve({}), true ? ["assets/style-899462f3.css"] : void 0);
+__vitePreload(() => Promise.resolve({}), true ? ["assets/style-ad763e98.css"] : void 0);
 createApp(App).use(plugin, { maps: { GermanyMap, JapanMap } }).mount("#app");
