@@ -117,6 +117,7 @@
   const currentAreaValue = ref<number | MapDataValue | null>(null)
 
   const emits = defineEmits([
+    'mapItemTouchstart',
     'mapItemMouseover',
     'mapItemMouseout',
     'mapItemClick',
@@ -127,7 +128,11 @@
     if (el) {
       const emitEvent = (
         target: HTMLElement,
-        emitId: 'mapItemMouseover' | 'mapItemMouseout' | 'mapItemClick'
+        emitId:
+          | 'mapItemMouseover'
+          | 'mapItemMouseout'
+          | 'mapItemClick'
+          | 'mapItemTouchstart'
       ) => {
         const id = target.getAttribute('id')
         currentAreaId.value = id
@@ -141,8 +146,18 @@
           )
         ) {
           emits(emitId, id, currentAreaValue.value)
+          if (emitId == 'mapItemTouchstart') {
+            isOutsideMap.value = false
+          }
+        } else {
+          if (emitId == 'mapItemTouchstart') {
+            isOutsideMap.value = true
+          }
         }
       }
+      useEventListener(el, 'touchstart', (event) => {
+        emitEvent(event.target as HTMLElement, 'mapItemTouchstart')
+      })
       useEventListener(el, 'mouseover', (event) => {
         emitEvent(event.target as HTMLElement, 'mapItemMouseover')
       })
@@ -313,8 +328,9 @@
 
   const tooltip = ref()
   const { x: mouseX, y: mouseY } = useMouse()
-  const { width: tooltipWidth, height: tooltipHeight } =
-    useElementBounding(tooltip)
+  const { width: tooltipWidth, height: tooltipHeight } = useElementBounding(
+    tooltip as any
+  )
 
   const tooltipLeft = computed(() => {
     let left = mouseX.value + 12

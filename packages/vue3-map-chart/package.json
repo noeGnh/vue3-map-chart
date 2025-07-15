@@ -86,7 +86,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@vueuse/core": "^10.11.0",
+    "@vueuse/core": "^12.3.0",
     "i18n-iso-countries": "^7.11.3",
     "iso-3166-2": "^1.0.0"
   }
