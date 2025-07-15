@@ -1200,6 +1200,9 @@ function isRef(r) {
 function ref(value) {
   return createRef(value, false);
 }
+function shallowRef(value) {
+  return createRef(value, true);
+}
 function createRef(rawValue, shallow) {
   if (isRef(rawValue)) {
     return rawValue;
@@ -1230,6 +1233,9 @@ class RefImpl {
 }
 function unref(ref2) {
   return isRef(ref2) ? ref2.value : ref2;
+}
+function toValue(source) {
+  return isFunction(source) ? source() : unref(source);
 }
 const shallowUnwrapHandlers = {
   get: (target, key, receiver) => unref(Reflect.get(target, key, receiver)),
@@ -5940,18 +5946,16 @@ function tryOnScopeDispose(fn) {
   }
   return false;
 }
-function toValue(r) {
-  return typeof r === "function" ? r() : unref(r);
-}
 const isClient = typeof window !== "undefined" && typeof document !== "undefined";
 typeof WorkerGlobalScope !== "undefined" && globalThis instanceof WorkerGlobalScope;
 const notNullish = (val) => val != null;
 const toString = Object.prototype.toString;
 const isObject$1 = (val) => toString.call(val) === "[object Object]";
-const noop = () => {
-};
 function getLifeCycleTarget(target) {
   return target || getCurrentInstance();
+}
+function toArray(value) {
+  return Array.isArray(value) ? value : [value];
 }
 function tryOnMounted(fn, sync = true, target) {
   const instance = getLifeCycleTarget();
@@ -5962,63 +5966,72 @@ function tryOnMounted(fn, sync = true, target) {
   else
     nextTick(fn);
 }
+function watchImmediate(source, cb, options) {
+  return watch(
+    source,
+    cb,
+    {
+      ...options,
+      immediate: true
+    }
+  );
+}
+const defaultWindow = isClient ? window : void 0;
+const defaultDocument = isClient ? window.document : void 0;
 function unrefElement(elRef) {
   var _a;
   const plain = toValue(elRef);
   return (_a = plain == null ? void 0 : plain.$el) != null ? _a : plain;
 }
-const defaultWindow = isClient ? window : void 0;
-const defaultDocument = isClient ? window.document : void 0;
 function useEventListener(...args) {
-  let target;
-  let events;
-  let listeners;
-  let options;
-  if (typeof args[0] === "string" || Array.isArray(args[0])) {
-    [events, listeners, options] = args;
-    target = defaultWindow;
-  } else {
-    [target, events, listeners, options] = args;
-  }
-  if (!target)
-    return noop;
-  if (!Array.isArray(events))
-    events = [events];
-  if (!Array.isArray(listeners))
-    listeners = [listeners];
   const cleanups = [];
   const cleanup = () => {
     cleanups.forEach((fn) => fn());
     cleanups.length = 0;
   };
-  const register = (el2, event, listener, options2) => {
-    el2.addEventListener(event, listener, options2);
-    return () => el2.removeEventListener(event, listener, options2);
+  const register = (el2, event, listener, options) => {
+    el2.addEventListener(event, listener, options);
+    return () => el2.removeEventListener(event, listener, options);
   };
-  const stopWatch = watch(
-    () => [unrefElement(target), toValue(options)],
-    ([el2, options2]) => {
+  const firstParamTargets = computed(() => {
+    const test = toArray(toValue(args[0])).filter((e) => e != null);
+    return test.every((e) => typeof e !== "string") ? test : void 0;
+  });
+  const stopWatch = watchImmediate(
+    () => {
+      var _a, _b;
+      return [
+        (_b = (_a = firstParamTargets.value) == null ? void 0 : _a.map((e) => unrefElement(e))) != null ? _b : [defaultWindow].filter((e) => e != null),
+        toArray(toValue(firstParamTargets.value ? args[1] : args[0])),
+        toArray(unref(firstParamTargets.value ? args[2] : args[1])),
+        // @ts-expect-error - TypeScript gets the correct types, but somehow still complains
+        toValue(firstParamTargets.value ? args[3] : args[2])
+      ];
+    },
+    ([raw_targets, raw_events, raw_listeners, raw_options]) => {
       cleanup();
-      if (!el2)
+      if (!(raw_targets == null ? void 0 : raw_targets.length) || !(raw_events == null ? void 0 : raw_events.length) || !(raw_listeners == null ? void 0 : raw_listeners.length))
         return;
-      const optionsClone = isObject$1(options2) ? { ...options2 } : options2;
+      const optionsClone = isObject$1(raw_options) ? { ...raw_options } : raw_options;
       cleanups.push(
-        ...events.flatMap((event) => {
-          return listeners.map((listener) => register(el2, event, listener, optionsClone));
-        })
+        ...raw_targets.flatMap(
+          (el2) => raw_events.flatMap(
+            (event) => raw_listeners.map((listener) => register(el2, event, listener, optionsClone))
+          )
+        )
       );
     },
-    { immediate: true, flush: "post" }
+    { flush: "post" }
   );
   const stop = () => {
     stopWatch();
     cleanup();
   };
-  tryOnScopeDispose(stop);
+  tryOnScopeDispose(cleanup);
   return stop;
 }
 function useMounted() {
-  const isMounted = ref(false);
+  const isMounted = shallowRef(false);
   const instance = getCurrentInstance();
   if (instance) {
     onMounted(() => {
@@ -6046,7 +6059,7 @@ function useMutationObserver(target, callback, options = {}) {
   };
   const targets = computed(() => {
     const value = toValue(target);
-    const items = (Array.isArray(value) ? value : [value]).map(unrefElement).filter(notNullish);
+    const items = toArray(value).map(unrefElement).filter(notNullish);
     return new Set(items);
   });
   const stopWatch = watch(
@@ -6064,8 +6077,8 @@ function useMutationObserver(target, callback, options = {}) {
     return observer == null ? void 0 : observer.takeRecords();
   };
   const stop = () => {
-    cleanup();
     stopWatch();
+    cleanup();
   };
   tryOnScopeDispose(stop);
   return {
@@ -6084,15 +6097,20 @@ function useResizeObserver(target, callback, options = {}) {
       observer = void 0;
     }
   };
-  const targets = computed(() => Array.isArray(target) ? target.map((el2) => unrefElement(el2)) : [unrefElement(target)]);
+  const targets = computed(() => {
+    const _targets = toValue(target);
+    return Array.isArray(_targets) ? _targets.map((el2) => unrefElement(el2)) : [unrefElement(_targets)];
+  });
   const stopWatch = watch(
     targets,
     (els) => {
       cleanup();
       if (isSupported.value && window2) {
         observer = new ResizeObserver(callback);
-        for (const _el of els)
-          _el && observer.observe(_el, observerOptions);
+        for (const _el of els) {
+          if (_el)
+            observer.observe(_el, observerOptions);
+        }
       }
     },
     { immediate: true, flush: "post" }
@@ -6112,17 +6130,18 @@ function useElementBounding(target, options = {}) {
     reset = true,
     windowResize = true,
     windowScroll = true,
-    immediate = true
+    immediate = true,
+    updateTiming = "sync"
   } = options;
-  const height = ref(0);
-  const bottom = ref(0);
-  const left = ref(0);
-  const right = ref(0);
-  const top = ref(0);
-  const width = ref(0);
-  const x = ref(0);
-  const y = ref(0);
-  function update() {
+  const height = shallowRef(0);
+  const bottom = shallowRef(0);
+  const left = shallowRef(0);
+  const right = shallowRef(0);
+  const top = shallowRef(0);
+  const width = shallowRef(0);
+  const x = shallowRef(0);
+  const y = shallowRef(0);
+  function recalculate() {
     const el2 = unrefElement(target);
     if (!el2) {
       if (reset) {
@@ -6146,6 +6165,12 @@ function useElementBounding(target, options = {}) {
     width.value = rect.width;
     x.value = rect.x;
     y.value = rect.y;
+  }
+  function update() {
+    if (updateTiming === "sync")
+      recalculate();
+    else if (updateTiming === "next-frame")
+      requestAnimationFrame(() => recalculate());
   }
   useResizeObserver(target, update);
   watch(() => unrefElement(target), (ele) => !ele && update());
@@ -6176,7 +6201,7 @@ const UseMouseBuiltinExtractors = {
   page: (event) => [event.pageX, event.pageY],
   client: (event) => [event.clientX, event.clientY],
   screen: (event) => [event.screenX, event.screenY],
-  movement: (event) => event instanceof Touch ? null : [event.movementX, event.movementY]
+  movement: (event) => event instanceof MouseEvent ? [event.movementX, event.movementY] : null
 };
 function useMouse(options = {}) {
   const {
@@ -6190,9 +6215,11 @@ function useMouse(options = {}) {
     eventFilter
   } = options;
   let _prevMouseEvent = null;
-  const x = ref(initialValue.x);
-  const y = ref(initialValue.y);
-  const sourceType = ref(null);
+  let _prevScrollX = 0;
+  let _prevScrollY = 0;
+  const x = shallowRef(initialValue.x);
+  const y = shallowRef(initialValue.y);
+  const sourceType = shallowRef(null);
   const extractor = typeof type === "function" ? type : UseMouseBuiltinExtractors[type];
   const mouseHandler = (event) => {
     const result = extractor(event);
@@ -6200,6 +6227,10 @@ function useMouse(options = {}) {
     if (result) {
       [x.value, y.value] = result;
       sourceType.value = "mouse";
+    }
+    if (window2) {
+      _prevScrollX = window2.scrollX;
+      _prevScrollY = window2.scrollY;
     }
   };
   const touchHandler = (event) => {
@@ -6216,8 +6247,8 @@ function useMouse(options = {}) {
       return;
     const pos = extractor(_prevMouseEvent);
     if (_prevMouseEvent instanceof MouseEvent && pos) {
-      x.value = pos[0] + window2.scrollX;
-      y.value = pos[1] + window2.scrollY;
+      x.value = pos[0] + window2.scrollX - _prevScrollX;
+      y.value = pos[1] + window2.scrollY - _prevScrollY;
     }
   };
   const reset = () => {
@@ -6236,7 +6267,7 @@ function useMouse(options = {}) {
         useEventListener(target, "touchend", reset, listenerOptions);
     }
     if (scroll && type === "page")
-      useEventListener(window2, "scroll", scrollHandlerWrapper, { passive: true });
+      useEventListener(window2, "scroll", scrollHandlerWrapper, listenerOptions);
   }
   return {
     x,
@@ -6251,14 +6282,14 @@ function useMouseInElement(target, options = {}) {
   } = options;
   const type = options.type || "page";
   const { x, y, sourceType } = useMouse(options);
-  const targetRef = ref(target != null ? target : window2 == null ? void 0 : window2.document.body);
-  const elementX = ref(0);
-  const elementY = ref(0);
-  const elementPositionX = ref(0);
-  const elementPositionY = ref(0);
-  const elementHeight = ref(0);
-  const elementWidth = ref(0);
-  const isOutside = ref(true);
+  const targetRef = shallowRef(target != null ? target : window2 == null ? void 0 : window2.document.body);
+  const elementX = shallowRef(0);
+  const elementY = shallowRef(0);
+  const elementPositionX = shallowRef(0);
+  const elementPositionY = shallowRef(0);
+  const elementHeight = shallowRef(0);
+  const elementWidth = shallowRef(0);
+  const isOutside = shallowRef(true);
   let stop = () => {
   };
   if (window2) {
@@ -6266,7 +6297,7 @@ function useMouseInElement(target, options = {}) {
       [targetRef, x, y],
       () => {
         const el2 = unrefElement(targetRef);
-        if (!el2)
+        if (!el2 || !(el2 instanceof Element))
           return;
         const {
           left,
@@ -6288,9 +6319,12 @@ function useMouseInElement(target, options = {}) {
       },
       { immediate: true }
     );
-    useEventListener(document, "mouseleave", () => {
-      isOutside.value = true;
-    });
+    useEventListener(
+      document,
+      "mouseleave",
+      () => isOutside.value = true,
+      { passive: true }
+    );
   }
   return {
     x,
@@ -6308,14 +6342,14 @@ function useMouseInElement(target, options = {}) {
 }
 let _id = 0;
 function useStyleTag(css, options = {}) {
-  const isLoaded = ref(false);
+  const isLoaded = shallowRef(false);
   const {
     document: document2 = defaultDocument,
     immediate = true,
     manual = false,
     id: id2 = `vueuse_styletag_${++_id}`
   } = options;
-  const cssRef = ref(css);
+  const cssRef = shallowRef(css);
   let stop = () => {
   };
   const load = () => {
@@ -28851,7 +28885,7 @@ const _export_sfc$1 = (sfc, props) => {
   return target;
 };
 const Tooltip = /* @__PURE__ */ _export_sfc$1(_sfc_main$1, [["__scopeId", "data-v-14df540e"]]);
-const _withScopeId$2 = (n) => (pushScopeId("data-v-8b4a401f"), n = n(), popScopeId(), n);
+const _withScopeId$2 = (n) => (pushScopeId("data-v-cbf53109"), n = n(), popScopeId(), n);
 const _hoisted_1$2 = { class: "v3mc-container" };
 const _hoisted_2$2 = { class: "v3mc-tiny-loader-wrapper" };
 const _hoisted_3$2 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", { class: "v3mc-tiny-loader" }, null, -1));
@@ -28883,22 +28917,23 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     data: {}
   },
   emits: [
+    "mapItemTouchstart",
     "mapItemMouseover",
     "mapItemMouseout",
     "mapItemClick"
   ],
   setup(__props, { emit: __emit }) {
     useCssVars((_ctx) => ({
-      "0f6ce3c5": unref(mapHeight),
-      "70f3e130": unref(mapWidth),
-      "2b36e9b0": unref(defaultStrokeColor),
-      "12a405fd": unref(defaultFillColor),
-      "938093ce": unref(defaultCursor),
-      "1a1bd5a6": unref(defaultFillHoverColor),
-      "311d12e2": _ctx.defaultStrokeHoverColor,
-      "6be93720": unref(tooltipTop),
-      "775d604c": unref(tooltipLeft),
-      "68e458b2": unref(loaderColor)
+      "2bdb5e10": unref(mapHeight),
+      "52b4afd5": unref(mapWidth),
+      "292b4755": unref(defaultStrokeColor),
+      "7655e96a": unref(defaultFillColor),
+      "8d955c68": unref(defaultCursor),
+      "4bf64de0": unref(defaultFillHoverColor),
+      "59f5ead5": _ctx.defaultStrokeHoverColor,
+      "44139d9d": unref(tooltipTop),
+      "3e5c4cbf": unref(tooltipLeft),
+      "2fe34525": unref(loaderColor)
     }));
     const props = __props;
     onMounted(() => {
@@ -28943,8 +28978,15 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
           currentAreaValue.value = id2 ? props.data[id2] : null;
           if (id2 && isValidIsoCode(id2) && !!(countries$1d.getName(id2, props.langCode) || ((_a = iso3166.subdivision(id2)) == null ? void 0 : _a.name))) {
             emits(emitId, id2, currentAreaValue.value);
+          } else {
+            if (emitId == "mapItemTouchstart") {
+              isOutsideMap.value = true;
+            }
           }
         };
+        useEventListener(el2, "touchstart", (event) => {
+          emitEvent(event.target, "mapItemTouchstart");
+        });
         useEventListener(el2, "mouseover", (event) => {
           emitEvent(event.target, "mapItemMouseover");
         });
@@ -29090,7 +29132,9 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     });
     const tooltip = ref();
     const { x: mouseX, y: mouseY } = useMouse();
-    const { width: tooltipWidth, height: tooltipHeight } = useElementBounding(tooltip);
+    const { width: tooltipWidth, height: tooltipHeight } = useElementBounding(
+      tooltip
+    );
     const tooltipLeft = computed(() => {
       let left = mouseX.value + 12;
       if (left + tooltipWidth.value > window.innerWidth) {
@@ -29138,7 +29182,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-8b4a401f"]]);
+const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-cbf53109"]]);
 const plugin = {
   install(app, options) {
     app.component((options == null ? void 0 : options.name) || "MapChart", MapChart);
@@ -29157,9 +29201,9 @@ const EuropeMap = { name: "EuropeMap", template: "continents/europe.svg" };
 const NorthAmericaMap = { name: "NorthAmericaMap", template: "continents/north-america.svg" };
 const OceaniaMap = { name: "OceaniaMap", template: "continents/oceania.svg" };
 const SouthAmericaMap = { name: "SouthAmericaMap", template: "continents/south-america.svg" };
-const EgyptMap = { name: "EgyptMap", template: "countries/africa/egypt.svg" };
 const JapanMap = { name: "JapanMap", template: "countries/asia/japan.svg" };
 const GermanyMap = { name: "GermanyMap", template: "countries/europe/germany.svg" };
+const EgyptMap = { name: "EgyptMap", template: "countries/africa/egypt.svg" };
 const BrazilMap = { name: "BrazilMap", template: "countries/south-america/brazil.svg" };
 const _withScopeId = (n) => (pushScopeId("data-v-64d0339b"), n = n(), popScopeId(), n);
 const _hoisted_1 = { class: "grid-container" };
@@ -29900,5 +29944,5 @@ const _export_sfc = (sfc, props) => {
   return target;
 };
 const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-64d0339b"]]);
-__vitePreload(() => Promise.resolve({}), true ? ["assets/style-5a8546d7.css"] : void 0);
+__vitePreload(() => Promise.resolve({}), true ? ["assets/style-05339b75.css"] : void 0);
 createApp(App).use(plugin, { maps: { GermanyMap, JapanMap } }).mount("#app");
