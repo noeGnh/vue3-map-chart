@@ -28885,7 +28885,7 @@ const _export_sfc$1 = (sfc, props) => {
   return target;
 };
 const Tooltip = /* @__PURE__ */ _export_sfc$1(_sfc_main$1, [["__scopeId", "data-v-14df540e"]]);
-const _withScopeId$2 = (n) => (pushScopeId("data-v-cbf53109"), n = n(), popScopeId(), n);
+const _withScopeId$2 = (n) => (pushScopeId("data-v-8d49b974"), n = n(), popScopeId(), n);
 const _hoisted_1$2 = { class: "v3mc-container" };
 const _hoisted_2$2 = { class: "v3mc-tiny-loader-wrapper" };
 const _hoisted_3$2 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", { class: "v3mc-tiny-loader" }, null, -1));
@@ -28924,16 +28924,16 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   ],
   setup(__props, { emit: __emit }) {
     useCssVars((_ctx) => ({
-      "2bdb5e10": unref(mapHeight),
-      "52b4afd5": unref(mapWidth),
-      "292b4755": unref(defaultStrokeColor),
-      "7655e96a": unref(defaultFillColor),
-      "8d955c68": unref(defaultCursor),
-      "4bf64de0": unref(defaultFillHoverColor),
-      "59f5ead5": _ctx.defaultStrokeHoverColor,
-      "44139d9d": unref(tooltipTop),
-      "3e5c4cbf": unref(tooltipLeft),
-      "2fe34525": unref(loaderColor)
+      "6fb732a8": unref(mapHeight),
+      "cdd64fb6": unref(mapWidth),
+      "3af14ba5": unref(defaultStrokeColor),
+      "6370c1ba": unref(defaultFillColor),
+      "3931db7c": unref(defaultCursor),
+      "c333b0e0": unref(defaultFillHoverColor),
+      "6053cef6": _ctx.defaultStrokeHoverColor,
+      "730af1ed": unref(tooltipTop),
+      "2360fb22": unref(tooltipLeft),
+      "40530a56": unref(loaderColor)
     }));
     const props = __props;
     onMounted(() => {
@@ -28978,6 +28978,9 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
           currentAreaValue.value = id2 ? props.data[id2] : null;
           if (id2 && isValidIsoCode(id2) && !!(countries$1d.getName(id2, props.langCode) || ((_a = iso3166.subdivision(id2)) == null ? void 0 : _a.name))) {
             emits(emitId, id2, currentAreaValue.value);
+            if (emitId == "mapItemTouchstart") {
+              isOutsideMap.value = false;
+            }
           } else {
             if (emitId == "mapItemTouchstart") {
               isOutsideMap.value = true;
@@ -29182,7 +29185,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-cbf53109"]]);
+const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-8d49b974"]]);
 const plugin = {
   install(app, options) {
     app.component((options == null ? void 0 : options.name) || "MapChart", MapChart);
@@ -29201,9 +29204,9 @@ const EuropeMap = { name: "EuropeMap", template: "continents/europe.svg" };
 const NorthAmericaMap = { name: "NorthAmericaMap", template: "continents/north-america.svg" };
 const OceaniaMap = { name: "OceaniaMap", template: "continents/oceania.svg" };
 const SouthAmericaMap = { name: "SouthAmericaMap", template: "continents/south-america.svg" };
+const EgyptMap = { name: "EgyptMap", template: "countries/africa/egypt.svg" };
 const JapanMap = { name: "JapanMap", template: "countries/asia/japan.svg" };
 const GermanyMap = { name: "GermanyMap", template: "countries/europe/germany.svg" };
-const EgyptMap = { name: "EgyptMap", template: "countries/africa/egypt.svg" };
 const BrazilMap = { name: "BrazilMap", template: "countries/south-america/brazil.svg" };
 const _withScopeId = (n) => (pushScopeId("data-v-64d0339b"), n = n(), popScopeId(), n);
 const _hoisted_1 = { class: "grid-container" };
@@ -29944,5 +29947,5 @@ const _export_sfc = (sfc, props) => {
   return target;
 };
 const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-64d0339b"]]);
-__vitePreload(() => Promise.resolve({}), true ? ["assets/style-05339b75.css"] : void 0);
+__vitePreload(() => Promise.resolve({}), true ? ["assets/style-f8b0d0fa.css"] : void 0);
 createApp(App).use(plugin, { maps: { GermanyMap, JapanMap } }).mount("#app");
