@@ -1,7 +1,7 @@
 {
   "name": "vue3-map-chart-lite",
   "description": "Vue 3 component for rendering interactive SVG maps of the world, continents, and countries with dynamic data.",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": false,
   "author": "Noé Gnanih <noegnanih@gmail.com>",
   "license": "MIT",

@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v0.1.5](https://github.com/noeGnh/vue3-map-chart/compare/v0.1.4...v0.1.5)
+## [v0.1.6](https://github.com/noeGnh/vue3-map-chart/compare/v0.1.5...v0.1.6)
+
+### Commits
+
+- fix: resolve issue with tooltip on scrolling pages and increase z-index [`becbb72`](https://github.com/noeGnh/vue3-map-chart/commit/becbb72f16ed02cb43860c4b0f82c73047081fdc)
+
+## [v0.1.5](https://github.com/noeGnh/vue3-map-chart/compare/v0.1.4...v0.1.5) - 2025-07-15
 
 ### Commits
 
