@@ -375,20 +375,24 @@
   )
 
   const tooltipLeft = computed(() => {
-    let left = mouseX.value + 12
+    const viewportMouseX = mouseX.value - window.scrollX
+
+    let left = viewportMouseX + 12
 
     if (left + tooltipWidth.value > window.innerWidth) {
-      left = mouseX.value - tooltipWidth.value - 12
+      left = viewportMouseX - tooltipWidth.value - 12
     }
 
     return `${left}px`
   })
 
   const tooltipTop = computed(() => {
-    let top = mouseY.value + 12
+    const viewportMouseY = mouseY.value - window.scrollY
+
+    let top = viewportMouseY + 12
 
     if (top + tooltipHeight.value > window.innerHeight) {
-      top = mouseY.value - tooltipHeight.value - 12
+      top = viewportMouseY - tooltipHeight.value - 12
     }
 
     return `${top}px`
@@ -451,7 +455,7 @@
 
   .v3mc-tooltip {
     position: fixed;
-    z-index: 10;
+    z-index: 9999;
     top: v-bind(tooltipTop);
     left: v-bind(tooltipLeft);
   }
