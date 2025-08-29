@@ -28885,7 +28885,7 @@ const _export_sfc$1 = (sfc, props) => {
   return target;
 };
 const Tooltip = /* @__PURE__ */ _export_sfc$1(_sfc_main$1, [["__scopeId", "data-v-14df540e"]]);
-const _withScopeId$2 = (n) => (pushScopeId("data-v-8d49b974"), n = n(), popScopeId(), n);
+const _withScopeId$2 = (n) => (pushScopeId("data-v-c9277a09"), n = n(), popScopeId(), n);
 const _hoisted_1$2 = { class: "v3mc-container" };
 const _hoisted_2$2 = { class: "v3mc-tiny-loader-wrapper" };
 const _hoisted_3$2 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", { class: "v3mc-tiny-loader" }, null, -1));
@@ -28924,16 +28924,16 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   ],
   setup(__props, { emit: __emit }) {
     useCssVars((_ctx) => ({
-      "6fb732a8": unref(mapHeight),
-      "cdd64fb6": unref(mapWidth),
-      "3af14ba5": unref(defaultStrokeColor),
-      "6370c1ba": unref(defaultFillColor),
-      "3931db7c": unref(defaultCursor),
-      "c333b0e0": unref(defaultFillHoverColor),
-      "6053cef6": _ctx.defaultStrokeHoverColor,
-      "730af1ed": unref(tooltipTop),
-      "2360fb22": unref(tooltipLeft),
-      "40530a56": unref(loaderColor)
+      "783ae21f": unref(mapHeight),
+      "179c4464": unref(mapWidth),
+      "4f73dbe4": unref(defaultStrokeColor),
+      "ee33e33a": unref(defaultFillColor),
+      "1e5a111a": unref(defaultCursor),
+      "6ac35c87": unref(defaultFillHoverColor),
+      "0c8c2888": _ctx.defaultStrokeHoverColor,
+      "7afd3156": unref(tooltipTop),
+      "36b59fb4": unref(tooltipLeft),
+      "53a7aee8": unref(loaderColor)
     }));
     const props = __props;
     onMounted(() => {
@@ -29139,16 +29139,18 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
       tooltip
     );
     const tooltipLeft = computed(() => {
-      let left = mouseX.value + 12;
+      const viewportMouseX = mouseX.value - window.scrollX;
+      let left = viewportMouseX + 12;
       if (left + tooltipWidth.value > window.innerWidth) {
-        left = mouseX.value - tooltipWidth.value - 12;
+        left = viewportMouseX - tooltipWidth.value - 12;
       }
       return `${left}px`;
     });
     const tooltipTop = computed(() => {
-      let top = mouseY.value + 12;
+      const viewportMouseY = mouseY.value - window.scrollY;
+      let top = viewportMouseY + 12;
       if (top + tooltipHeight.value > window.innerHeight) {
-        top = mouseY.value - tooltipHeight.value - 12;
+        top = viewportMouseY - tooltipHeight.value - 12;
       }
       return `${top}px`;
     });
@@ -29185,7 +29187,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-8d49b974"]]);
+const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-c9277a09"]]);
 const plugin = {
   install(app, options) {
     app.component((options == null ? void 0 : options.name) || "MapChart", MapChart);
@@ -29947,5 +29949,5 @@ const _export_sfc = (sfc, props) => {
   return target;
 };
 const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-64d0339b"]]);
-__vitePreload(() => Promise.resolve({}), true ? ["assets/style-f8b0d0fa.css"] : void 0);
+__vitePreload(() => Promise.resolve({}), true ? ["assets/style-b5c7df4a.css"] : void 0);
 createApp(App).use(plugin, { maps: { GermanyMap, JapanMap } }).mount("#app");
