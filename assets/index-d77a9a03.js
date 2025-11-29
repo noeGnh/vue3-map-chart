@@ -28885,7 +28885,7 @@ const _export_sfc$1 = (sfc, props) => {
   return target;
 };
 const Tooltip = /* @__PURE__ */ _export_sfc$1(_sfc_main$1, [["__scopeId", "data-v-14df540e"]]);
-const _withScopeId$2 = (n) => (pushScopeId("data-v-c9277a09"), n = n(), popScopeId(), n);
+const _withScopeId$2 = (n) => (pushScopeId("data-v-990f691c"), n = n(), popScopeId(), n);
 const _hoisted_1$2 = { class: "v3mc-container" };
 const _hoisted_2$2 = { class: "v3mc-tiny-loader-wrapper" };
 const _hoisted_3$2 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", { class: "v3mc-tiny-loader" }, null, -1));
@@ -28899,6 +28899,8 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     mapStyles: { default: () => ({}) },
     displayLegend: { type: Boolean, default: true },
     displayLegendWhenEmpty: { type: Boolean, default: true },
+    displayAreaNameOnMap: { type: Boolean, default: false },
+    areaNameOnMapSize: { default: 12 },
     formatValueWithSiPrefix: { type: Boolean, default: false },
     forceCursorPointer: { type: Boolean, default: false },
     legendBgColor: { default: void 0 },
@@ -28924,16 +28926,16 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   ],
   setup(__props, { emit: __emit }) {
     useCssVars((_ctx) => ({
-      "783ae21f": unref(mapHeight),
-      "179c4464": unref(mapWidth),
-      "4f73dbe4": unref(defaultStrokeColor),
-      "ee33e33a": unref(defaultFillColor),
-      "1e5a111a": unref(defaultCursor),
-      "6ac35c87": unref(defaultFillHoverColor),
-      "0c8c2888": _ctx.defaultStrokeHoverColor,
-      "7afd3156": unref(tooltipTop),
-      "36b59fb4": unref(tooltipLeft),
-      "53a7aee8": unref(loaderColor)
+      "f1ebebbc": unref(mapHeight),
+      "16a7ad2a": unref(mapWidth),
+      "58e03d6b": unref(defaultStrokeColor),
+      "69dd6d00": unref(defaultFillColor),
+      "33f865f6": unref(defaultCursor),
+      "00c0cfec": unref(defaultFillHoverColor),
+      "6f155b02": _ctx.defaultStrokeHoverColor,
+      "461309b3": unref(tooltipTop),
+      "7c4a6369": unref(tooltipLeft),
+      "6dd15bcf": unref(loaderColor)
     }));
     const props = __props;
     onMounted(() => {
@@ -29154,6 +29156,63 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
       }
       return `${top}px`;
     });
+    onMounted(() => {
+      if (!props.displayAreaNameOnMap)
+        return;
+      const svgNS2 = "http://www.w3.org/2000/svg";
+      const mapContainer = document.getElementById(`v3mc-map-${cpntId}`);
+      if (mapContainer) {
+        const areas = Array.from(
+          mapContainer.querySelectorAll("[id]")
+        ).filter(
+          (el2) => {
+            var _a;
+            return isValidIsoCode(el2.id) && !!(countries$1d.getName(el2.id, props.langCode) || ((_a = iso3166.subdivision(el2.id)) == null ? void 0 : _a.name));
+          }
+        ).map((el2) => {
+          var _a;
+          return {
+            element: el2,
+            id: el2.id,
+            name: countries$1d.getName(el2.id, props.langCode) || ((_a = iso3166.subdivision(el2.id)) == null ? void 0 : _a.name) || ""
+          };
+        });
+        areas.forEach((area, index) => {
+          var _a, _b, _c;
+          if (!("getBBox" in area.element))
+            return;
+          try {
+            const bbox = area.element.getBBox();
+            const centerX = bbox.x + bbox.width / 2;
+            const centerY = bbox.y + bbox.height / 2;
+            const textElem = document.createElementNS(svgNS2, "text");
+            textElem.setAttribute("x", centerX.toString());
+            textElem.setAttribute("y", centerY.toString());
+            textElem.setAttribute("text-anchor", "middle");
+            textElem.setAttribute("dominant-baseline", "middle");
+            textElem.setAttribute("font-size", `${props.areaNameOnMapSize}`);
+            textElem.setAttribute("fill", "white");
+            textElem.setAttribute("pointer-events", "none");
+            textElem.textContent = countries$1d.getName(area.element.id, props.langCode) || ((_a = iso3166.subdivision(area.element.id)) == null ? void 0 : _a.name) || "";
+            (_b = area.element.parentNode) == null ? void 0 : _b.insertBefore(
+              textElem,
+              area.element.nextSibling
+            );
+            const rectBg = document.createElementNS(svgNS2, "rect");
+            const textBBox = textElem.getBBox();
+            rectBg.setAttribute("x", (textBBox.x - 4).toString());
+            rectBg.setAttribute("y", (textBBox.y - 2).toString());
+            rectBg.setAttribute("width", (textBBox.width + 7).toString());
+            rectBg.setAttribute("height", (textBBox.height + 3).toString());
+            rectBg.setAttribute("fill", "rgba(0,0,0,0.6)");
+            rectBg.setAttribute("rx", "3");
+            rectBg.setAttribute("pointer-events", "none");
+            (_c = area.element.parentNode) == null ? void 0 : _c.insertBefore(rectBg, textElem);
+          } catch (e) {
+          }
+        });
+      }
+    });
     return (_ctx, _cache) => {
       return openBlock(), createElementBlock("div", _hoisted_1$2, [
         withDirectives(createBaseVNode("div", _hoisted_2$2, [
@@ -29187,7 +29246,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-c9277a09"]]);
+const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-990f691c"]]);
 const plugin = {
   install(app, options) {
     app.component((options == null ? void 0 : options.name) || "MapChart", MapChart);
@@ -29210,7 +29269,7 @@ const EgyptMap = { name: "EgyptMap", template: "countries/africa/egypt.svg" };
 const JapanMap = { name: "JapanMap", template: "countries/asia/japan.svg" };
 const GermanyMap = { name: "GermanyMap", template: "countries/europe/germany.svg" };
 const BrazilMap = { name: "BrazilMap", template: "countries/south-america/brazil.svg" };
-const _withScopeId = (n) => (pushScopeId("data-v-64d0339b"), n = n(), popScopeId(), n);
+const _withScopeId = (n) => (pushScopeId("data-v-8d75f73c"), n = n(), popScopeId(), n);
 const _hoisted_1 = { class: "grid-container" };
 const _hoisted_2 = { class: "cell big" };
 const _hoisted_3 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "map-label" }, "World", -1));
@@ -29846,6 +29905,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
             "legend-divider-color": "#333",
             "legend-value-suffix": " km2",
             "format-value-with-si-prefix": "",
+            "display-area-name-on-map": "",
             data: southAmericaData,
             "map-styles": { height: "100%" },
             onMapItemClick
@@ -29940,7 +30000,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
   }
 });
 const App_vue_vue_type_style_index_0_lang = "";
-const App_vue_vue_type_style_index_1_scoped_64d0339b_lang = "";
+const App_vue_vue_type_style_index_1_scoped_8d75f73c_lang = "";
 const _export_sfc = (sfc, props) => {
   const target = sfc.__vccOpts || sfc;
   for (const [key, val] of props) {
@@ -29948,6 +30008,6 @@ const _export_sfc = (sfc, props) => {
   }
   return target;
 };
-const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-64d0339b"]]);
-__vitePreload(() => Promise.resolve({}), true ? ["assets/style-b5c7df4a.css"] : void 0);
+const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-8d75f73c"]]);
+__vitePreload(() => Promise.resolve({}), true ? ["assets/style-012d247c.css"] : void 0);
 createApp(App).use(plugin, { maps: { GermanyMap, JapanMap } }).mount("#app");
