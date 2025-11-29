@@ -28885,7 +28885,7 @@ const _export_sfc$1 = (sfc, props) => {
   return target;
 };
 const Tooltip = /* @__PURE__ */ _export_sfc$1(_sfc_main$1, [["__scopeId", "data-v-14df540e"]]);
-const _withScopeId$2 = (n) => (pushScopeId("data-v-990f691c"), n = n(), popScopeId(), n);
+const _withScopeId$2 = (n) => (pushScopeId("data-v-046060df"), n = n(), popScopeId(), n);
 const _hoisted_1$2 = { class: "v3mc-container" };
 const _hoisted_2$2 = { class: "v3mc-tiny-loader-wrapper" };
 const _hoisted_3$2 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", { class: "v3mc-tiny-loader" }, null, -1));
@@ -28899,8 +28899,10 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     mapStyles: { default: () => ({}) },
     displayLegend: { type: Boolean, default: true },
     displayLegendWhenEmpty: { type: Boolean, default: true },
-    displayAreaNameOnMap: { type: Boolean, default: false },
+    areaNameOnMap: { default: "none" },
     areaNameOnMapSize: { default: 12 },
+    areaNameOnMapColor: { default: "#ffffff" },
+    areaNameOnMapBgColor: { default: "rgba(0, 0, 0, 0.6)" },
     formatValueWithSiPrefix: { type: Boolean, default: false },
     forceCursorPointer: { type: Boolean, default: false },
     legendBgColor: { default: void 0 },
@@ -28926,16 +28928,16 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   ],
   setup(__props, { emit: __emit }) {
     useCssVars((_ctx) => ({
-      "f1ebebbc": unref(mapHeight),
-      "16a7ad2a": unref(mapWidth),
-      "58e03d6b": unref(defaultStrokeColor),
-      "69dd6d00": unref(defaultFillColor),
-      "33f865f6": unref(defaultCursor),
-      "00c0cfec": unref(defaultFillHoverColor),
-      "6f155b02": _ctx.defaultStrokeHoverColor,
-      "461309b3": unref(tooltipTop),
-      "7c4a6369": unref(tooltipLeft),
-      "6dd15bcf": unref(loaderColor)
+      "00c0fc33": unref(mapHeight),
+      "6c36313a": unref(mapWidth),
+      "11ba0e7a": unref(defaultStrokeColor),
+      "79c635cf": unref(defaultFillColor),
+      "35d5e787": unref(defaultCursor),
+      "4b2ef89b": unref(defaultFillHoverColor),
+      "6daed2d0": _ctx.defaultStrokeHoverColor,
+      "033a59c2": unref(tooltipTop),
+      "640d153a": unref(tooltipLeft),
+      "55940da0": unref(loaderColor)
     }));
     const props = __props;
     onMounted(() => {
@@ -29157,7 +29159,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
       return `${top}px`;
     });
     onMounted(() => {
-      if (!props.displayAreaNameOnMap)
+      if (props.areaNameOnMap == "none")
         return;
       const svgNS2 = "http://www.w3.org/2000/svg";
       const mapContainer = document.getElementById(`v3mc-map-${cpntId}`);
@@ -29167,7 +29169,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
         ).filter(
           (el2) => {
             var _a;
-            return isValidIsoCode(el2.id) && !!(countries$1d.getName(el2.id, props.langCode) || ((_a = iso3166.subdivision(el2.id)) == null ? void 0 : _a.name));
+            return isValidIsoCode(el2.id) && !!(countries$1d.getName(el2.id, props.langCode) || ((_a = iso3166.subdivision(el2.id)) == null ? void 0 : _a.name)) && props.areaNameOnMap == "all" || Object.keys(props.data).includes(el2.id);
           }
         ).map((el2) => {
           var _a;
@@ -29177,8 +29179,21 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
             name: countries$1d.getName(el2.id, props.langCode) || ((_a = iso3166.subdivision(el2.id)) == null ? void 0 : _a.name) || ""
           };
         });
+        const svgContainers = /* @__PURE__ */ new Set();
+        areas.forEach((area) => {
+          const svg = area.element.ownerSVGElement;
+          if (svg)
+            svgContainers.add(svg);
+        });
+        const labelGroups = /* @__PURE__ */ new Map();
+        svgContainers.forEach((svg) => {
+          const group = document.createElementNS(svgNS2, "g");
+          group.setAttribute("class", "labels-group");
+          svg.appendChild(group);
+          labelGroups.set(svg, group);
+        });
         areas.forEach((area, index) => {
-          var _a, _b, _c;
+          var _a;
           if (!("getBBox" in area.element))
             return;
           try {
@@ -29191,23 +29206,25 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
             textElem.setAttribute("text-anchor", "middle");
             textElem.setAttribute("dominant-baseline", "middle");
             textElem.setAttribute("font-size", `${props.areaNameOnMapSize}`);
-            textElem.setAttribute("fill", "white");
+            textElem.setAttribute("fill", `${props.areaNameOnMapColor}`);
             textElem.setAttribute("pointer-events", "none");
             textElem.textContent = countries$1d.getName(area.element.id, props.langCode) || ((_a = iso3166.subdivision(area.element.id)) == null ? void 0 : _a.name) || "";
-            (_b = area.element.parentNode) == null ? void 0 : _b.insertBefore(
-              textElem,
-              area.element.nextSibling
-            );
-            const rectBg = document.createElementNS(svgNS2, "rect");
-            const textBBox = textElem.getBBox();
-            rectBg.setAttribute("x", (textBBox.x - 4).toString());
-            rectBg.setAttribute("y", (textBBox.y - 2).toString());
-            rectBg.setAttribute("width", (textBBox.width + 7).toString());
-            rectBg.setAttribute("height", (textBBox.height + 3).toString());
-            rectBg.setAttribute("fill", "rgba(0,0,0,0.6)");
-            rectBg.setAttribute("rx", "3");
-            rectBg.setAttribute("pointer-events", "none");
-            (_c = area.element.parentNode) == null ? void 0 : _c.insertBefore(rectBg, textElem);
+            const svg = area.element.ownerSVGElement;
+            const group = svg ? labelGroups.get(svg) : null;
+            if (group) {
+              group.appendChild(textElem);
+              const textBBox = textElem.getBBox();
+              const rectBg = document.createElementNS(svgNS2, "rect");
+              rectBg.setAttribute("x", (textBBox.x - 4).toString());
+              rectBg.setAttribute("y", (textBBox.y - 2).toString());
+              rectBg.setAttribute("width", (textBBox.width + 7).toString());
+              rectBg.setAttribute("height", (textBBox.height + 3).toString());
+              rectBg.setAttribute("fill", `${props.areaNameOnMapBgColor}`);
+              rectBg.setAttribute("stroke-width", "0");
+              rectBg.setAttribute("rx", "3");
+              rectBg.setAttribute("pointer-events", "none");
+              group.insertBefore(rectBg, textElem);
+            }
           } catch (e) {
           }
         });
@@ -29246,7 +29263,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-990f691c"]]);
+const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-046060df"]]);
 const plugin = {
   install(app, options) {
     app.component((options == null ? void 0 : options.name) || "MapChart", MapChart);
@@ -29269,7 +29286,7 @@ const EgyptMap = { name: "EgyptMap", template: "countries/africa/egypt.svg" };
 const JapanMap = { name: "JapanMap", template: "countries/asia/japan.svg" };
 const GermanyMap = { name: "GermanyMap", template: "countries/europe/germany.svg" };
 const BrazilMap = { name: "BrazilMap", template: "countries/south-america/brazil.svg" };
-const _withScopeId = (n) => (pushScopeId("data-v-8d75f73c"), n = n(), popScopeId(), n);
+const _withScopeId = (n) => (pushScopeId("data-v-abf38975"), n = n(), popScopeId(), n);
 const _hoisted_1 = { class: "grid-container" };
 const _hoisted_2 = { class: "cell big" };
 const _hoisted_3 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "map-label" }, "World", -1));
@@ -29905,7 +29922,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
             "legend-divider-color": "#333",
             "legend-value-suffix": " km2",
             "format-value-with-si-prefix": "",
-            "display-area-name-on-map": "",
+            "area-name-on-map": "data-only",
             data: southAmericaData,
             "map-styles": { height: "100%" },
             onMapItemClick
@@ -30000,7 +30017,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
   }
 });
 const App_vue_vue_type_style_index_0_lang = "";
-const App_vue_vue_type_style_index_1_scoped_8d75f73c_lang = "";
+const App_vue_vue_type_style_index_1_scoped_abf38975_lang = "";
 const _export_sfc = (sfc, props) => {
   const target = sfc.__vccOpts || sfc;
   for (const [key, val] of props) {
@@ -30008,6 +30025,6 @@ const _export_sfc = (sfc, props) => {
   }
   return target;
 };
-const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-8d75f73c"]]);
-__vitePreload(() => Promise.resolve({}), true ? ["assets/style-012d247c.css"] : void 0);
+const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-abf38975"]]);
+__vitePreload(() => Promise.resolve({}), true ? ["assets/style-cd650274.css"] : void 0);
 createApp(App).use(plugin, { maps: { GermanyMap, JapanMap } }).mount("#app");
