@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v0.1.7](https://github.com/noeGnh/vue3-map-chart/compare/v0.1.6...v0.1.7)
+## [v0.1.8](https://github.com/noeGnh/vue3-map-chart/compare/v0.1.7...v0.1.8)
+
+### Commits
+
+- fix: improve area name on map stuffs [`95735fb`](https://github.com/noeGnh/vue3-map-chart/commit/95735fb5ec5979a439c129f20e9b8bed06ee3f28)
+
+## [v0.1.7](https://github.com/noeGnh/vue3-map-chart/compare/v0.1.6...v0.1.7) - 2025-11-29
 
 ### Commits
 
