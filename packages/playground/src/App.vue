@@ -455,6 +455,7 @@
         legend-divider-color="#333"
         legend-value-suffix="&nbsp;km2"
         format-value-with-si-prefix
+        display-area-name-on-map
         :data="southAmericaData"
         :map-styles="{ height: '100%' }"
         @map-item-click="onMapItemClick">

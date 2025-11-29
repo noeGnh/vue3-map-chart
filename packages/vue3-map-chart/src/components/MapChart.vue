@@ -30,6 +30,8 @@
     mapStyles?: CSSProperties
     displayLegend?: boolean
     displayLegendWhenEmpty?: boolean
+    displayAreaNameOnMap?: boolean
+    areaNameOnMapSize?: number
     formatValueWithSiPrefix?: boolean
     forceCursorPointer?: boolean
     legendBgColor?: string
@@ -54,6 +56,8 @@
     mapStyles: () => ({}),
     displayLegend: true,
     displayLegendWhenEmpty: true,
+    displayAreaNameOnMap: false,
+    areaNameOnMapSize: 12,
     formatValueWithSiPrefix: false,
     forceCursorPointer: false,
     legendBgColor: undefined,
@@ -354,6 +358,87 @@
     }
 
     return `${top}px`
+  })
+
+  // Dynamically Display area name on map
+
+  onMounted(() => {
+    if (!props.displayAreaNameOnMap) return
+
+    const svgNS = 'http://www.w3.org/2000/svg'
+    const mapContainer = document.getElementById(`v3mc-map-${cpntId}`)
+    if (mapContainer) {
+      const areas: {
+        element: SVGGraphicsElement
+        id: string
+        name: string
+      }[] = Array.from(
+        mapContainer.querySelectorAll<SVGGraphicsElement>('[id]')
+      )
+        .filter(
+          (el) =>
+            isValidIsoCode(el.id) &&
+            !!(
+              countries.getName(el.id, props.langCode) ||
+              iso3166.subdivision(el.id)?.name
+            )
+        )
+        .map((el) => ({
+          element: el,
+          id: el.id,
+          name:
+            countries.getName(el.id, props.langCode) ||
+            iso3166.subdivision(el.id)?.name ||
+            '',
+        }))
+
+      areas.forEach((area, index) => {
+        if (!('getBBox' in area.element)) return
+
+        try {
+          // Get the bounding box of the element
+          const bbox = area.element.getBBox()
+
+          // Calculate the center
+          const centerX = bbox.x + bbox.width / 2
+          const centerY = bbox.y + bbox.height / 2
+
+          // Create an SVG text element
+          const textElem = document.createElementNS(svgNS, 'text')
+          textElem.setAttribute('x', centerX.toString())
+          textElem.setAttribute('y', centerY.toString())
+          textElem.setAttribute('text-anchor', 'middle')
+          textElem.setAttribute('dominant-baseline', 'middle')
+          textElem.setAttribute('font-size', `${props.areaNameOnMapSize}`)
+          textElem.setAttribute('fill', 'white')
+          textElem.setAttribute('pointer-events', 'none')
+          textElem.textContent =
+            countries.getName(area.element.id, props.langCode) ||
+            iso3166.subdivision(area.element.id)?.name ||
+            ''
+
+          // Add the text immediately after the element
+          area.element.parentNode?.insertBefore(
+            textElem,
+            area.element.nextSibling
+          )
+
+          // Add a background for readability
+          const rectBg = document.createElementNS(svgNS, 'rect')
+          const textBBox = textElem.getBBox()
+          rectBg.setAttribute('x', (textBBox.x - 4).toString())
+          rectBg.setAttribute('y', (textBBox.y - 2).toString())
+          rectBg.setAttribute('width', (textBBox.width + 7).toString())
+          rectBg.setAttribute('height', (textBBox.height + 3).toString())
+          rectBg.setAttribute('fill', 'rgba(0,0,0,0.6)')
+          rectBg.setAttribute('rx', '3')
+          rectBg.setAttribute('pointer-events', 'none')
+
+          // Insert the background before the text
+          area.element.parentNode?.insertBefore(rectBg, textElem)
+        } catch (e) {}
+      })
+    }
   })
 </script>
 
