@@ -30,8 +30,10 @@
     mapStyles?: CSSProperties
     displayLegend?: boolean
     displayLegendWhenEmpty?: boolean
-    displayAreaNameOnMap?: boolean
+    areaNameOnMap?: 'none' | 'all' | 'data-only'
     areaNameOnMapSize?: number
+    areaNameOnMapColor?: string
+    areaNameOnMapBgColor?: string
     formatValueWithSiPrefix?: boolean
     forceCursorPointer?: boolean
     legendBgColor?: string
@@ -56,8 +58,10 @@
     mapStyles: () => ({}),
     displayLegend: true,
     displayLegendWhenEmpty: true,
-    displayAreaNameOnMap: false,
+    areaNameOnMap: 'none',
     areaNameOnMapSize: 12,
+    areaNameOnMapColor: '#ffffff',
+    areaNameOnMapBgColor: 'rgba(0, 0, 0, 0.6)',
     formatValueWithSiPrefix: false,
     forceCursorPointer: false,
     legendBgColor: undefined,
@@ -363,7 +367,7 @@
   // Dynamically Display area name on map
 
   onMounted(() => {
-    if (!props.displayAreaNameOnMap) return
+    if (props.areaNameOnMap == 'none') return
 
     const svgNS = 'http://www.w3.org/2000/svg'
     const mapContainer = document.getElementById(`v3mc-map-${cpntId}`)
@@ -377,11 +381,13 @@
       )
         .filter(
           (el) =>
-            isValidIsoCode(el.id) &&
-            !!(
-              countries.getName(el.id, props.langCode) ||
-              iso3166.subdivision(el.id)?.name
-            )
+            (isValidIsoCode(el.id) &&
+              !!(
+                countries.getName(el.id, props.langCode) ||
+                iso3166.subdivision(el.id)?.name
+              ) &&
+              props.areaNameOnMap == 'all') ||
+            Object.keys(props.data).includes(el.id)
         )
         .map((el) => ({
           element: el,
@@ -391,6 +397,22 @@
             iso3166.subdivision(el.id)?.name ||
             '',
         }))
+
+      // Create a group for all labels at the end of each SVG
+      const svgContainers = new Set<SVGSVGElement>()
+      areas.forEach((area) => {
+        const svg = area.element.ownerSVGElement
+        if (svg) svgContainers.add(svg)
+      })
+
+      // Create a label group per SVG
+      const labelGroups = new Map<SVGSVGElement, SVGGElement>()
+      svgContainers.forEach((svg) => {
+        const group = document.createElementNS(svgNS, 'g')
+        group.setAttribute('class', 'labels-group')
+        svg.appendChild(group)
+        labelGroups.set(svg, group)
+      })
 
       areas.forEach((area, index) => {
         if (!('getBBox' in area.element)) return
@@ -410,32 +432,36 @@
           textElem.setAttribute('text-anchor', 'middle')
           textElem.setAttribute('dominant-baseline', 'middle')
           textElem.setAttribute('font-size', `${props.areaNameOnMapSize}`)
-          textElem.setAttribute('fill', 'white')
+          textElem.setAttribute('fill', `${props.areaNameOnMapColor}`)
           textElem.setAttribute('pointer-events', 'none')
           textElem.textContent =
             countries.getName(area.element.id, props.langCode) ||
             iso3166.subdivision(area.element.id)?.name ||
             ''
 
-          // Add the text immediately after the element
-          area.element.parentNode?.insertBefore(
-            textElem,
-            area.element.nextSibling
-          )
+          // Get the label group
+          const svg = area.element.ownerSVGElement
+          const group = svg ? labelGroups.get(svg) : null
 
-          // Add a background for readability
-          const rectBg = document.createElementNS(svgNS, 'rect')
-          const textBBox = textElem.getBBox()
-          rectBg.setAttribute('x', (textBBox.x - 4).toString())
-          rectBg.setAttribute('y', (textBBox.y - 2).toString())
-          rectBg.setAttribute('width', (textBBox.width + 7).toString())
-          rectBg.setAttribute('height', (textBBox.height + 3).toString())
-          rectBg.setAttribute('fill', 'rgba(0,0,0,0.6)')
-          rectBg.setAttribute('rx', '3')
-          rectBg.setAttribute('pointer-events', 'none')
+          if (group) {
+            // Add text to DOM first so getBBox() works
+            group.appendChild(textElem)
 
-          // Insert the background before the text
-          area.element.parentNode?.insertBefore(rectBg, textElem)
+            // Now get the text bounding box and create background
+            const textBBox = textElem.getBBox()
+            const rectBg = document.createElementNS(svgNS, 'rect')
+            rectBg.setAttribute('x', (textBBox.x - 4).toString())
+            rectBg.setAttribute('y', (textBBox.y - 2).toString())
+            rectBg.setAttribute('width', (textBBox.width + 7).toString())
+            rectBg.setAttribute('height', (textBBox.height + 3).toString())
+            rectBg.setAttribute('fill', `${props.areaNameOnMapBgColor}`)
+            rectBg.setAttribute('stroke-width', '0')
+            rectBg.setAttribute('rx', '3')
+            rectBg.setAttribute('pointer-events', 'none')
+
+            // Insert background before text (so text is on top)
+            group.insertBefore(rectBg, textElem)
+          }
         } catch (e) {}
       })
     }

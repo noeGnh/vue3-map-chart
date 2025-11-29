@@ -134,8 +134,10 @@ The key must be a valid [ISO 3166-1 country code](https://en.wikipedia.org/wiki/
 | mapStyles               | CSSProperties                                                                                               | Styles applied to map                                                           | {}                   | No       |
 | displayLegend           | boolean                                                                                                     | Display legend when mouse passes hover area on map                              | true                 | No       |
 | displayLegendWhenEmpty  | boolean                                                                                                     | Do not display legend when area value is empty                                  | true                 | No       |
-| displayAreaNameOnMap    | boolean  | Display area name on map | false | No |
+| areaNameOnMap    | 'none' / 'all' / 'data-only'  | Display area name on map | 'none' | No |
 | areaNameOnMapSize       | number  | Font size of area name on map | 12 | No |
+| areaNameOnMapColor      | string  | Color of area name on map | '#ffffff' | No |
+| areaNameOnMapBgColor.   | string  | Background color of area name on map | 'rgba(0, 0, 0, 0.6)' | No |
 | legendBgColor           | string                                                                                                      | Color of legend tooltip box                                                     | 'rgba(0, 0, 0, 0.5)' | No       |
 | legendTextColor         | string                                                                                                      | Color of legend text                                                            | '#fff'            | No       |
 | legendDividerColor         | string                                                                                                      | Color of legend divider                                                            | 'rgba(255, 255, 255, 0.5)'            | No       |
