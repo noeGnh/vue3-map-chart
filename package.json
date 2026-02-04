@@ -42,8 +42,8 @@
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "@vitejs/plugin-vue": "^4.6.2",
-    "@vue/compiler-dom": "^3.5.25",
-    "@vue/compiler-sfc": "^3.5.25",
+    "@vue/compiler-dom": "^3.5.27",
+    "@vue/compiler-sfc": "^3.5.27",
     "@vue/eslint-config-prettier": "^7.1.0",
     "@vue/eslint-config-typescript": "^11.0.3",
     "@vue/test-utils": "^2.4.6",
@@ -61,7 +61,7 @@
     "unplugin-vue-components": "^0.24.1",
     "vite": "^4.5.14",
     "vitest": "^0.28.5",
-    "vue": "^3.5.25",
+    "vue": "^3.5.27",
     "vue-tsc": "^1.8.27"
   }
 }
