@@ -5,7 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v0.1.8](https://github.com/noeGnh/vue3-map-chart/compare/v0.1.7...v0.1.8)
+## [v0.1.9](https://github.com/noeGnh/vue3-map-chart/compare/v0.1.8...v0.1.9)
+
+### Merged
+
+- build(deps-dev): bump eslint-import-resolver-typescript from 3.10.1 to 4.4.4 [`#6`](https://github.com/noeGnh/vue3-map-chart/pull/6)
+- build(deps-dev): bump @vue/eslint-config-typescript from 11.0.3 to 13.0.0 [`#14`](https://github.com/noeGnh/vue3-map-chart/pull/14)
+- build(deps-dev): bump unplugin-vue-components from 0.24.1 to 31.0.0 [`#7`](https://github.com/noeGnh/vue3-map-chart/pull/7)
+- build(deps-dev): bump @trivago/prettier-plugin-sort-imports from 4.3.0 to 6.0.2 [`#12`](https://github.com/noeGnh/vue3-map-chart/pull/12)
+- build(deps-dev): bump typescript from 4.9.5 to 5.9.3 [`#13`](https://github.com/noeGnh/vue3-map-chart/pull/13)
+- build(deps-dev): bump @types/node from 16.18.126 to 25.2.0 [`#11`](https://github.com/noeGnh/vue3-map-chart/pull/11)
+- build(deps-dev): bump vue-tsc from 1.8.27 to 2.0.22 [`#9`](https://github.com/noeGnh/vue3-map-chart/pull/9)
+- build(deps-dev): bump @vue/tsconfig from 0.1.3 to 0.5.1 [`#10`](https://github.com/noeGnh/vue3-map-chart/pull/10)
+- build(deps-dev): bump @types/iso-3166-2 from 1.0.3 to 1.0.4 [`#8`](https://github.com/noeGnh/vue3-map-chart/pull/8)
+
+### Commits
+
+- build: update some dependencies [`4f38028`](https://github.com/noeGnh/vue3-map-chart/commit/4f380289de4cebfe6c8e8ed8afbec533b406e13a)
+- build: add dependabot config and update some dependencies [`f39f0a1`](https://github.com/noeGnh/vue3-map-chart/commit/f39f0a1160fb079ddba2340ad18ffec5ff51b597)
+- build(deps-dev): bump @vue/eslint-config-typescript [`097a0fe`](https://github.com/noeGnh/vue3-map-chart/commit/097a0fee0bb0ca4582da9bc023975ded76716322)
+
+## [v0.1.8](https://github.com/noeGnh/vue3-map-chart/compare/v0.1.7...v0.1.8) - 2025-11-29
 
 ### Commits
 
