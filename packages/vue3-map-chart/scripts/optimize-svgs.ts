@@ -5,7 +5,7 @@ import { Config, optimize, Output } from 'svgo'
 import svgoConfig from '../svgo.config.mjs'
 
 // Target directory (customize this path)
-const targetDir: string = './src/assets/maps'
+const targetDir = './src/assets/maps'
 
 // Statistics tracking
 interface OptimizationStats {

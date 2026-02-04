@@ -83,7 +83,7 @@
   onMounted(() => {
     const registerLocale = async (langCode: string) => {
       try {
-        countries.registerLocale(locales[langCode])
+        if (locales[langCode]) countries.registerLocale(locales[langCode])
       } catch (error) {
         console.error('Error loading locale:', error)
       }
@@ -126,7 +126,7 @@
 
   const isOutsideMap = ref(true)
   const currentAreaId = ref<string | null>(null)
-  const currentAreaValue = ref<number | MapDataValue | null>(null)
+  const currentAreaValue = ref<number | MapDataValue | null | undefined>(null)
 
   const emits = defineEmits([
     'mapItemTouchstart',
@@ -204,7 +204,7 @@
       if (slots.default) {
         const slotContent = slots.default()
 
-        const type = slotContent[0].type as { name: string; template: string }
+        const type = slotContent[0]?.type as { name: string; template: string }
 
         if (typeof type == 'object') {
           const fetchData = async () => {
@@ -277,7 +277,7 @@
             max = dataValue
           }
         } else if (isObject(dataValue)) {
-          const value = dataValue.value || 0
+          const value = dataValue?.value || 0
 
           if (min === undefined || value < min) {
             min = value
@@ -296,8 +296,8 @@
         if (typeof dataValue === 'number') {
           value = dataValue
         } else if (isObject(dataValue)) {
-          value = dataValue.value
-          color = dataValue.color
+          value = dataValue?.value
+          color = dataValue?.color
         }
 
         if (value === undefined || max === undefined || min === undefined) {
@@ -456,7 +456,7 @@
         labelGroups.set(svg, group)
       })
 
-      areas.forEach((area, index) => {
+      areas.forEach((area) => {
         if (!('getBBox' in area.element)) return
 
         try {
@@ -504,7 +504,9 @@
             // Insert background before text (so text is on top)
             group.insertBefore(rectBg, textElem)
           }
-        } catch (e) {}
+        } catch (_) {
+          //
+        }
       })
     }
   })

@@ -9,7 +9,7 @@ const plugin = {
 
     if (options?.maps) {
       Object.keys(options.maps).forEach((mapName: string) => {
-        if (options.maps) app.component(mapName, options.maps[mapName])
+        if (options.maps && options.maps[mapName]) app.component(mapName, options.maps[mapName])
       })
     }
   },

@@ -71,7 +71,7 @@ export function isSVG(input: string): boolean {
       }
 
       const svgElements = doc.getElementsByTagName('svg')
-      return svgElements.length > 0 && svgElements[0].parentNode === doc
+      return svgElements.length > 0 && svgElements[0]?.parentNode === doc
     }
     return false
   } catch (e) {
