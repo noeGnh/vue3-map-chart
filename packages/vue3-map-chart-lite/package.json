@@ -38,7 +38,7 @@
     "vue": "^3.4.0"
   },
   "devDependencies": {
-    "@types/iso-3166-2": "^1.0.3",
+    "@types/iso-3166-2": "^1.0.4",
     "@types/jsdom": "^21.1.7",
     "auto-changelog": "^2.4.0",
     "fast-glob": "^3.3.3",
