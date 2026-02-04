@@ -1,3 +1,4 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/style-C9dDPerd.css"])))=>i.map(i=>d[i]);
 (function polyfill() {
   const relList = document.createElement("link").relList;
   if (relList && relList.supports && relList.supports("modulepreload")) {
@@ -19,16 +20,12 @@
   }).observe(document, { childList: true, subtree: true });
   function getFetchOpts(link) {
     const fetchOpts = {};
-    if (link.integrity)
-      fetchOpts.integrity = link.integrity;
-    if (link.referrerPolicy)
-      fetchOpts.referrerPolicy = link.referrerPolicy;
+    if (link.integrity) fetchOpts.integrity = link.integrity;
+    if (link.referrerPolicy) fetchOpts.referrerPolicy = link.referrerPolicy;
     if (link.crossOrigin === "use-credentials")
       fetchOpts.credentials = "include";
-    else if (link.crossOrigin === "anonymous")
-      fetchOpts.credentials = "omit";
-    else
-      fetchOpts.credentials = "same-origin";
+    else if (link.crossOrigin === "anonymous") fetchOpts.credentials = "omit";
+    else fetchOpts.credentials = "same-origin";
     return fetchOpts;
   }
   function processPreload(link) {
@@ -45,49 +42,62 @@ const assetsURL = function(dep) {
 };
 const seen = {};
 const __vitePreload = function preload(baseModule, deps, importerUrl) {
-  if (!deps || deps.length === 0) {
-    return baseModule();
-  }
-  const links = document.getElementsByTagName("link");
-  return Promise.all(deps.map((dep) => {
-    dep = assetsURL(dep);
-    if (dep in seen)
-      return;
-    seen[dep] = true;
-    const isCss = dep.endsWith(".css");
-    const cssSelector = isCss ? '[rel="stylesheet"]' : "";
-    const isBaseRelative = !!importerUrl;
-    if (isBaseRelative) {
-      for (let i = links.length - 1; i >= 0; i--) {
-        const link2 = links[i];
-        if (link2.href === dep && (!isCss || link2.rel === "stylesheet")) {
+  let promise = Promise.resolve();
+  if (deps && deps.length > 0) {
+    document.getElementsByTagName("link");
+    const cspNonceMeta = document.querySelector(
+      "meta[property=csp-nonce]"
+    );
+    const cspNonce = (cspNonceMeta == null ? void 0 : cspNonceMeta.nonce) || (cspNonceMeta == null ? void 0 : cspNonceMeta.getAttribute("nonce"));
+    promise = Promise.allSettled(
+      deps.map((dep) => {
+        dep = assetsURL(dep);
+        if (dep in seen) return;
+        seen[dep] = true;
+        const isCss = dep.endsWith(".css");
+        const cssSelector = isCss ? '[rel="stylesheet"]' : "";
+        if (document.querySelector(`link[href="${dep}"]${cssSelector}`)) {
           return;
         }
-      }
-    } else if (document.querySelector(`link[href="${dep}"]${cssSelector}`)) {
-      return;
-    }
-    const link = document.createElement("link");
-    link.rel = isCss ? "stylesheet" : scriptRel;
-    if (!isCss) {
-      link.as = "script";
-      link.crossOrigin = "";
-    }
-    link.href = dep;
-    document.head.appendChild(link);
-    if (isCss) {
-      return new Promise((res, rej) => {
-        link.addEventListener("load", res);
-        link.addEventListener("error", () => rej(new Error(`Unable to preload CSS for ${dep}`)));
-      });
-    }
-  })).then(() => baseModule()).catch((err) => {
-    const e = new Event("vite:preloadError", { cancelable: true });
+        const link = document.createElement("link");
+        link.rel = isCss ? "stylesheet" : scriptRel;
+        if (!isCss) {
+          link.as = "script";
+        }
+        link.crossOrigin = "";
+        link.href = dep;
+        if (cspNonce) {
+          link.setAttribute("nonce", cspNonce);
+        }
+        document.head.appendChild(link);
+        if (isCss) {
+          return new Promise((res, rej) => {
+            link.addEventListener("load", res);
+            link.addEventListener(
+              "error",
+              () => rej(new Error(`Unable to preload CSS for ${dep}`))
+            );
+          });
+        }
+      })
+    );
+  }
+  function handlePreloadError(err) {
+    const e = new Event("vite:preloadError", {
+      cancelable: true
+    });
     e.payload = err;
     window.dispatchEvent(e);
     if (!e.defaultPrevented) {
       throw err;
     }
+  }
+  return promise.then((res) => {
+    for (const item of res || []) {
+      if (item.status !== "rejected") continue;
+      handlePreloadError(item.reason);
+    }
+    return baseModule().catch(handlePreloadError);
   });
 };
 /**
@@ -346,9 +356,9 @@ class EffectScope {
     }
   }
 }
-function recordEffectScope(effect, scope = activeEffectScope) {
+function recordEffectScope(effect2, scope = activeEffectScope) {
   if (scope && scope.active) {
-    scope.effects.push(effect);
+    scope.effects.push(effect2);
   }
 }
 function getCurrentScope() {
@@ -1532,13 +1542,11 @@ function flushJobs(seen2) {
   isFlushPending = false;
   isFlushing = true;
   queue.sort(comparator);
-  const check = NOOP;
   try {
     for (flushIndex = 0; flushIndex < queue.length; flushIndex++) {
       const job = queue[flushIndex];
       if (job && job.active !== false) {
-        if (false)
-          ;
+        if (false) ;
         callWithErrorHandling(job, null, 14);
       }
     }
@@ -1741,8 +1749,7 @@ function renderComponentRoot(instance) {
       fallthroughAttrs = attrs;
     } else {
       const render2 = Component;
-      if (false)
-        ;
+      if (false) ;
       result = normalizeVNode(
         render2.length > 1 ? render2(
           false ? shallowReadonly(props) : props,
@@ -1893,7 +1900,7 @@ function resolveAsset(type, name, warnMissing = true, maybeSelfReference = false
   const instance = currentRenderingInstance || currentInstance;
   if (instance) {
     const Component = instance.type;
-    if (type === COMPONENTS) {
+    {
       const selfName = getComponentName(
         Component,
         false
@@ -1936,9 +1943,9 @@ const useSSRContext = () => {
     return ctx;
   }
 };
-function watchPostEffect(effect, options) {
+function watchPostEffect(effect2, options) {
   return doWatch(
-    effect,
+    effect2,
     null,
     { flush: "post" }
   );
@@ -1986,8 +1993,7 @@ function doWatch(source, cb, {
         return reactiveGetter(s);
       } else if (isFunction(s)) {
         return callWithErrorHandling(s, instance, 2);
-      } else
-        ;
+      } else ;
     });
   } else if (isFunction(source)) {
     if (cb) {
@@ -2014,9 +2020,9 @@ function doWatch(source, cb, {
   }
   let cleanup;
   let onCleanup = (fn) => {
-    cleanup = effect.onStop = () => {
+    cleanup = effect2.onStop = () => {
       callWithErrorHandling(fn, instance, 4);
-      cleanup = effect.onStop = void 0;
+      cleanup = effect2.onStop = void 0;
     };
   };
   let ssrCleanup;
@@ -2040,11 +2046,11 @@ function doWatch(source, cb, {
   }
   let oldValue = isMultiSource ? new Array(source.length).fill(INITIAL_WATCHER_VALUE) : INITIAL_WATCHER_VALUE;
   const job = () => {
-    if (!effect.active || !effect.dirty) {
+    if (!effect2.active || !effect2.dirty) {
       return;
     }
     if (cb) {
-      const newValue = effect.run();
+      const newValue = effect2.run();
       if (deep || forceTrigger || (isMultiSource ? newValue.some((v, i) => hasChanged(v, oldValue[i])) : hasChanged(newValue, oldValue)) || false) {
         if (cleanup) {
           cleanup();
@@ -2058,7 +2064,7 @@ function doWatch(source, cb, {
         oldValue = newValue;
       }
     } else {
-      effect.run();
+      effect2.run();
     }
   };
   job.allowRecurse = !!cb;
@@ -2073,27 +2079,27 @@ function doWatch(source, cb, {
       job.id = instance.uid;
     scheduler = () => queueJob(job);
   }
-  const effect = new ReactiveEffect(getter, NOOP, scheduler);
+  const effect2 = new ReactiveEffect(getter, NOOP, scheduler);
   const scope = getCurrentScope();
   const unwatch = () => {
-    effect.stop();
+    effect2.stop();
     if (scope) {
-      remove(scope.effects, effect);
+      remove(scope.effects, effect2);
     }
   };
   if (cb) {
     if (immediate) {
       job();
     } else {
-      oldValue = effect.run();
+      oldValue = effect2.run();
     }
   } else if (flush === "post") {
     queuePostRenderEffect(
-      effect.run.bind(effect),
+      effect2.run.bind(effect2),
       instance && instance.suspense
     );
   } else {
-    effect.run();
+    effect2.run();
   }
   if (ssrCleanup)
     ssrCleanup.push(unwatch);
@@ -2297,8 +2303,7 @@ function onErrorCaptured(hook, target = currentInstance) {
 }
 function renderSlot(slots, name, props = {}, fallback, noSlotted) {
   if (currentRenderingInstance.isCE || currentRenderingInstance.parent && isAsyncWrapper(currentRenderingInstance.parent) && currentRenderingInstance.parent.isCE) {
-    if (name !== "default")
-      props.name = name;
+    props.name = name;
     return createVNode("slot", props, fallback && fallback());
   }
   let slot = slots[name];
@@ -2317,9 +2322,6 @@ function renderSlot(slots, name, props = {}, fallback, noSlotted) {
     validSlotContent || (fallback ? fallback() : []),
     validSlotContent && slots._ === 1 ? 64 : -2
   );
-  if (!noSlotted && rendered.scopeId) {
-    rendered.slotScopeIds = [rendered.scopeId + "-s"];
-  }
   if (slot && slot._c) {
     slot._d = true;
   }
@@ -2429,8 +2431,7 @@ const PublicInstanceProxyHandlers = {
       {
         return globalProperties[key];
       }
-    } else
-      ;
+    } else ;
   },
   set({ _: instance }, key, value) {
     const { data, setupState, ctx } = instance;
@@ -2538,8 +2539,7 @@ function applyOptions(instance) {
   }
   if (dataOptions) {
     const data = dataOptions.call(publicThis, publicThis);
-    if (!isObject$2(data))
-      ;
+    if (!isObject$2(data)) ;
     else {
       instance.data = reactive(data);
     }
@@ -2653,7 +2653,7 @@ function resolveInjections(injectOptions, ctx, checkDuplicateProperties = NOOP) 
 }
 function callHook(hook, instance, type) {
   callWithAsyncErrorHandling(
-    isArray(hook) ? hook.map((h) => h.bind(instance.proxy)) : hook.bind(instance.proxy),
+    isArray(hook) ? hook.map((h2) => h2.bind(instance.proxy)) : hook.bind(instance.proxy),
     instance,
     type
   );
@@ -2676,8 +2676,7 @@ function createWatcher(raw, ctx, publicThis, key) {
         watch(getter, handler, raw);
       }
     }
-  } else
-    ;
+  } else ;
 }
 function resolveMergedOptions(instance) {
   const base = instance.type;
@@ -2720,8 +2719,7 @@ function mergeOptions(to, from, strats, asMixin = false) {
     );
   }
   for (const key in from) {
-    if (asMixin && key === "expose")
-      ;
+    if (asMixin && key === "expose") ;
     else {
       const strat = internalOptionMergeStrats[key] || strats && strats[key];
       to[key] = strat ? strat(to[key], from[key]) : from[key];
@@ -2865,16 +2863,14 @@ function createAppAPI(render, hydrate) {
       set config(v) {
       },
       use(plugin2, ...options) {
-        if (installedPlugins.has(plugin2))
-          ;
+        if (installedPlugins.has(plugin2)) ;
         else if (plugin2 && isFunction(plugin2.install)) {
           installedPlugins.add(plugin2);
           plugin2.install(app, ...options);
         } else if (isFunction(plugin2)) {
           installedPlugins.add(plugin2);
           plugin2(app, ...options);
-        } else
-          ;
+        } else ;
         return app;
       },
       mixin(mixin) {
@@ -2908,9 +2904,7 @@ function createAppAPI(render, hydrate) {
           } else if (namespace === false) {
             namespace = void 0;
           }
-          if (isHydrate && hydrate) {
-            hydrate(vnode, rootContainer);
-          } else {
+          {
             render(vnode, rootContainer, namespace);
           }
           isMounted = true;
@@ -2944,8 +2938,7 @@ function createAppAPI(render, hydrate) {
 }
 let currentApp = null;
 function provide(key, value) {
-  if (!currentInstance)
-    ;
+  if (!currentInstance) ;
   else {
     let provides = currentInstance.provides;
     const parentProvides = currentInstance.parent && currentInstance.parent.provides;
@@ -2963,8 +2956,7 @@ function inject(key, defaultValue, treatDefaultAsFactory = false) {
       return provides[key];
     } else if (arguments.length > 1) {
       return treatDefaultAsFactory && isFunction(defaultValue) ? defaultValue.call(instance && instance.proxy) : defaultValue;
-    } else
-      ;
+    } else ;
   }
 }
 const internalObjectProto = {};
@@ -3267,8 +3259,7 @@ const normalizeSlot = (key, rawSlot, ctx) => {
     return rawSlot;
   }
   const normalized = withCtx((...args) => {
-    if (false)
-      ;
+    if (false) ;
     return normalizeSlotValue(rawSlot(...args));
   }, ctx);
   normalized._c = false;
@@ -3356,11 +3347,11 @@ function setRef(rawRef, oldRawRef, parentSuspense, vnode, isUnmount = false) {
   }
   const refValue = vnode.shapeFlag & 4 ? getExposeProxy(vnode.component) || vnode.component.proxy : vnode.el;
   const value = isUnmount ? null : refValue;
-  const { i: owner, r: ref2 } = rawRef;
+  const { i: owner, r: ref3 } = rawRef;
   const oldRef = oldRawRef && oldRawRef.r;
   const refs = owner.refs === EMPTY_OBJ ? owner.refs = {} : owner.refs;
   const setupState = owner.setupState;
-  if (oldRef != null && oldRef !== ref2) {
+  if (oldRef != null && oldRef !== ref3) {
     if (isString(oldRef)) {
       refs[oldRef] = null;
       if (hasOwn(setupState, oldRef)) {
@@ -3370,44 +3361,43 @@ function setRef(rawRef, oldRawRef, parentSuspense, vnode, isUnmount = false) {
       oldRef.value = null;
     }
   }
-  if (isFunction(ref2)) {
-    callWithErrorHandling(ref2, owner, 12, [value, refs]);
+  if (isFunction(ref3)) {
+    callWithErrorHandling(ref3, owner, 12, [value, refs]);
   } else {
-    const _isString = isString(ref2);
-    const _isRef = isRef(ref2);
+    const _isString = isString(ref3);
+    const _isRef = isRef(ref3);
     if (_isString || _isRef) {
       const doSet = () => {
         if (rawRef.f) {
-          const existing = _isString ? hasOwn(setupState, ref2) ? setupState[ref2] : refs[ref2] : ref2.value;
+          const existing = _isString ? hasOwn(setupState, ref3) ? setupState[ref3] : refs[ref3] : ref3.value;
           if (isUnmount) {
             isArray(existing) && remove(existing, refValue);
           } else {
             if (!isArray(existing)) {
               if (_isString) {
-                refs[ref2] = [refValue];
-                if (hasOwn(setupState, ref2)) {
-                  setupState[ref2] = refs[ref2];
+                refs[ref3] = [refValue];
+                if (hasOwn(setupState, ref3)) {
+                  setupState[ref3] = refs[ref3];
                 }
               } else {
-                ref2.value = [refValue];
+                ref3.value = [refValue];
                 if (rawRef.k)
-                  refs[rawRef.k] = ref2.value;
+                  refs[rawRef.k] = ref3.value;
               }
             } else if (!existing.includes(refValue)) {
               existing.push(refValue);
             }
           }
         } else if (_isString) {
-          refs[ref2] = value;
-          if (hasOwn(setupState, ref2)) {
-            setupState[ref2] = value;
+          refs[ref3] = value;
+          if (hasOwn(setupState, ref3)) {
+            setupState[ref3] = value;
           }
         } else if (_isRef) {
-          ref2.value = value;
+          ref3.value = value;
           if (rawRef.k)
             refs[rawRef.k] = value;
-        } else
-          ;
+        } else ;
       };
       if (value) {
         doSet.id = -1;
@@ -3452,7 +3442,7 @@ function baseCreateRenderer(options, createHydrationFns) {
       optimized = false;
       n2.dynamicChildren = null;
     }
-    const { type, ref: ref2, shapeFlag } = n2;
+    const { type, ref: ref3, shapeFlag } = n2;
     switch (type) {
       case Text:
         processText(n1, n2, container, anchor);
@@ -3529,11 +3519,10 @@ function baseCreateRenderer(options, createHydrationFns) {
             optimized,
             internals
           );
-        } else
-          ;
+        } else ;
     }
-    if (ref2 != null && parentComponent) {
-      setRef(ref2, n1 && n1.ref, parentSuspense, n2 || n1, !n2);
+    if (ref3 != null && parentComponent) {
+      setRef(ref3, n1 && n1.ref, parentSuspense, n2 || n1, !n2);
     }
   };
   const processText = (n1, n2, container, anchor) => {
@@ -4055,29 +4044,7 @@ function baseCreateRenderer(options, createHydrationFns) {
           invokeVNodeHook(vnodeHook, parent, initialVNode);
         }
         toggleRecurse(instance, true);
-        if (el2 && hydrateNode) {
-          const hydrateSubTree = () => {
-            instance.subTree = renderComponentRoot(instance);
-            hydrateNode(
-              el2,
-              instance.subTree,
-              instance,
-              parentSuspense,
-              null
-            );
-          };
-          if (isAsyncWrapperVNode) {
-            initialVNode.type.__asyncLoader().then(
-              // note: we are moving the render call into an async callback,
-              // which means it won't track dependencies - but it's ok because
-              // a server-rendered async wrapper is already in resolved state
-              // and it will never need to change.
-              () => !instance.isUnmounted && hydrateSubTree()
-            );
-          } else {
-            hydrateSubTree();
-          }
-        } else {
+        {
           const subTree = instance.subTree = renderComponentRoot(instance);
           patch(
             null,
@@ -4167,7 +4134,7 @@ function baseCreateRenderer(options, createHydrationFns) {
         }
       }
     };
-    const effect = instance.effect = new ReactiveEffect(
+    const effect2 = instance.effect = new ReactiveEffect(
       componentUpdateFn,
       NOOP,
       () => queueJob(update),
@@ -4175,8 +4142,8 @@ function baseCreateRenderer(options, createHydrationFns) {
       // track it in component's effect scope
     );
     const update = instance.update = () => {
-      if (effect.dirty) {
-        effect.run();
+      if (effect2.dirty) {
+        effect2.run();
       }
     };
     update.id = instance.uid;
@@ -4526,15 +4493,15 @@ function baseCreateRenderer(options, createHydrationFns) {
     const {
       type,
       props,
-      ref: ref2,
+      ref: ref3,
       children,
       dynamicChildren,
       shapeFlag,
       patchFlag,
       dirs
     } = vnode;
-    if (ref2 != null) {
-      setRef(ref2, null, parentSuspense, vnode, true);
+    if (ref3 != null) {
+      setRef(ref3, null, parentSuspense, vnode, true);
     }
     if (shapeFlag & 256) {
       parentComponent.ctx.deactivate(vnode);
@@ -4702,23 +4669,17 @@ function baseCreateRenderer(options, createHydrationFns) {
     o: options
   };
   let hydrate;
-  let hydrateNode;
-  if (createHydrationFns) {
-    [hydrate, hydrateNode] = createHydrationFns(
-      internals
-    );
-  }
   return {
     render,
     hydrate,
-    createApp: createAppAPI(render, hydrate)
+    createApp: createAppAPI(render)
   };
 }
 function resolveChildrenNamespace({ type, props }, currentNamespace) {
   return currentNamespace === "svg" && type === "foreignObject" || currentNamespace === "mathml" && type === "annotation-xml" && props && props.encoding && props.encoding.includes("html") ? void 0 : currentNamespace;
 }
-function toggleRecurse({ effect, update }, allowed) {
-  effect.allowRecurse = update.allowRecurse = allowed;
+function toggleRecurse({ effect: effect2, update }, allowed) {
+  effect2.allowRecurse = update.allowRecurse = allowed;
 }
 function needTransition(parentSuspense, transition) {
   return (!parentSuspense || parentSuspense && !parentSuspense.pendingBranch) && transition && !transition.persisted;
@@ -4853,14 +4814,14 @@ function isSameVNodeType(n1, n2) {
 }
 const normalizeKey = ({ key }) => key != null ? key : null;
 const normalizeRef = ({
-  ref: ref2,
+  ref: ref3,
   ref_key,
   ref_for
 }) => {
-  if (typeof ref2 === "number") {
-    ref2 = "" + ref2;
+  if (typeof ref3 === "number") {
+    ref3 = "" + ref3;
   }
-  return ref2 != null ? isString(ref2) || isRef(ref2) || isFunction(ref2) ? { i: currentRenderingInstance, r: ref2, k: ref_key, f: !!ref_for } : ref2 : null;
+  return ref3 != null ? isString(ref3) || isRef(ref3) || isFunction(ref3) ? { i: currentRenderingInstance, r: ref3, k: ref_key, f: !!ref_for } : ref3 : null;
 };
 function createBaseVNode(type, props = null, children = null, patchFlag = 0, dynamicProps = null, shapeFlag = type === Fragment ? 0 : 1, isBlockNode = false, needFullChildrenNormalization = false) {
   const vnode = {
@@ -4971,7 +4932,7 @@ function guardReactiveProps(props) {
   return isProxy(props) || isInternalObject(props) ? extend({}, props) : props;
 }
 function cloneVNode(vnode, extraProps, mergeRef = false, cloneTransition = false) {
-  const { props, ref: ref2, patchFlag, children, transition } = vnode;
+  const { props, ref: ref3, patchFlag, children, transition } = vnode;
   const mergedProps = extraProps ? mergeProps(props || {}, extraProps) : props;
   const cloned = {
     __v_isVNode: true,
@@ -4983,8 +4944,8 @@ function cloneVNode(vnode, extraProps, mergeRef = false, cloneTransition = false
       // #2078 in the case of <component :is="vnode" ref="extra"/>
       // if the vnode itself already has a ref, cloneVNode will need to merge
       // the refs so the single vnode can be set on multiple refs
-      mergeRef && ref2 ? isArray(ref2) ? ref2.concat(normalizeRef(extraProps)) : [ref2, normalizeRef(extraProps)] : normalizeRef(extraProps)
-    ) : ref2,
+      mergeRef && ref3 ? isArray(ref3) ? ref3.concat(normalizeRef(extraProps)) : [ref3, normalizeRef(extraProps)] : normalizeRef(extraProps)
+    ) : ref3,
     scopeId: vnode.scopeId,
     slotScopeIds: vnode.slotScopeIds,
     children,
@@ -5289,7 +5250,7 @@ function setupStatefulComponent(instance, isSSR) {
       setupResult.then(unsetCurrentInstance, unsetCurrentInstance);
       if (isSSR) {
         return setupResult.then((resolvedResult) => {
-          handleSetupResult(instance, resolvedResult, isSSR);
+          handleSetupResult(instance, resolvedResult);
         }).catch((e) => {
           handleError(e, instance, 0);
         });
@@ -5297,10 +5258,10 @@ function setupStatefulComponent(instance, isSSR) {
         instance.asyncDep = setupResult;
       }
     } else {
-      handleSetupResult(instance, setupResult, isSSR);
+      handleSetupResult(instance, setupResult);
     }
   } else {
-    finishComponentSetup(instance, isSSR);
+    finishComponentSetup(instance);
   }
 }
 function handleSetupResult(instance, setupResult, isSSR) {
@@ -5312,32 +5273,12 @@ function handleSetupResult(instance, setupResult, isSSR) {
     }
   } else if (isObject$2(setupResult)) {
     instance.setupState = proxyRefs(setupResult);
-  } else
-    ;
-  finishComponentSetup(instance, isSSR);
+  } else ;
+  finishComponentSetup(instance);
 }
-let compile;
 function finishComponentSetup(instance, isSSR, skipOptions) {
   const Component = instance.type;
   if (!instance.render) {
-    if (!isSSR && compile && !Component.render) {
-      const template = Component.template || resolveMergedOptions(instance).template;
-      if (template) {
-        const { isCustomElement, compilerOptions } = instance.appContext.config;
-        const { delimiters, compilerOptions: componentCompilerOptions } = Component;
-        const finalCompilerOptions = extend(
-          extend(
-            {
-              isCustomElement,
-              delimiters
-            },
-            compilerOptions
-          ),
-          componentCompilerOptions
-        );
-        Component.render = compile(template, finalCompilerOptions);
-      }
-    }
     instance.render = Component.render || NOOP;
   }
   {
@@ -5952,7 +5893,7 @@ const notNullish = (val) => val != null;
 const toString = Object.prototype.toString;
 const isObject$1 = (val) => toString.call(val) === "[object Object]";
 function getLifeCycleTarget(target) {
-  return target || getCurrentInstance();
+  return getCurrentInstance();
 }
 function toArray(value) {
   return Array.isArray(value) ? value : [value];
@@ -8387,7 +8328,7 @@ function removeDiacritics(str) {
 }
 diacritics.replacementList = replacementList;
 diacritics.diacriticsMap = diacriticsMap;
-(function(exports) {
+(function(exports$1) {
   const codes = require$$0;
   const supportedLocales = require$$1;
   const removeDiacritics2 = diacritics.remove;
@@ -8427,7 +8368,7 @@ diacritics.diacriticsMap = diacriticsMap;
         );
     }
   }
-  exports.registerLocale = function(localeData) {
+  exports$1.registerLocale = function(localeData) {
     if (!localeData.locale) {
       throw new TypeError("Missing localeData.locale");
     }
@@ -8439,29 +8380,29 @@ diacritics.diacriticsMap = diacriticsMap;
   function alpha3ToAlpha2(code) {
     return alpha3[code];
   }
-  exports.alpha3ToAlpha2 = alpha3ToAlpha2;
+  exports$1.alpha3ToAlpha2 = alpha3ToAlpha2;
   function alpha2ToAlpha3(code) {
     return alpha2[code];
   }
-  exports.alpha2ToAlpha3 = alpha2ToAlpha3;
+  exports$1.alpha2ToAlpha3 = alpha2ToAlpha3;
   function alpha3ToNumeric(code) {
     return invertedNumeric[alpha3ToAlpha2(code)];
   }
-  exports.alpha3ToNumeric = alpha3ToNumeric;
+  exports$1.alpha3ToNumeric = alpha3ToNumeric;
   function alpha2ToNumeric(code) {
     return invertedNumeric[code];
   }
-  exports.alpha2ToNumeric = alpha2ToNumeric;
+  exports$1.alpha2ToNumeric = alpha2ToNumeric;
   function numericToAlpha3(code) {
     const padded = formatNumericCode(code);
     return alpha2ToAlpha3(numeric[padded]);
   }
-  exports.numericToAlpha3 = numericToAlpha3;
+  exports$1.numericToAlpha3 = numericToAlpha3;
   function numericToAlpha2(code) {
     const padded = formatNumericCode(code);
     return numeric[padded];
   }
-  exports.numericToAlpha2 = numericToAlpha2;
+  exports$1.numericToAlpha2 = numericToAlpha2;
   function toAlpha3(code) {
     if (typeof code === "string") {
       if (/^[0-9]*$/.test(code)) {
@@ -8479,7 +8420,7 @@ diacritics.diacriticsMap = diacriticsMap;
     }
     return void 0;
   }
-  exports.toAlpha3 = toAlpha3;
+  exports$1.toAlpha3 = toAlpha3;
   function toAlpha2(code) {
     if (typeof code === "string") {
       if (/^[0-9]*$/.test(code)) {
@@ -8497,8 +8438,8 @@ diacritics.diacriticsMap = diacriticsMap;
     }
     return void 0;
   }
-  exports.toAlpha2 = toAlpha2;
-  exports.getName = function(code, lang, options = {}) {
+  exports$1.toAlpha2 = toAlpha2;
+  exports$1.getName = function(code, lang, options = {}) {
     if (!("select" in options)) {
       options.select = "official";
     }
@@ -8510,18 +8451,17 @@ diacritics.diacriticsMap = diacriticsMap;
       return void 0;
     }
   };
-  exports.getNames = function(lang, options = {}) {
+  exports$1.getNames = function(lang, options = {}) {
     if (!("select" in options)) {
       options.select = "official";
     }
     const localeList = registeredLocales[lang.toLowerCase()];
-    if (localeList === void 0)
-      return {};
+    if (localeList === void 0) return {};
     return localeFilter(localeList, function(nameList) {
       return filterNameBy(options.select, nameList);
     });
   };
-  exports.getAlpha2Code = function(name, lang) {
+  exports$1.getAlpha2Code = function(name, lang) {
     const normalizeString = (string) => string.toLowerCase();
     const areSimilar = (a, b) => normalizeString(a) === normalizeString(b);
     try {
@@ -8548,7 +8488,7 @@ diacritics.diacriticsMap = diacriticsMap;
       return void 0;
     }
   };
-  exports.getSimpleAlpha2Code = function(name, lang) {
+  exports$1.getSimpleAlpha2Code = function(name, lang) {
     const normalizeString = (string) => removeDiacritics2(string.toLowerCase());
     const areSimilar = (a, b) => normalizeString(a) === normalizeString(b);
     try {
@@ -8575,38 +8515,38 @@ diacritics.diacriticsMap = diacriticsMap;
       return void 0;
     }
   };
-  exports.getAlpha2Codes = function() {
+  exports$1.getAlpha2Codes = function() {
     return alpha2;
   };
-  exports.getAlpha3Code = function(name, lang) {
-    const alpha22 = exports.getAlpha2Code(name, lang);
+  exports$1.getAlpha3Code = function(name, lang) {
+    const alpha22 = exports$1.getAlpha2Code(name, lang);
     if (alpha22) {
-      return exports.toAlpha3(alpha22);
+      return exports$1.toAlpha3(alpha22);
     } else {
       return void 0;
     }
   };
-  exports.getSimpleAlpha3Code = function(name, lang) {
-    const alpha22 = exports.getSimpleAlpha2Code(name, lang);
+  exports$1.getSimpleAlpha3Code = function(name, lang) {
+    const alpha22 = exports$1.getSimpleAlpha2Code(name, lang);
     if (alpha22) {
-      return exports.toAlpha3(alpha22);
+      return exports$1.toAlpha3(alpha22);
     } else {
       return void 0;
     }
   };
-  exports.getAlpha3Codes = function() {
+  exports$1.getAlpha3Codes = function() {
     return alpha3;
   };
-  exports.getNumericCodes = function() {
+  exports$1.getNumericCodes = function() {
     return numeric;
   };
-  exports.langs = function() {
+  exports$1.langs = function() {
     return Object.keys(registeredLocales);
   };
-  exports.getSupportedLanguages = function() {
+  exports$1.getSupportedLanguages = function() {
     return supportedLocales;
   };
-  exports.isValid = function(code) {
+  exports$1.isValid = function(code) {
     if (!code) {
       return false;
     }
@@ -8616,7 +8556,6 @@ diacritics.diacriticsMap = diacriticsMap;
 })(i18nIsoCountries);
 const countries$1d = /* @__PURE__ */ getDefaultExportFromCjs(i18nIsoCountries);
 var iso3166_min = { exports: {} };
-iso3166_min.exports;
 (function(module) {
   (function() {
     var data = { BD: { name: "Bangladesh", sub: { "BD-E": { type: "Division", name: "Rajshahi" }, "BD-41": { type: "District", name: "Netrakona" }, "BD-G": { type: "Division", name: "Sylhet" }, "BD-38": { type: "District", name: "Moulvibazar" }, "BD-A": { type: "Division", name: "Barisal" }, "BD-C": { type: "Division", name: "Dhaka" }, "BD-B": { type: "Division", name: "Chittagong" }, "BD-D": { type: "Division", name: "Khulna" }, "BD-46": { type: "District", name: "Nilphamari" }, "BD-59": { type: "District", name: "Sirajganj" }, "BD-55": { type: "District", name: "Rangpur" }, "BD-47": { type: "District", name: "Noakhali" }, "BD-60": { type: "District", name: "Sylhet" }, "BD-49": { type: "District", name: "Pabna" }, "BD-62": { type: "District", name: "Shariatpur" }, "BD-63": { type: "District", name: "Tangail" }, "BD-64": { type: "District", name: "Thakurgaon" }, "BD-22": { type: "District", name: "Jessore" }, "BD-36": { type: "District", name: "Madaripur" }, "BD-61": { type: "District", name: "Sunamganj" }, "BD-23": { type: "District", name: "Jhenaidah" }, "BD-06": { type: "District", name: "Barisal" }, "BD-07": { type: "District", name: "Bhola" }, "BD-04": { type: "District", name: "Brahmanbaria" }, "BD-05": { type: "District", name: "Bagerhat" }, "BD-02": { type: "District", name: "Barguna" }, "BD-03": { type: "District", name: "Bogra" }, "BD-01": { type: "District", name: "Bandarban" }, "BD-24": { type: "District", name: "Jaipurhat" }, "BD-25": { type: "District", name: "Jhalakati" }, "BD-26": { type: "District", name: "Kishoreganj" }, "BD-27": { type: "District", name: "Khulna" }, "BD-20": { type: "District", name: "Habiganj" }, "BD-21": { type: "District", name: "Jamalpur" }, "BD-08": { type: "District", name: "Comilla" }, "BD-09": { type: "District", name: "Chandpur" }, "BD-35": { type: "District", name: "Munshiganj" }, "BD-54": { type: "District", name: "Rajshahi" }, "BD-33": { type: "District", name: "Manikganj" }, "BD-58": { type: "District", name: "Satkhira" }, "BD-F": { type: "Division", name: "Rangpur" }, "BD-32": { type: "District", name: "Lalmonirhat" }, "BD-31": { type: "District", name: "Lakshmipur" }, "BD-53": { type: "District", name: "Rajbari" }, "BD-30": { type: "District", name: "Kushtia" }, "BD-28": { type: "District", name: "Kurigram" }, "BD-44": { type: "District", name: "Natore" }, "BD-48": { type: "District", name: "Naogaon" }, "BD-29": { type: "District", name: "Khagrachari" }, "BD-15": { type: "District", name: "Faridpur" }, "BD-14": { type: "District", name: "Dinajpur" }, "BD-17": { type: "District", name: "Gopalganj" }, "BD-16": { type: "District", name: "Feni" }, "BD-11": { type: "District", name: "Cox's Bazar" }, "BD-10": { type: "District", name: "Chittagong" }, "BD-13": { type: "District", name: "Dhaka" }, "BD-12": { type: "District", name: "Chuadanga" }, "BD-51": { type: "District", name: "Patuakhali" }, "BD-50": { type: "District", name: "Pirojpur" }, "BD-39": { type: "District", name: "Meherpur" }, "BD-34": { type: "District", name: "Mymensingh" }, "BD-19": { type: "District", name: "Gaibandha" }, "BD-18": { type: "District", name: "Gazipur" }, "BD-57": { type: "District", name: "Sherpur" }, "BD-52": { type: "District", name: "Panchagarh" }, "BD-42": { type: "District", name: "Narsingdi" }, "BD-45": { type: "District", name: "Nawabganj" }, "BD-43": { type: "District", name: "Narail" }, "BD-37": { type: "District", name: "Magura" }, "BD-40": { type: "District", name: "Narayanganj" }, "BD-56": { type: "District", name: "Rangamati" } } }, BE: { name: "Belgium", sub: { "BE-VWV": { type: "Province", name: "West-Vlaanderen" }, "BE-VAN": { type: "Province", name: "Antwerpen" }, "BE-VLG": { type: "Region", name: "Vlaams Gewest" }, "BE-VLI": { type: "Province", name: "Limburg" }, "BE-WBR": { type: "Province", name: "Brabant wallon" }, "BE-VBR": { type: "Province", name: "Vlaams-Brabant" }, "BE-VOV": { type: "Province", name: "Oost-Vlaanderen" }, "BE-WLG": { type: "Province", name: "Liège" }, "BE-WLX": { type: "Province", name: "Luxembourg" }, "BE-WHT": { type: "Province", name: "Hainaut" }, "BE-WAL": { type: "Region", name: "wallonne, Région" }, "BE-BRU": { type: "Region", name: "Brussels Hoofdstedelijk Gewest" }, "BE-WNA": { type: "Province", name: "Namur" } } }, BF: { name: "Burkina Faso", sub: { "BF-SEN": { type: "Province", name: "Séno" }, "BF-KEN": { type: "Province", name: "Kénédougou" }, "BF-BLK": { type: "Province", name: "Boulkiemdé" }, "BF-NAM": { type: "Province", name: "Namentenga" }, "BF-NAO": { type: "Province", name: "Nahouri" }, "BF-BLG": { type: "Province", name: "Boulgou" }, "BF-KOP": { type: "Province", name: "Koulpélogo" }, "BF-KAD": { type: "Province", name: "Kadiogo" }, "BF-01": { type: "Region", name: "Boucle du Mouhoun" }, "BF-02": { type: "Region", name: "Cascades" }, "BF-03": { type: "Region", name: "Centre" }, "BF-04": { type: "Region", name: "Centre-Est" }, "BF-05": { type: "Region", name: "Centre-Nord" }, "BF-06": { type: "Region", name: "Centre-Ouest" }, "BF-07": { type: "Region", name: "Centre-Sud" }, "BF-08": { type: "Region", name: "Est" }, "BF-09": { type: "Region", name: "Hauts-Bassins" }, "BF-YAT": { type: "Province", name: "Yatenga" }, "BF-PAS": { type: "Province", name: "Passoré" }, "BF-YAG": { type: "Province", name: "Yagha" }, "BF-IOB": { type: "Province", name: "Ioba" }, "BF-GNA": { type: "Province", name: "Gnagna" }, "BF-PON": { type: "Province", name: "Poni" }, "BF-HOU": { type: "Province", name: "Houet" }, "BF-LER": { type: "Province", name: "Léraba" }, "BF-KMD": { type: "Province", name: "Komondjari" }, "BF-SMT": { type: "Province", name: "Sanmatenga" }, "BF-ZON": { type: "Province", name: "Zondoma" }, "BF-MOU": { type: "Province", name: "Mouhoun" }, "BF-COM": { type: "Province", name: "Comoé" }, "BF-TUI": { type: "Province", name: "Tui" }, "BF-SIS": { type: "Province", name: "Sissili" }, "BF-GAN": { type: "Province", name: "Ganzourgou" }, "BF-BGR": { type: "Province", name: "Bougouriba" }, "BF-SOR": { type: "Province", name: "Sourou" }, "BF-ZIR": { type: "Province", name: "Ziro" }, "BF-KOW": { type: "Province", name: "Kourwéogo" }, "BF-SOM": { type: "Province", name: "Soum" }, "BF-KOT": { type: "Province", name: "Kouritenga" }, "BF-13": { type: "Region", name: "Sud-Ouest" }, "BF-12": { type: "Region", name: "Sahel" }, "BF-11": { type: "Region", name: "Plateau-Central" }, "BF-10": { type: "Region", name: "Nord" }, "BF-ZOU": { type: "Province", name: "Zoundwéogo" }, "BF-LOR": { type: "Province", name: "Loroum" }, "BF-BAL": { type: "Province", name: "Balé" }, "BF-BAM": { type: "Province", name: "Bam" }, "BF-BAN": { type: "Province", name: "Banwa" }, "BF-OUB": { type: "Province", name: "Oubritenga" }, "BF-OUD": { type: "Province", name: "Oudalan" }, "BF-NAY": { type: "Province", name: "Nayala" }, "BF-NOU": { type: "Province", name: "Noumbiel" }, "BF-KOS": { type: "Province", name: "Kossi" }, "BF-TAP": { type: "Province", name: "Tapoa" }, "BF-BAZ": { type: "Province", name: "Bazèga" }, "BF-SNG": { type: "Province", name: "Sanguié" }, "BF-KMP": { type: "Province", name: "Kompienga" }, "BF-GOU": { type: "Province", name: "Gourma" } } }, BG: { name: "Bulgaria", sub: { "BG-14": { type: "Region", name: "Pernik" }, "BG-15": { type: "Region", name: "Pleven" }, "BG-16": { type: "Region", name: "Plovdiv" }, "BG-17": { type: "Region", name: "Razgrad" }, "BG-10": { type: "Region", name: "Kyustendil" }, "BG-11": { type: "Region", name: "Lovech" }, "BG-12": { type: "Region", name: "Montana" }, "BG-13": { type: "Region", name: "Pazardzhik" }, "BG-18": { type: "Region", name: "Ruse" }, "BG-19": { type: "Region", name: "Silistra" }, "BG-25": { type: "Region", name: "Targovishte" }, "BG-24": { type: "Region", name: "Stara Zagora" }, "BG-27": { type: "Region", name: "Shumen" }, "BG-07": { type: "Region", name: "Gabrovo" }, "BG-06": { type: "Region", name: "Vratsa" }, "BG-23": { type: "Region", name: "Sofia" }, "BG-04": { type: "Region", name: "Veliko Tarnovo" }, "BG-09": { type: "Region", name: "Kardzhali" }, "BG-08": { type: "Region", name: "Dobrich" }, "BG-28": { type: "Region", name: "Yambol" }, "BG-03": { type: "Region", name: "Varna" }, "BG-02": { type: "Region", name: "Burgas" }, "BG-01": { type: "Region", name: "Blagoevgrad" }, "BG-26": { type: "Region", name: "Haskovo" }, "BG-21": { type: "Region", name: "Smolyan" }, "BG-20": { type: "Region", name: "Sliven" }, "BG-05": { type: "Region", name: "Vidin" }, "BG-22": { type: "Region", name: "Sofia" } } }, BA: { name: "Bosnia and Herzegovina", sub: { "BA-BRC": { type: "District with special status", name: "Brčko distrikt" }, "BA-10": { type: "Canton", name: "Kanton br. 10" }, "BA-BIH": { type: "Entity", name: "Federacija Bosne i Hercegovine" }, "BA-09": { type: "Canton", name: "Kanton Sarajevo" }, "BA-08": { type: "Canton", name: "Zapadnohercegovačka županija" }, "BA-SRP": { type: "Entity", name: "Republika Srpska" }, "BA-05": { type: "Canton", name: "Bosansko-podrinjska županija" }, "BA-04": { type: "Canton", name: "Zeničko-dobojska županija" }, "BA-07": { type: "Canton", name: "Hercegovačko-neretvanska županija" }, "BA-06": { type: "Canton", name: "Srednjobosanska županija" }, "BA-01": { type: "Canton", name: "Unsko-sanska županija" }, "BA-03": { type: "Canton", name: "Tuzlanska županija" }, "BA-02": { type: "Canton", name: "Posavska županija" } } }, BB: { name: "Barbados", sub: { "BB-11": { type: "Parish", name: "Saint Thomas" }, "BB-10": { type: "Parish", name: "Saint Philip" }, "BB-08": { type: "Parish", name: "Saint Michael" }, "BB-09": { type: "Parish", name: "Saint Peter" }, "BB-04": { type: "Parish", name: "Saint James" }, "BB-05": { type: "Parish", name: "Saint John" }, "BB-06": { type: "Parish", name: "Saint Joseph" }, "BB-07": { type: "Parish", name: "Saint Lucy" }, "BB-01": { type: "Parish", name: "Christ Church" }, "BB-02": { type: "Parish", name: "Saint Andrew" }, "BB-03": { type: "Parish", name: "Saint George" } } }, WF: { name: "Wallis & Futuna Islands", sub: { "WF-WF": { type: "Country", name: "Wallis & Futuna Islands" } } }, BL: { name: "St. Barthélemy", sub: { "BL-BL": { type: "Country", name: "St. Barthélemy" } } }, BM: { name: "Bermuda", sub: { "BM-BM": { type: "Country", name: "Bermuda" } } }, BN: { name: "Brunei Darussalam", sub: { "BN-TE": { type: "District", name: "Temburong" }, "BN-BM": { type: "District", name: "Brunei-Muara" }, "BN-TU": { type: "District", name: "Tutong" }, "BN-BE": { type: "District", name: "Belait" } } }, BO: { name: "Bolivia", sub: { "BO-B": { type: "Department", name: "El Beni" }, "BO-C": { type: "Department", name: "Cochabamba" }, "BO-N": { type: "Department", name: "Pando" }, "BO-O": { type: "Department", name: "Oruro" }, "BO-L": { type: "Department", name: "La Paz" }, "BO-H": { type: "Department", name: "Chuquisaca" }, "BO-T": { type: "Department", name: "Tarija" }, "BO-S": { type: "Department", name: "Santa Cruz" }, "BO-P": { type: "Department", name: "Potosí" } } }, BH: { name: "Bahrain", sub: { "BH-13": { type: "Governorate", name: "Al Manāmah" }, "BH-15": { type: "Governorate", name: "Al Muḩarraq" }, "BH-14": { type: "Governorate", name: "Al Janūbīyah" }, "BH-17": { type: "Governorate", name: "Ash Shamālīyah" }, "BH-16": { type: "Governorate", name: "Al Wusţá" } } }, BI: { name: "Burundi", sub: { "BI-BB": { type: "Province", name: "Bubanza" }, "BI-MA": { type: "Province", name: "Makamba" }, "BI-CI": { type: "Province", name: "Cibitoke" }, "BI-KR": { type: "Province", name: "Karuzi" }, "BI-NG": { type: "Province", name: "Ngozi" }, "BI-RY": { type: "Province", name: "Ruyigi" }, "BI-RT": { type: "Province", name: "Rutana" }, "BI-CA": { type: "Province", name: "Cankuzo" }, "BI-BM": { type: "Province", name: "Bujumbura Mairie" }, "BI-BL": { type: "Province", name: "Bujumbura Rural" }, "BI-BR": { type: "Province", name: "Bururi" }, "BI-MW": { type: "Province", name: "Mwaro" }, "BI-KI": { type: "Province", name: "Kirundo" }, "BI-MU": { type: "Province", name: "Muramvya" }, "BI-GI": { type: "Province", name: "Gitega" }, "BI-MY": { type: "Province", name: "Muyinga" }, "BI-KY": { type: "Province", name: "Kayanza" } } }, BJ: { name: "Benin", sub: { "BJ-AK": { type: "Department", name: "Atakora" }, "BJ-BO": { type: "Department", name: "Borgou" }, "BJ-CO": { type: "Department", name: "Collines" }, "BJ-AL": { type: "Department", name: "Alibori" }, "BJ-MO": { type: "Department", name: "Mono" }, "BJ-LI": { type: "Department", name: "Littoral" }, "BJ-ZO": { type: "Department", name: "Zou" }, "BJ-OU": { type: "Department", name: "Ouémé" }, "BJ-PL": { type: "Department", name: "Plateau" }, "BJ-DO": { type: "Department", name: "Donga" }, "BJ-AQ": { type: "Department", name: "Atlantique" }, "BJ-KO": { type: "Department", name: "Kouffo" } } }, BT: { name: "Bhutan", sub: { "BT-33": { type: "District", name: "Bumthang" }, "BT-42": { type: "District", name: "Monggar" }, "BT-GA": { type: "District", name: "Gasa" }, "BT-32": { type: "District", name: "Trongsa" }, "BT-34": { type: "District", name: "Zhemgang" }, "BT-45": { type: "District", name: "Samdrup Jongkha" }, "BT-15": { type: "District", name: "Thimphu" }, "BT-14": { type: "District", name: "Samtse" }, "BT-31": { type: "District", name: "Sarpang" }, "BT-TY": { type: "District", name: "Trashi Yangtse" }, "BT-11": { type: "District", name: "Paro" }, "BT-44": { type: "District", name: "Lhuentse" }, "BT-13": { type: "District", name: "Ha" }, "BT-12": { type: "District", name: "Chhukha" }, "BT-24": { type: "District", name: "Wangdue Phodrang" }, "BT-43": { type: "District", name: "Pemagatshel" }, "BT-41": { type: "District", name: "Trashigang" }, "BT-21": { type: "District", name: "Tsirang" }, "BT-22": { type: "District", name: "Dagana" }, "BT-23": { type: "District", name: "Punakha" } } }, JM: { name: "Jamaica", sub: { "JM-12": { type: "Parish", name: "Manchester" }, "JM-14": { type: "Parish", name: "Saint Catherine" }, "JM-11": { type: "Parish", name: "Saint Elizabeth" }, "JM-10": { type: "Parish", name: "Westmoreland" }, "JM-01": { type: "Parish", name: "Kingston" }, "JM-13": { type: "Parish", name: "Clarendon" }, "JM-03": { type: "Parish", name: "Saint Thomas" }, "JM-02": { type: "Parish", name: "Saint Andrew" }, "JM-05": { type: "Parish", name: "Saint Mary" }, "JM-04": { type: "Parish", name: "Portland" }, "JM-07": { type: "Parish", name: "Trelawny" }, "JM-06": { type: "Parish", name: "Saint Ann" }, "JM-09": { type: "Parish", name: "Hanover" }, "JM-08": { type: "Parish", name: "Saint James" } } }, BV: { name: "Bouvet Island", sub: { "BV-BV": { type: "Country", name: "Bouvet Island" } } }, BW: { name: "Botswana", sub: { "BW-KW": { type: "District", name: "Kweneng" }, "BW-JW": { type: "Town", name: "Jwaneng" }, "BW-FR": { type: "City", name: "Francistown" }, "BW-CH": { type: "District", name: "Chobe" }, "BW-SO": { type: "District", name: "Southern" }, "BW-LO": { type: "Town", name: "Lobatse" }, "BW-ST": { type: "Town", name: "Sowa Town" }, "BW-CE": { type: "District", name: "Central" }, "BW-NW": { type: "District", name: "North West" }, "BW-KG": { type: "District", name: "Kgalagadi" }, "BW-GA": { type: "City", name: "Gaborone" }, "BW-SP": { type: "Town", name: "Selibe Phikwe" }, "BW-GH": { type: "District", name: "Ghanzi" }, "BW-SE": { type: "District", name: "South East" }, "BW-NE": { type: "District", name: "North East" }, "BW-KL": { type: "District", name: "Kgatleng" } } }, WS: { name: "Samoa", sub: { "WS-AA": { type: "District", name: "A'ana" }, "WS-VF": { type: "District", name: "Va'a-o-Fonoti" }, "WS-SA": { type: "District", name: "Satupa'itea" }, "WS-FA": { type: "District", name: "Fa'asaleleaga" }, "WS-VS": { type: "District", name: "Vaisigano" }, "WS-AL": { type: "District", name: "Aiga-i-le-Tai" }, "WS-GI": { type: "District", name: "Gagaifomauga" }, "WS-PA": { type: "District", name: "Palauli" }, "WS-AT": { type: "District", name: "Atua" }, "WS-TU": { type: "District", name: "Tuamasaga" }, "WS-GE": { type: "District", name: "Gaga'emauga" } } }, BQ: { name: "Bonaire, Sint Eustatius and Saba", sub: { "BQ-SE": { type: "Special municipality", name: "Sint Eustatius" }, "BQ-BO": { type: "Special municipality", name: "Bonaire" }, "BQ-SA": { type: "Special municipality", name: "Saba" } } }, BR: { name: "Brazil", sub: { "BR-RJ": { type: "State", name: "Rio de Janeiro" }, "BR-BA": { type: "State", name: "Bahia" }, "BR-SE": { type: "State", name: "Sergipe" }, "BR-DF": { type: "Federal district", name: "Distrito Federal" }, "BR-SP": { type: "State", name: "São Paulo" }, "BR-SC": { type: "State", name: "Santa Catarina" }, "BR-RR": { type: "State", name: "Roraima" }, "BR-RS": { type: "State", name: "Rio Grande do Sul" }, "BR-AP": { type: "State", name: "Amapá" }, "BR-CE": { type: "State", name: "Ceará" }, "BR-GO": { type: "State", name: "Goiás" }, "BR-AM": { type: "State", name: "Amazonas" }, "BR-AL": { type: "State", name: "Alagoas" }, "BR-AC": { type: "State", name: "Acre" }, "BR-PI": { type: "State", name: "Piauí" }, "BR-RN": { type: "State", name: "Rio Grande do Norte" }, "BR-RO": { type: "State", name: "Rondônia" }, "BR-MT": { type: "State", name: "Mato Grosso" }, "BR-MS": { type: "State", name: "Mato Grosso do Sul" }, "BR-PA": { type: "State", name: "Pará" }, "BR-PB": { type: "State", name: "Paraíba" }, "BR-ES": { type: "State", name: "Espírito Santo" }, "BR-PR": { type: "State", name: "Paraná" }, "BR-PE": { type: "State", name: "Pernambuco" }, "BR-MG": { type: "State", name: "Minas Gerais" }, "BR-MA": { type: "State", name: "Maranhão" }, "BR-TO": { type: "State", name: "Tocantins" } } }, BS: { name: "Bahamas", sub: { "BS-SA": { type: "District", name: "South Andros" }, "BS-EX": { type: "District", name: "Exuma" }, "BS-CS": { type: "District", name: "Central Andros" }, "BS-CK": { type: "District", name: "Crooked Island and Long Cay" }, "BS-CI": { type: "District", name: "Cat Island" }, "BS-GC": { type: "District", name: "Grand Cay" }, "BS-EG": { type: "District", name: "East Grand Bahama" }, "BS-CE": { type: "District", name: "Central Eleuthera" }, "BS-RI": { type: "District", name: "Ragged Island" }, "BS-RC": { type: "District", name: "Rum Cay" }, "BS-AK": { type: "District", name: "Acklins" }, "BS-MG": { type: "District", name: "Mayaguana" }, "BS-IN": { type: "District", name: "Inagua" }, "BS-MC": { type: "District", name: "Mangrove Cay" }, "BS-MI": { type: "District", name: "Moore's Island" }, "BS-BY": { type: "District", name: "Berry Islands" }, "BS-FP": { type: "District", name: "City of Freeport" }, "BS-BP": { type: "District", name: "Black Point" }, "BS-LI": { type: "District", name: "Long Island" }, "BS-BI": { type: "District", name: "Bimini" }, "BS-WG": { type: "District", name: "West Grand Bahama" }, "BS-NO": { type: "District", name: "North Abaco" }, "BS-SO": { type: "District", name: "South Abaco" }, "BS-NE": { type: "District", name: "North Eleuthera" }, "BS-HT": { type: "District", name: "Hope Town" }, "BS-SE": { type: "District", name: "South Eleuthera" }, "BS-HI": { type: "District", name: "Harbour Island" }, "BS-SS": { type: "District", name: "San Salvador" }, "BS-SW": { type: "District", name: "Spanish Wells" }, "BS-NS": { type: "District", name: "North Andros" }, "BS-CO": { type: "District", name: "Central Abaco" } } }, JE: { name: "Jersey", sub: { "JE-JE": { type: "Country", name: "Jersey" } } }, BY: { name: "Belarus", sub: { "BY-HM": { type: "City", name: "Gorod Minsk" }, "BY-BR": { type: "Oblast", name: "Bresckaja voblasć" }, "BY-HO": { type: "Oblast", name: "Gomel'skaja oblast'" }, "BY-MA": { type: "Oblast", name: "Mahilioŭskaja voblasć" }, "BY-MI": { type: "Oblast", name: "Minskaja oblast'" }, "BY-VI": { type: "Oblast", name: "Viciebskaja voblasć" }, "BY-HR": { type: "Oblast", name: "Grodnenskaja oblast'" } } }, BZ: { name: "Belize", sub: { "BZ-CY": { type: "District", name: "Cayo" }, "BZ-CZL": { type: "District", name: "Corozal" }, "BZ-SC": { type: "District", name: "Stann Creek" }, "BZ-BZ": { type: "District", name: "Belize" }, "BZ-TOL": { type: "District", name: "Toledo" }, "BZ-OW": { type: "District", name: "Orange Walk" } } }, RU: { name: "Russia", sub: { "RU-PNZ": { type: "Administrative region", name: "Penzenskaja oblast'" }, "RU-KRS": { type: "Administrative region", name: "Kurskaja oblast'" }, "RU-ULY": { type: "Administrative region", name: "Ul'janovskaja oblast'" }, "RU-BEL": { type: "Administrative region", name: "Belgorodskaja oblast'" }, "RU-SAK": { type: "Administrative region", name: "Sahalinskaja oblast'" }, "RU-KYA": { type: "Administrative territory", name: "Krasnojarskij kraj" }, "RU-STA": { type: "Administrative territory", name: "Stavropol'skij kraj" }, "RU-IVA": { type: "Administrative region", name: "Ivanovskaja oblast'" }, "RU-LIP": { type: "Administrative region", name: "Lipeckaja oblast'" }, "RU-AST": { type: "Administrative region", name: "Astrahanskaja oblast'" }, "RU-CE": { type: "Republic", name: "Čečenskaja Respublika" }, "RU-KHA": { type: "Administrative territory", name: "Habarovskij kraj" }, "RU-ORE": { type: "Administrative region", name: "Orenburgskaja oblast'" }, "RU-VLG": { type: "Administrative region", name: "Vologodskaja oblast'" }, "RU-YAR": { type: "Administrative region", name: "Jaroslavskaja oblast'" }, "RU-NGR": { type: "Administrative region", name: "Novgorodskaja oblast'" }, "RU-KLU": { type: "Administrative region", name: "Kaluzhskaya oblast'" }, "RU-OMS": { type: "Administrative region", name: "Omskaja oblast'" }, "RU-IRK": { type: "Administrative region", name: "Irkutskaja oblast'" }, "RU-ORL": { type: "Administrative region", name: "Orlovskaja oblast'" }, "RU-DA": { type: "Republic", name: "Dagestan, Respublika" }, "RU-PRI": { type: "Administrative territory", name: "Primorskij kraj" }, "RU-SAM": { type: "Administrative region", name: "Samarskaja oblast'" }, "RU-SAR": { type: "Administrative region", name: "Saratovskaja oblast'" }, "RU-KOS": { type: "Administrative region", name: "Kostromskaja oblast'" }, "RU-SPE": { type: "Autonomous city", name: "Sankt-Peterburg" }, "RU-NIZ": { type: "Administrative region", name: "Nižegorodskaja oblast'" }, "RU-SA": { type: "Republic", name: "Saha, Respublika" }, "RU-KHM": { type: "Autonomous district", name: "Hanty-Mansijskij avtonomnyj okrug" }, "RU-LEN": { type: "Administrative region", name: "Leningradskaja oblast'" }, "RU-CHE": { type: "Administrative region", name: "Čeljabinskaja oblast'" }, "RU-BA": { type: "Republic", name: "Bashkortostan, Respublika" }, "RU-SE": { type: "Republic", name: "Severnaja Osetija, Respublika" }, "RU-MOS": { type: "Administrative region", name: "Moskovskaja oblast'" }, "RU-YAN": { type: "Autonomous district", name: "Jamalo-Neneckij avtonomnyj okrug" }, "RU-KGD": { type: "Administrative region", name: "Kaliningradskaja oblast'" }, "RU-MOW": { type: "Autonomous city", name: "Moskva" }, "RU-KAM": { type: "Administrative territory", name: "Kamčatskij kraj" }, "RU-ARK": { type: "Administrative region", name: "Arhangel'skaja oblast'" }, "RU-BU": { type: "Republic", name: "Burjatija, Respublika" }, "RU-KEM": { type: "Administrative region", name: "Kemerovskaja oblast'" }, "RU-CHU": { type: "Autonomous district", name: "Chukotskiy avtonomnyy okrug" }, "RU-UD": { type: "Republic", name: "Udmurtskaja Respublika" }, "RU-KGN": { type: "Administrative region", name: "Kurganskaja oblast'" }, "RU-TUL": { type: "Administrative region", name: "Tul'skaja oblast'" }, "RU-KIR": { type: "Administrative region", name: "Kirovskaja oblast'" }, "RU-KR": { type: "Republic", name: "Karelija, Respublika" }, "RU-ME": { type: "Republic", name: "Marij Èl, Respublika" }, "RU-IN": { type: "Republic", name: "Ingušetija, Respublika" }, "RU-MAG": { type: "Administrative region", name: "Magadanskaja oblast'" }, "RU-MO": { type: "Republic", name: "Mordovija, Respublika" }, "RU-TA": { type: "Republic", name: "Tatarstan, Respublika" }, "RU-SVE": { type: "Administrative region", name: "Sverdlovskaja oblast'" }, "RU-RYA": { type: "Administrative region", name: "Rjazanskaja oblast'" }, "RU-ZAB": { type: "Administrative territory", name: "Zabajkal'skij kraj" }, "RU-NEN": { type: "Autonomous district", name: "Neneckij avtonomnyj okrug" }, "RU-KB": { type: "Republic", name: "Kabardino-Balkarskaja Respublika" }, "RU-ALT": { type: "Administrative territory", name: "Altajskij kraj" }, "RU-TY": { type: "Republic", name: "Tyva, Respublika" }, "RU-MUR": { type: "Administrative region", name: "Murmanskaja oblast'" }, "RU-VOR": { type: "Administrative region", name: "Voronezhskaya oblast'" }, "RU-PSK": { type: "Administrative region", name: "Pskovskaja oblast'" }, "RU-TVE": { type: "Administrative region", name: "Tverskaja oblast'" }, "RU-VGG": { type: "Administrative region", name: "Volgogradskaja oblast'" }, "RU-KK": { type: "Republic", name: "Hakasija, Respublika" }, "RU-KL": { type: "Republic", name: "Kalmykija, Respublika" }, "RU-TOM": { type: "Administrative region", name: "Tomskaja oblast'" }, "RU-KO": { type: "Republic", name: "Komi, Respublika" }, "RU-TYU": { type: "Administrative region", name: "Tjumenskaja oblast'" }, "RU-TAM": { type: "Administrative region", name: "Tambovskaja oblast'" }, "RU-NVS": { type: "Administrative region", name: "Novosibirskaja oblast'" }, "RU-AD": { type: "Republic", name: "Adygeja, Respublika" }, "RU-PER": { type: "Administrative territory", name: "Permskij kraj" }, "RU-ROS": { type: "Administrative region", name: "Rostovskaja oblast'" }, "RU-AMU": { type: "Administrative region", name: "Amurskaja oblast'" }, "RU-AL": { type: "Republic", name: "Altaj, Respublika" }, "RU-KC": { type: "Republic", name: "Karačaevo-Čerkesskaja Respublika" }, "RU-KDA": { type: "Administrative territory", name: "Krasnodarskij kraj" }, "RU-YEV": { type: "Autonomous region", name: "Evrejskaja avtonomnaja oblast'" }, "RU-VLA": { type: "Administrative region", name: "Vladimirskaja oblast'" }, "RU-BRY": { type: "Administrative region", name: "Brjanskaja oblast'" }, "RU-SMO": { type: "Administrative region", name: "Smolenskaja oblast'" }, "RU-CU": { type: "Republic", name: "Chuvashskaya Respublika" } } }, RW: { name: "Rwanda", sub: { "RW-03": { type: "Province", name: "Nord" }, "RW-02": { type: "Province", name: "Est" }, "RW-01": { type: "Town council", name: "Ville de Kigal" }, "RW-05": { type: "Province", name: "Sud" }, "RW-04": { type: "Province", name: "Ouest" } } }, RS: { name: "Serbia", sub: { "RS-07": { type: "District", name: "Sremski okrug" }, "RS-06": { type: "District", name: "Južnobački okrug" }, "RS-05": { type: "District", name: "Zapadnobački okrug" }, "RS-04": { type: "District", name: "Južnobanatski okrug" }, "RS-03": { type: "District", name: "Severnobanatski okrug" }, "RS-02": { type: "District", name: "Srednjebanatski okrug" }, "RS-01": { type: "District", name: "Severnobački okrug" }, "RS-00": { type: "City", name: "Beograd" }, "RS-09": { type: "District", name: "Kolubarski okrug" }, "RS-08": { type: "District", name: "Mačvanski okrug" }, "RS-29": { type: "District", name: "Kosovsko-Pomoravski okrug" }, "RS-28": { type: "District", name: "Kosovsko-Mitrovački okrug" }, "RS-21": { type: "District", name: "Toplički okrug" }, "RS-20": { type: "District", name: "Nišavski okrug" }, "RS-23": { type: "District", name: "Jablanički okrug" }, "RS-22": { type: "District", name: "Pirotski okrug" }, "RS-25": { type: "District", name: "Kosovski okrug" }, "RS-24": { type: "District", name: "Pčinjski okrug" }, "RS-27": { type: "District", name: "Prizrenski okrug" }, "RS-26": { type: "District", name: "Pećki okrug" }, "RS-VO": { type: "Autonomous province", name: "Vojvodina" }, "RS-10": { type: "District", name: "Podunavski okrug" }, "RS-11": { type: "District", name: "Braničevski okrug" }, "RS-12": { type: "District", name: "Šumadijski okrug" }, "RS-13": { type: "District", name: "Pomoravski okrug" }, "RS-14": { type: "District", name: "Borski okrug" }, "RS-15": { type: "District", name: "Zaječarski okrug" }, "RS-16": { type: "District", name: "Zlatiborski okrug" }, "RS-17": { type: "District", name: "Moravički okrug" }, "RS-18": { type: "District", name: "Raški okrug" }, "RS-19": { type: "District", name: "Rasinski okrug" }, "RS-KM": { type: "Autonomous province", name: "Kosovo-Metohija" } } }, TL: { name: "East Timor", sub: { "TL-ER": { type: "District", name: "Ermera" }, "TL-LA": { type: "District", name: "Lautém" }, "TL-OE": { type: "District", name: "Oecussi" }, "TL-AN": { type: "District", name: "Ainaro" }, "TL-AL": { type: "District", name: "Aileu" }, "TL-MF": { type: "District", name: "Manufahi" }, "TL-MT": { type: "District", name: "Manatuto" }, "TL-VI": { type: "District", name: "Vikeke" }, "TL-BO": { type: "District", name: "Bobonaro" }, "TL-CO": { type: "District", name: "Cova Lima" }, "TL-BA": { type: "District", name: "Baucau" }, "TL-LI": { type: "District", name: "Likisá" }, "TL-DI": { type: "District", name: "Díli" } } }, RE: { name: "Reunion", sub: { "RE-RE": { type: "Country", name: "Reunion" } } }, TM: { name: "Turkmenistan", sub: { "TM-S": { type: "City", name: "Aşgabat" }, "TM-L": { type: "Region", name: "Lebap" }, "TM-M": { type: "Region", name: "Mary" }, "TM-D": { type: "Region", name: "Daşoguz" }, "TM-B": { type: "Region", name: "Balkan" }, "TM-A": { type: "Region", name: "Ahal" } } }, TJ: { name: "Tajikistan", sub: { "TJ-GB": { type: "Autonomous region", name: "Kŭhistoni Badakhshon" }, "TJ-SU": { type: "Region", name: "Sughd" }, "TJ-DU": { type: "Capital territory", name: "Dushanbe" }, "TJ-KT": { type: "Region", name: "Khatlon" } } }, RO: { name: "Romania", sub: { "RO-SB": { type: "Department", name: "Sibiu" }, "RO-DB": { type: "Department", name: "Dâmboviţa" }, "RO-SM": { type: "Department", name: "Satu Mare" }, "RO-SJ": { type: "Department", name: "Sălaj" }, "RO-DJ": { type: "Department", name: "Dolj" }, "RO-HD": { type: "Department", name: "Hunedoara" }, "RO-SV": { type: "Department", name: "Suceava" }, "RO-B": { type: "Municipality", name: "Bucureşti" }, "RO-HR": { type: "Department", name: "Harghita" }, "RO-VS": { type: "Department", name: "Vaslui" }, "RO-NT": { type: "Department", name: "Neamţ" }, "RO-CV": { type: "Department", name: "Covasna" }, "RO-CT": { type: "Department", name: "Constanţa" }, "RO-CS": { type: "Department", name: "Caraş-Severin" }, "RO-GR": { type: "Department", name: "Giurgiu" }, "RO-VN": { type: "Department", name: "Vrancea" }, "RO-AR": { type: "Department", name: "Arad" }, "RO-GJ": { type: "Department", name: "Gorj" }, "RO-GL": { type: "Department", name: "Galaţi" }, "RO-CL": { type: "Department", name: "Călăraşi" }, "RO-AG": { type: "Department", name: "Argeş" }, "RO-CJ": { type: "Department", name: "Cluj" }, "RO-AB": { type: "Department", name: "Alba" }, "RO-PH": { type: "Department", name: "Prahova" }, "RO-TR": { type: "Department", name: "Teleorman" }, "RO-OT": { type: "Department", name: "Olt" }, "RO-IS": { type: "Department", name: "Iaşi" }, "RO-VL": { type: "Department", name: "Vâlcea" }, "RO-MS": { type: "Department", name: "Mureş" }, "RO-MH": { type: "Department", name: "Mehedinţi" }, "RO-IF": { type: "Department", name: "Ilfov" }, "RO-MM": { type: "Department", name: "Maramureş" }, "RO-IL": { type: "Department", name: "Ialomiţa" }, "RO-TM": { type: "Department", name: "Timiş" }, "RO-TL": { type: "Department", name: "Tulcea" }, "RO-BT": { type: "Department", name: "Botoşani" }, "RO-BV": { type: "Department", name: "Braşov" }, "RO-BR": { type: "Department", name: "Brăila" }, "RO-BZ": { type: "Department", name: "Buzău" }, "RO-BC": { type: "Department", name: "Bacău" }, "RO-BN": { type: "Department", name: "Bistriţa-Năsăud" }, "RO-BH": { type: "Department", name: "Bihor" } } }, TK: { name: "Tokelau", sub: { "TK-TK": { type: "Country", name: "Tokelau" } } }, GW: { name: "Guinea-Bissau", sub: { "GW-BL": { type: "Region", name: "Bolama" }, "GW-BM": { type: "Region", name: "Biombo" }, "GW-CA": { type: "Region", name: "Cacheu" }, "GW-QU": { type: "Region", name: "Quinara" }, "GW-S": { type: "Province", name: "Sul" }, "GW-OI": { type: "Region", name: "Oio" }, "GW-L": { type: "Province", name: "Leste" }, "GW-N": { type: "Province", name: "Norte" }, "GW-BA": { type: "Region", name: "Bafatá" }, "GW-TO": { type: "Region", name: "Tombali" }, "GW-GA": { type: "Region", name: "Gabú" }, "GW-BS": { type: "Autonomous sector", name: "Bissau" } } }, GU: { name: "Guam", sub: { "GU-GU": { type: "Country", name: "Guam" } } }, GT: { name: "Guatemala", sub: { "GT-SO": { type: "Department", name: "Sololá" }, "GT-SM": { type: "Department", name: "San Marcos" }, "GT-JA": { type: "Department", name: "Jalapa" }, "GT-BV": { type: "Department", name: "Baja Verapaz" }, "GT-QZ": { type: "Department", name: "Quetzaltenango" }, "GT-SA": { type: "Department", name: "Sacatepéquez" }, "GT-JU": { type: "Department", name: "Jutiapa" }, "GT-HU": { type: "Department", name: "Huehuetenango" }, "GT-QC": { type: "Department", name: "Quiché" }, "GT-SU": { type: "Department", name: "Suchitepéquez" }, "GT-SR": { type: "Department", name: "Santa Rosa" }, "GT-ZA": { type: "Department", name: "Zacapa" }, "GT-RE": { type: "Department", name: "Retalhuleu" }, "GT-PE": { type: "Department", name: "Petén" }, "GT-CQ": { type: "Department", name: "Chiquimula" }, "GT-TO": { type: "Department", name: "Totonicapán" }, "GT-CM": { type: "Department", name: "Chimaltenango" }, "GT-IZ": { type: "Department", name: "Izabal" }, "GT-PR": { type: "Department", name: "El Progreso" }, "GT-AV": { type: "Department", name: "Alta Verapaz" }, "GT-GU": { type: "Department", name: "Guatemala" }, "GT-ES": { type: "Department", name: "Escuintla" } } }, GS: { name: "S.Georgia & S.Sandwich Islands", sub: { "GS-GS": { type: "Country", name: "S.Georgia & S.Sandwich Islands" } } }, GR: { name: "Greece", sub: { "GR-85": { type: "Department", name: "Chíos" }, "GR-84": { type: "Department", name: "Sámos" }, "GR-64": { type: "Department", name: "Chalkidikí" }, "GR-81": { type: "Department", name: "Dodekánisa" }, "GR-83": { type: "Department", name: "Lésvos" }, "GR-54": { type: "Department", name: "Thessaloníki" }, "GR-A": { type: "Administrative region", name: "Anatolikí Makedonía kai Thráki" }, "GR-G": { type: "Administrative region", name: "Dytikí Elláda" }, "GR-B": { type: "Administrative region", name: "Kentrikí Makedonía" }, "GR-73": { type: "Department", name: "Rodópi" }, "GR-J": { type: "Administrative region", name: "Peloponnísos" }, "GR-I": { type: "Administrative region", name: "Attikí" }, "GR-34": { type: "Department", name: "Préveza" }, "GR-53": { type: "Department", name: "Imathía" }, "GR-51": { type: "Department", name: "Grevená" }, "GR-56": { type: "Department", name: "Kastoriá" }, "GR-31": { type: "Department", name: "Árta" }, "GR-32": { type: "Department", name: "Thesprotía" }, "GR-33": { type: "Department", name: "Ioánnina" }, "GR-71": { type: "Department", name: "Évros" }, "GR-58": { type: "Department", name: "Kozáni" }, "GR-59": { type: "Department", name: "Pélla" }, "GR-16": { type: "Department", name: "Lakonía" }, "GR-17": { type: "Department", name: "Messinía" }, "GR-14": { type: "Department", name: "Ileía" }, "GR-15": { type: "Department", name: "Korinthía" }, "GR-12": { type: "Department", name: "Arkadía" }, "GR-13": { type: "Department", name: "Achaḯa" }, "GR-11": { type: "Department", name: "Argolída" }, "GR-52": { type: "Department", name: "Dráma" }, "GR-94": { type: "Department", name: "Chaniá" }, "GR-92": { type: "Department", name: "Lasíthi" }, "GR-93": { type: "Department", name: "Rethýmnis" }, "GR-91": { type: "Department", name: "Irakleío" }, "GR-L": { type: "Administrative region", name: "Notío Aigaío" }, "GR-A1": { type: "Department", name: "Attikí" }, "GR-05": { type: "Department", name: "Evrytanía" }, "GR-04": { type: "Department", name: "Évvoia" }, "GR-82": { type: "Department", name: "Kykládes" }, "GR-07": { type: "Department", name: "Fokída" }, "GR-57": { type: "Department", name: "Kilkís" }, "GR-41": { type: "Department", name: "Kardítsa" }, "GR-M": { type: "Administrative region", name: "Krítí" }, "GR-43": { type: "Department", name: "Magnisía" }, "GR-42": { type: "Department", name: "Lárisa" }, "GR-H": { type: "Administrative region", name: "Stereá Elláda" }, "GR-44": { type: "Department", name: "Tríkala" }, "GR-69": { type: "Self-governed part", name: "Ágion Óros" }, "GR-K": { type: "Administrative region", name: "Voreío Aigaío" }, "GR-D": { type: "Administrative region", name: "Ípeiros" }, "GR-E": { type: "Administrative region", name: "Thessalía" }, "GR-F": { type: "Administrative region", name: "Ionía Nísia" }, "GR-55": { type: "Department", name: "Kavála" }, "GR-63": { type: "Department", name: "Flórina" }, "GR-62": { type: "Department", name: "Sérres" }, "GR-61": { type: "Department", name: "Piería" }, "GR-C": { type: "Administrative region", name: "Dytikí Makedonía" }, "GR-23": { type: "Department", name: "Kefallinía" }, "GR-22": { type: "Department", name: "Kérkyra" }, "GR-21": { type: "Department", name: "Zákynthos" }, "GR-06": { type: "Department", name: "Fthiótida" }, "GR-01": { type: "Department", name: "Aitoloakarnanía" }, "GR-72": {
@@ -8644,23 +8583,19 @@ iso3166_min.exports;
       if ("undefined" == typeof a) {
         a = e.trim().toUpperCase();
         var n = a.split("-");
-        if (2 !== n.length)
-          return {};
+        if (2 !== n.length) return {};
         e = n[0], a = n[1];
       }
       3 === e.length && (e = codes[e]);
       var t = e + "-" + a;
-      if (!(e in data))
-        return null;
+      if (!(e in data)) return null;
       var i = data[e].sub, m = i[t];
       if ("undefined" == typeof m) {
-        for (var o in i)
-          if (i.hasOwnProperty(o) && i[o].name.toUpperCase() === a.toUpperCase()) {
-            m = i[o], t = o;
-            break;
-          }
-        if ("undefined" == typeof m)
-          return null;
+        for (var o in i) if (i.hasOwnProperty(o) && i[o].name.toUpperCase() === a.toUpperCase()) {
+          m = i[o], t = o;
+          break;
+        }
+        if ("undefined" == typeof m) return null;
       }
       return m.countryName = data[e].name, m.countryCode = e, m.code = t, m.regionCode = 2 === t.split("-").length ? t.split("-")[1] : "", m;
     }, country: function(e) {
@@ -8668,11 +8603,10 @@ iso3166_min.exports;
         var a = data[e];
         return a.code = e, a;
       }
-      for (var n in data)
-        if (data.hasOwnProperty(n) && data[n].name.toUpperCase() === e.toUpperCase()) {
-          a = data[n], a.code = n;
-          break;
-        }
+      for (var n in data) if (data.hasOwnProperty(n) && data[n].name.toUpperCase() === e.toUpperCase()) {
+        a = data[n], a.code = n;
+        break;
+      }
       return "undefined" == typeof a ? null : a;
     }, data, codes };
     null !== module ? module.exports = functions : window.iso3166 = functions;
@@ -28810,8 +28744,7 @@ function isObject(value) {
 function formatNumberWithSIPrefix(number) {
   var SI_SYMBOL = ["", "k", "M", "G", "T", "P", "E"];
   var tier = Math.log10(Math.abs(number)) / 3 | 0;
-  if (tier == 0)
-    return number;
+  if (tier == 0) return number;
   var suffix = SI_SYMBOL[tier];
   var scale = Math.pow(10, tier * 3);
   var scaled = number / scale;
@@ -28825,6 +28758,7 @@ function isValidIsoCode(code) {
   return isoCodeRegex.test(code);
 }
 function isSVG(input) {
+  var _a;
   const svgRegex = /^\s*<svg\b[^>]*>.*<\/svg>\s*$/is;
   try {
     if (svgRegex.test(input)) {
@@ -28835,7 +28769,7 @@ function isSVG(input) {
         return false;
       }
       const svgElements = doc2.getElementsByTagName("svg");
-      return svgElements.length > 0 && svgElements[0].parentNode === doc2;
+      return svgElements.length > 0 && ((_a = svgElements[0]) == null ? void 0 : _a.parentNode) === doc2;
     }
     return false;
   } catch (e) {
@@ -28885,7 +28819,7 @@ const _export_sfc$1 = (sfc, props) => {
   return target;
 };
 const Tooltip = /* @__PURE__ */ _export_sfc$1(_sfc_main$1, [["__scopeId", "data-v-14df540e"]]);
-const _withScopeId$2 = (n) => (pushScopeId("data-v-046060df"), n = n(), popScopeId(), n);
+const _withScopeId$2 = (n) => (pushScopeId("data-v-98122709"), n = n(), popScopeId(), n);
 const _hoisted_1$2 = { class: "v3mc-container" };
 const _hoisted_2$2 = { class: "v3mc-tiny-loader-wrapper" };
 const _hoisted_3$2 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", { class: "v3mc-tiny-loader" }, null, -1));
@@ -28928,22 +28862,22 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   ],
   setup(__props, { emit: __emit }) {
     useCssVars((_ctx) => ({
-      "00c0fc33": unref(mapHeight),
-      "6c36313a": unref(mapWidth),
-      "11ba0e7a": unref(defaultStrokeColor),
-      "79c635cf": unref(defaultFillColor),
-      "35d5e787": unref(defaultCursor),
-      "4b2ef89b": unref(defaultFillHoverColor),
-      "6daed2d0": _ctx.defaultStrokeHoverColor,
-      "033a59c2": unref(tooltipTop),
-      "640d153a": unref(tooltipLeft),
-      "55940da0": unref(loaderColor)
+      "a83408c2": unref(mapHeight),
+      "79fd944e": unref(mapWidth),
+      "3480aee4": unref(defaultStrokeColor),
+      "4659763a": unref(defaultFillColor),
+      "83555e1a": unref(defaultCursor),
+      "f9d793f2": unref(defaultFillHoverColor),
+      "413a653c": _ctx.defaultStrokeHoverColor,
+      "86957054": unref(tooltipTop),
+      "4c202cb4": unref(tooltipLeft),
+      "69123be8": unref(loaderColor)
     }));
     const props = __props;
     onMounted(() => {
       const registerLocale = async (langCode) => {
         try {
-          countries$1d.registerLocale(locales[langCode]);
+          if (locales[langCode]) countries$1d.registerLocale(locales[langCode]);
         } catch (error) {
           console.error("Error loading locale:", error);
         }
@@ -28963,8 +28897,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     );
     const defaultStrokeColor = computed(() => props.defaultStrokeColor);
     const defaultCursor = computed(() => {
-      if (props.forceCursorPointer)
-        return "pointer";
+      if (props.forceCursorPointer) return "pointer";
       return props.displayLegend && props.displayLegendWhenEmpty ? "pointer" : "default";
     });
     const cpntId = getRandomInteger(1e4, 99999);
@@ -29016,6 +28949,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     const svgMap = ref(null);
     const isLoading = ref(false);
     const loadSvgMap = async () => {
+      var _a;
       if (props.customMapSvg && isSVG(props.customMapSvg)) {
         svgMap.value = props.customMapSvg;
         return;
@@ -29023,7 +28957,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
       try {
         if (slots.default) {
           const slotContent = slots.default();
-          const type = slotContent[0].type;
+          const type = (_a = slotContent[0]) == null ? void 0 : _a.type;
           if (typeof type == "object") {
             const fetchData = async () => {
               const svgUrl = `https://raw.githubusercontent.com/noeGnh/vue3-map-chart/master/packages/vue3-map-chart/src/assets/maps/${type.template}`;
@@ -29042,10 +28976,8 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
               const isCacheValid = Date.now() - timestamp < 28 * 24 * 60 * 60 * 1e3;
               if (isCacheValid) {
                 svgMap.value = svg;
-              } else
-                await fetchData();
-            } else
-              await fetchData();
+              } else await fetchData();
+            } else await fetchData();
           }
         } else {
           svgMap.value = "";
@@ -29082,7 +29014,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
               max = dataValue;
             }
           } else if (isObject(dataValue)) {
-            const value = dataValue.value || 0;
+            const value = (dataValue == null ? void 0 : dataValue.value) || 0;
             if (min === void 0 || value < min) {
               min = value;
             }
@@ -29097,8 +29029,8 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
           if (typeof dataValue === "number") {
             value = dataValue;
           } else if (isObject(dataValue)) {
-            value = dataValue.value;
-            color = dataValue.color;
+            value = dataValue == null ? void 0 : dataValue.value;
+            color = dataValue == null ? void 0 : dataValue.color;
           }
           if (value === void 0 || max === void 0 || min === void 0) {
             opacity = 1;
@@ -29128,8 +29060,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     const tooltipValue = computed(() => {
       var _a;
       let value = (typeof currentAreaValue.value === "number" ? currentAreaValue.value : (_a = currentAreaValue.value) == null ? void 0 : _a.value) || "";
-      if (typeof value !== "number")
-        return value;
+      if (typeof value !== "number") return value;
       value = props.formatValueWithSiPrefix ? formatNumberWithSIPrefix(value) : value;
       value = props.legendValuePrefix + value + props.legendValueSuffix;
       return value;
@@ -29159,8 +29090,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
       return `${top}px`;
     });
     onMounted(() => {
-      if (props.areaNameOnMap == "none")
-        return;
+      if (props.areaNameOnMap == "none") return;
       const svgNS2 = "http://www.w3.org/2000/svg";
       const mapContainer = document.getElementById(`v3mc-map-${cpntId}`);
       if (mapContainer) {
@@ -29182,8 +29112,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
         const svgContainers = /* @__PURE__ */ new Set();
         areas.forEach((area) => {
           const svg = area.element.ownerSVGElement;
-          if (svg)
-            svgContainers.add(svg);
+          if (svg) svgContainers.add(svg);
         });
         const labelGroups = /* @__PURE__ */ new Map();
         svgContainers.forEach((svg) => {
@@ -29192,10 +29121,9 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
           svg.appendChild(group);
           labelGroups.set(svg, group);
         });
-        areas.forEach((area, index) => {
+        areas.forEach((area) => {
           var _a;
-          if (!("getBBox" in area.element))
-            return;
+          if (!("getBBox" in area.element)) return;
           try {
             const bbox = area.element.getBBox();
             const centerX = bbox.x + bbox.width / 2;
@@ -29225,7 +29153,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
               rectBg.setAttribute("pointer-events", "none");
               group.insertBefore(rectBg, textElem);
             }
-          } catch (e) {
+          } catch (_) {
           }
         });
       }
@@ -29235,7 +29163,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
         withDirectives(createBaseVNode("div", _hoisted_2$2, [
           renderSlot(_ctx.$slots, "loader", {}, () => [
             _hoisted_3$2
-          ], true)
+          ])
         ], 512), [
           [vShow, unref(isLoading)]
         ]),
@@ -29263,14 +29191,13 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-046060df"]]);
+const MapChart = /* @__PURE__ */ _export_sfc$1(_sfc_main$2, [["__scopeId", "data-v-98122709"]]);
 const plugin = {
   install(app, options) {
     app.component((options == null ? void 0 : options.name) || "MapChart", MapChart);
     if (options == null ? void 0 : options.maps) {
       Object.keys(options.maps).forEach((mapName) => {
-        if (options.maps)
-          app.component(mapName, options.maps[mapName]);
+        if (options.maps && options.maps[mapName]) app.component(mapName, options.maps[mapName]);
       });
     }
   }
@@ -29820,8 +29747,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       () => "ontouchstart" in window || navigator.maxTouchPoints > 0
     );
     const onMapItemClick = (areaId, areaValue) => {
-      if (!isTouchDevice.value)
-        alert(`${areaId}: ${areaValue}`);
+      if (!isTouchDevice.value) alert(`${areaId}: ${areaValue}`);
     };
     const onMapItemMouseout = (areaId, areaValue) => {
       console.log(`Mouseout ${areaId}: ${areaValue}`);
@@ -30016,8 +29942,6 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const App_vue_vue_type_style_index_0_lang = "";
-const App_vue_vue_type_style_index_1_scoped_abf38975_lang = "";
 const _export_sfc = (sfc, props) => {
   const target = sfc.__vccOpts || sfc;
   for (const [key, val] of props) {
@@ -30026,5 +29950,7 @@ const _export_sfc = (sfc, props) => {
   return target;
 };
 const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-abf38975"]]);
-__vitePreload(() => Promise.resolve({}), true ? ["assets/style-cd650274.css"] : void 0);
+{
+  __vitePreload(() => Promise.resolve({}), true ? __vite__mapDeps([0]) : void 0);
+}
 createApp(App).use(plugin, { maps: { GermanyMap, JapanMap } }).mount("#app");
