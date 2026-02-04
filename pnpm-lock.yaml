@@ -103,8 +103,8 @@ importers:
   packages/playground:
     dependencies:
       vue:
-        specifier: ^3.4.0
-        version: 3.4.27(typescript@5.9.3)
+        specifier: ^3.5.27
+        version: 3.5.27(typescript@5.9.3)
       vue3-map-chart:
         specifier: workspace:*
         version: link:../vue3-map-chart
