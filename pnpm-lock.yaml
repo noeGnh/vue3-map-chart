@@ -25,7 +25,7 @@ importers:
         version: 5.62.0(eslint@8.57.1)(typescript@5.9.3)
       '@vitejs/plugin-vue':
         specifier: ^6.0.4
-        version: 6.0.4(vite@5.4.21(@types/node@25.2.1)(terser@5.31.3))(vue@3.5.27(typescript@5.9.3))
+        version: 6.0.4(vite@7.3.1(@types/node@25.2.1)(terser@5.31.3)(tsx@4.21.0)(yaml@2.8.2))(vue@3.5.27(typescript@5.9.3))
       '@vue/compiler-dom':
         specifier: ^3.5.27
         version: 3.5.27
@@ -78,8 +78,8 @@ importers:
         specifier: ^31.0.0
         version: 31.0.0(vue@3.5.27(typescript@5.9.3))
       vite:
-        specifier: ^5.4.21
-        version: 5.4.21(@types/node@25.2.1)(terser@5.31.3)
+        specifier: ^7.3.1
+        version: 7.3.1(@types/node@25.2.1)(terser@5.31.3)(tsx@4.21.0)(yaml@2.8.2)
       vitest:
         specifier: ^4.0.18
         version: 4.0.18(@types/node@25.2.1)(jsdom@28.0.0)(terser@5.31.3)(tsx@4.21.0)(yaml@2.8.2)
@@ -119,8 +119,8 @@ importers:
         specifier: ^6.0.5
         version: 6.0.5(rollup@4.57.1)
       vite:
-        specifier: ^5.4.21
-        version: 5.4.21(@types/node@25.2.1)(terser@5.31.3)
+        specifier: ^7.3.1
+        version: 7.3.1(@types/node@25.2.1)(terser@5.31.3)(tsx@4.21.0)(yaml@2.8.2)
       vue-tsc:
         specifier: ^3.2.4
         version: 3.2.4(typescript@5.9.3)
@@ -165,8 +165,8 @@ importers:
         specifier: ^4.21.0
         version: 4.21.0
       vite:
-        specifier: ^5.4.21
-        version: 5.4.21(@types/node@25.2.1)(terser@5.31.3)
+        specifier: ^7.3.1
+        version: 7.3.1(@types/node@25.2.1)(terser@5.31.3)(tsx@4.21.0)(yaml@2.8.2)
       vite-svg-loader:
         specifier: ^5.1.0
         version: 5.1.0(vue@3.5.27(typescript@5.9.3))
@@ -208,8 +208,8 @@ importers:
         specifier: ^4.21.0
         version: 4.21.0
       vite:
-        specifier: ^5.4.21
-        version: 5.4.21(@types/node@25.2.1)(terser@5.31.3)
+        specifier: ^7.3.1
+        version: 7.3.1(@types/node@25.2.1)(terser@5.31.3)(tsx@4.21.0)(yaml@2.8.2)
       vitest:
         specifier: ^4.0.18
         version: 4.0.18(@types/node@25.2.1)(jsdom@28.0.0)(terser@5.31.3)(tsx@4.21.0)(yaml@2.8.2)
@@ -4701,10 +4701,10 @@ snapshots:
       vite: 5.4.21(@types/node@25.2.1)(terser@5.31.3)
       vue: 3.5.27(typescript@5.9.3)
 
-  '@vitejs/plugin-vue@6.0.4(vite@5.4.21(@types/node@25.2.1)(terser@5.31.3))(vue@3.5.27(typescript@5.9.3))':
+  '@vitejs/plugin-vue@6.0.4(vite@7.3.1(@types/node@25.2.1)(terser@5.31.3)(tsx@4.21.0)(yaml@2.8.2))(vue@3.5.27(typescript@5.9.3))':
     dependencies:
       '@rolldown/pluginutils': 1.0.0-rc.2
-      vite: 5.4.21(@types/node@25.2.1)(terser@5.31.3)
+      vite: 7.3.1(@types/node@25.2.1)(terser@5.31.3)(tsx@4.21.0)(yaml@2.8.2)
       vue: 3.5.27(typescript@5.9.3)
 
   '@vitest/expect@4.0.18':
