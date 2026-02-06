@@ -43,7 +43,7 @@
   "devDependencies": {
     "@types/iso-3166-2": "^1.0.4",
     "@types/jsdom": "^27.0.0",
-    "@types/node": "^25.2.0",
+    "@types/node": "^25.2.1",
     "auto-changelog": "^2.5.0",
     "fast-glob": "^3.3.3",
     "rollup-plugin-visualizer": "^6.0.5",
