@@ -89,6 +89,16 @@ export default defineConfig({
         globals: {
           vue: 'Vue',
         },
+        assetFileNames: (assetInfo) => {
+          if (
+            assetInfo.names &&
+            assetInfo.names.some((n) => n.endsWith('.css'))
+          ) {
+            return 'style.css'
+          }
+
+          return '[name][extname]'
+        },
       },
       onwarn(warning, warn) {
         // Ignore dynamic import warnings for SVG components
