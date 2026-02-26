@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@types/iso-3166-2": "^1.0.4",
-    "@types/jsdom": "^27.0.0",
+    "@types/jsdom": "^28.0.0",
     "@types/node": "^25.3.0",
     "auto-changelog": "^2.5.0",
     "fast-glob": "^3.3.3",
