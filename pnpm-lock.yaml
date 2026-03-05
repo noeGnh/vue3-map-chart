@@ -116,8 +116,8 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
       rollup-plugin-visualizer:
-        specifier: ^7.0.0
-        version: 7.0.0(rollup@4.57.1)
+        specifier: ^7.0.1
+        version: 7.0.1(rollup@4.57.1)
       vite:
         specifier: ^7.3.1
         version: 7.3.1(@types/node@25.3.1)(terser@5.31.3)(tsx@4.21.0)(yaml@2.8.2)
@@ -156,8 +156,8 @@ importers:
         specifier: ^3.3.3
         version: 3.3.3
       rollup-plugin-visualizer:
-        specifier: ^7.0.0
-        version: 7.0.0(rollup@4.57.1)
+        specifier: ^7.0.1
+        version: 7.0.1(rollup@4.57.1)
       svgo:
         specifier: ^4.0.0
         version: 4.0.0
@@ -202,8 +202,8 @@ importers:
         specifier: ^3.3.3
         version: 3.3.3
       rollup-plugin-visualizer:
-        specifier: ^7.0.0
-        version: 7.0.0(rollup@4.57.1)
+        specifier: ^7.0.1
+        version: 7.0.1(rollup@4.57.1)
       tsx:
         specifier: ^4.21.0
         version: 4.21.0
@@ -3100,8 +3100,8 @@ packages:
     deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
 
-  rollup-plugin-visualizer@7.0.0:
-    resolution: {integrity: sha512-loo4kmhTg7GMO0hqaUv/azvLPUT2B4jXU3gNMG35gm1mWKpOzhV6rspb/Mqmsfg7oOTdkzdmOckCIwGB5Ca1CA==}
+  rollup-plugin-visualizer@7.0.1:
+    resolution: {integrity: sha512-UJUT4+1Ho4OcWmPYU3sYXgUqI8B8Ayfe06MX7y0qCJ1K8aGoKtR/NDd/2nZqM7ADkrzny+I99Ul7GgyoiVNAgg==}
     engines: {node: '>=22'}
     hasBin: true
     peerDependencies:
@@ -3300,6 +3300,10 @@ packages:
 
   strip-ansi@7.1.2:
     resolution: {integrity: sha512-gmBGslpoQJtgnMAvOVqGZpEz9dyoKTCzy2nfz/n8aIFhN/jCE/rCmcxabB6jOOHV+0WNnylOxaxBQPSvcWklhA==}
+    engines: {node: '>=12'}
+
+  strip-ansi@7.2.0:
+    resolution: {integrity: sha512-yDPMNjp4WyfYBkHnjIRLfca1i6KMyGCtsVgoKe/z1+6vukgaENdgGBZt+ZmKPc4gavvEZ5OgHfHdrazhgNyG7w==}
     engines: {node: '>=12'}
 
   strip-bom@3.0.0:
@@ -4255,7 +4259,7 @@ snapshots:
     dependencies:
       string-width: 5.1.2
       string-width-cjs: string-width@4.2.3
-      strip-ansi: 7.1.2
+      strip-ansi: 7.2.0
       strip-ansi-cjs: strip-ansi@6.0.1
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
@@ -5317,7 +5321,7 @@ snapshots:
   cliui@9.0.1:
     dependencies:
       string-width: 7.2.0
-      strip-ansi: 7.1.2
+      strip-ansi: 7.2.0
       wrap-ansi: 9.0.2
 
   color-convert@2.0.1:
@@ -6883,7 +6887,7 @@ snapshots:
     dependencies:
       glob: 7.2.3
 
-  rollup-plugin-visualizer@7.0.0(rollup@4.57.1):
+  rollup-plugin-visualizer@7.0.1(rollup@4.57.1):
     dependencies:
       open: 11.0.0
       picomatch: 4.0.3
@@ -7120,18 +7124,18 @@ snapshots:
     dependencies:
       eastasianwidth: 0.2.0
       emoji-regex: 9.2.2
-      strip-ansi: 7.1.2
+      strip-ansi: 7.2.0
 
   string-width@7.2.0:
     dependencies:
       emoji-regex: 10.6.0
       get-east-asian-width: 1.5.0
-      strip-ansi: 7.1.2
+      strip-ansi: 7.2.0
 
   string-width@8.2.0:
     dependencies:
       get-east-asian-width: 1.5.0
-      strip-ansi: 7.1.2
+      strip-ansi: 7.2.0
 
   string.prototype.trim@1.2.10:
     dependencies:
@@ -7169,6 +7173,10 @@ snapshots:
       ansi-regex: 5.0.1
 
   strip-ansi@7.1.2:
+    dependencies:
+      ansi-regex: 6.2.2
+
+  strip-ansi@7.2.0:
     dependencies:
       ansi-regex: 6.2.2
 
@@ -7735,7 +7743,7 @@ snapshots:
     dependencies:
       ansi-styles: 6.2.3
       string-width: 5.1.2
-      strip-ansi: 7.1.2
+      strip-ansi: 7.2.0
 
   wrap-ansi@9.0.2:
     dependencies:
