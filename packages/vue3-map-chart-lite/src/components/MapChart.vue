@@ -150,12 +150,13 @@
         currentAreaId.value = id
         currentAreaValue.value = id ? props.data[id] : null
         if (
-          id &&
-          isValidIsoCode(id) &&
-          !!(
-            countries.getName(id, props.langCode) ||
-            iso3166.subdivision(id)?.name
-          )
+          (id &&
+            isValidIsoCode(id) &&
+            !!(
+              countries.getName(id, props.langCode) ||
+              iso3166.subdivision(id)?.name
+            )) ||
+          (props.customMapSvg && isSVG(props.customMapSvg))
         ) {
           emits(emitId, id, currentAreaValue.value)
           if (emitId == 'mapItemTouchstart') {
@@ -306,12 +307,16 @@
           opacity = (value - min) / (max - min)
           opacity = opacity == 0 ? 0.05 : opacity
         }
-        css.value += ` #v3mc-map-${cpntId} #${key.toUpperCase()} { fill: ${
+        const id =
+          props.customMapSvg && isSVG(props.customMapSvg)
+            ? key
+            : key.toUpperCase()
+        css.value += ` #v3mc-map-${cpntId} #${id} { fill: ${
           color || props.baseColor
         }; fill-opacity: ${opacity}; cursor: ${
           props.displayLegend ? 'pointer' : 'default'
         }; } `
-        css.value += ` #v3mc-map-${cpntId} #${key.toUpperCase()}:hover { fill-opacity: ${
+        css.value += ` #v3mc-map-${cpntId} #${id}:hover { fill-opacity: ${
           opacity + 0.05
         }; } `
       })
@@ -408,6 +413,25 @@
 
   // Dynamically Display area name on map
 
+  const getAreaName = (id: string) => {
+    const customLegendLabel =
+      props.data && props.data[id] && typeof props.data[id] === 'number'
+        ? undefined
+        : (props.data[id] as MapDataValue)?.legendLabel
+
+    const customMapLabel =
+      props.customMapLabels && props.customMapLabels[id]
+        ? props.customMapLabels[id]
+        : undefined
+
+    const areaName =
+      countries.getName(id, props.langCode) ||
+      iso3166.subdivision(id)?.name ||
+      id
+
+    return customLegendLabel || customMapLabel || areaName || id
+  }
+
   onMounted(() => {
     if (props.areaNameOnMap == 'none') return
 
@@ -423,11 +447,12 @@
       )
         .filter(
           (el) =>
-            (isValidIsoCode(el.id) &&
+            (((isValidIsoCode(el.id) &&
               !!(
                 countries.getName(el.id, props.langCode) ||
                 iso3166.subdivision(el.id)?.name
-              ) &&
+              )) ||
+              (props.customMapSvg && isSVG(props.customMapSvg))) &&
               props.areaNameOnMap == 'all') ||
             Object.keys(props.data).includes(el.id)
         )
@@ -476,10 +501,7 @@
           textElem.setAttribute('font-size', `${props.areaNameOnMapSize}`)
           textElem.setAttribute('fill', `${props.areaNameOnMapColor}`)
           textElem.setAttribute('pointer-events', 'none')
-          textElem.textContent =
-            countries.getName(area.element.id, props.langCode) ||
-            iso3166.subdivision(area.element.id)?.name ||
-            ''
+          textElem.textContent = getAreaName(area.element.id)
 
           // Get the label group
           const svg = area.element.ownerSVGElement

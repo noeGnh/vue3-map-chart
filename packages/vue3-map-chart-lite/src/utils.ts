@@ -58,23 +58,15 @@ export function isValidIsoCode(code: string): boolean {
  * @return {boolean} Returns true if the string is a valid SVG document, false otherwise.
  */
 export function isSVG(input: string): boolean {
-  const svgRegex = /^\s*<svg\b[^>]*>.*<\/svg>\s*$/is
-
   try {
-    if (svgRegex.test(input)) {
-      const parser = new DOMParser()
-      const doc = parser.parseFromString(input, 'image/svg+xml')
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(input.trim(), 'image/svg+xml')
 
-      const parserErrors = doc.getElementsByTagName('parsererror')
-      if (parserErrors.length > 0) {
-        return false
-      }
+    if (doc.getElementsByTagName('parsererror').length > 0) return false
 
-      const svgElements = doc.getElementsByTagName('svg')
-      return svgElements.length > 0 && svgElements[0]?.parentNode === doc
-    }
-    return false
-  } catch (e) {
+    const root = doc.documentElement
+    return root.tagName.toLowerCase() === 'svg'
+  } catch {
     return false
   }
 }

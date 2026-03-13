@@ -3,14 +3,15 @@
     AfricaMap,
     AsiaMap,
     BrazilMap,
-    EgyptMap,
     EuropeMap,
     NorthAmericaMap,
     OceaniaMap,
     SouthAmericaMap,
     WorldMap,
   } from 'vue3-map-chart-lite'
-  import type { MapDataValue } from 'vue3-map-chart-lite/types/types'
+  import { MapDataValue } from 'vue3-map-chart/src/types/index.js'
+
+  import customMap from './maps/p-bl.svg?raw'
 
   const worldData = {
     US: 13,
@@ -344,22 +345,16 @@
     },
   }
 
-  const egyptData = {
-    'EG-C': 72, // Cairo (Le Caire)
-    'EG-GZ': 65, // Giza (Gizeh)
-    'EG-DK': 60, // Dakahlia
-    'EG-SHR': 59, // Sharqia
-    'EG-MT': 64, // Matruh
-    'EG-JS': 58, // South Sinai (Janub Sina')
-    'EG-BA': 48, // Bani Suwayf
-    'EG-ASN': 52, // Aswan
-    'EG-FYM': 47, // Faiyum
-    'EG-BH': 66, // Beheira
-    'EG-KB': 61, // Qalyubia
-    'EG-MNF': 55, // Monufia
-    'EG-IS': 53, // Ismailia
-    'EG-KFS': 50, // Kafr el-Sheikh
-    'EG-SUZ': 62, // Suez
+  const customMapData = {
+    'blitta-1': 66,
+    'blitta-2': 58,
+    'blitta-3': 36,
+  }
+
+  const customMapLabels = {
+    'blitta-1': 'Blitta 1',
+    'blitta-2': 'Blitta 2',
+    'blitta-3': 'Blitta 3',
   }
 
   const isTouchDevice = computed(
@@ -514,12 +509,15 @@
         legend-value-suffix="°C"
         legend-bg-color="rgba(0,0,0,0.7)"
         legend-text-color="white"
-        :data="egyptData"
+        :custom-map-svg="customMap"
+        :custom-map-labels="customMapLabels"
+        :data="customMapData"
         :map-styles="{ height: '100%' }"
-        @map-item-click="onMapItemClick">
-        <EgyptMap />
-      </MapChart>
-      <div class="map-label">Egypt</div>
+        :area-name-on-map-size="16"
+        area-name-on-map-bg-color="rgba(0, 0, 255, 0.75)"
+        area-name-on-map="all"
+        @map-item-click="onMapItemClick" />
+      <div class="map-label">Custom Map</div>
     </div>
   </div>
 </template>

@@ -2,6 +2,7 @@ import vue from '@vitejs/plugin-vue'
 // import { visualizer } from 'rollup-plugin-visualizer'
 import AutoImport from 'unplugin-auto-import/vite'
 import { defineConfig } from 'vite'
+import SvgLoader from 'vite-svg-loader'
 
 process.env.NODE_ENV
 export default defineConfig({
@@ -42,6 +43,9 @@ export default defineConfig({
         filepath: './.eslintrc-auto-import.json', // Default `./.eslintrc-auto-import.json`
         globalsPropValue: true, // Default `true`, (true | false | 'readonly' | 'readable' | 'writable' | 'writeable')
       },
+    }),
+    SvgLoader({
+      defaultImport: 'url', // or 'raw'
     }),
   ],
   resolve: {
