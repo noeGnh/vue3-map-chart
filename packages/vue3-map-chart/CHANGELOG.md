@@ -5,7 +5,57 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v0.1.9](https://github.com/noeGnh/vue3-map-chart/compare/v0.1.8...v0.1.9)
+## [v0.2.0](https://github.com/noeGnh/vue3-map-chart/compare/v0.1.9...v0.2.0)
+
+### Merged
+
+- build(deps): bump vue from 3.5.29 to 3.5.30 [`#50`](https://github.com/noeGnh/vue3-map-chart/pull/50)
+- build(deps-dev): bump lint-staged from 16.2.7 to 16.3.3 [`#53`](https://github.com/noeGnh/vue3-map-chart/pull/53)
+- build(deps-dev): bump @vue/compiler-sfc from 3.5.29 to 3.5.30 [`#51`](https://github.com/noeGnh/vue3-map-chart/pull/51)
+- build(deps-dev): bump @types/node from 25.3.3 to 25.4.0 [`#52`](https://github.com/noeGnh/vue3-map-chart/pull/52)
+- build(deps-dev): bump vite-svg-loader from 5.1.0 to 5.1.1 [`#49`](https://github.com/noeGnh/vue3-map-chart/pull/49)
+- build(deps-dev): bump @vue/tsconfig from 0.8.1 to 0.9.0 [`#44`](https://github.com/noeGnh/vue3-map-chart/pull/44)
+- build(deps-dev): bump svgo from 4.0.0 to 4.0.1 [`#47`](https://github.com/noeGnh/vue3-map-chart/pull/47)
+- build(deps-dev): bump @vue/compiler-sfc from 3.5.28 to 3.5.29 [`#45`](https://github.com/noeGnh/vue3-map-chart/pull/45)
+- build(deps-dev): bump @types/node from 25.3.1 to 25.3.3 [`#46`](https://github.com/noeGnh/vue3-map-chart/pull/46)
+- build(deps-dev): bump rollup-plugin-visualizer from 7.0.0 to 7.0.1 [`#48`](https://github.com/noeGnh/vue3-map-chart/pull/48)
+- build(deps-dev): bump rollup-plugin-visualizer from 6.0.5 to 7.0.0 [`#43`](https://github.com/noeGnh/vue3-map-chart/pull/43)
+- build(deps-dev): bump @types/node from 25.3.0 to 25.3.1 [`#41`](https://github.com/noeGnh/vue3-map-chart/pull/41)
+- build(deps-dev): bump @vue/compiler-dom from 3.5.28 to 3.5.29 [`#40`](https://github.com/noeGnh/vue3-map-chart/pull/40)
+- build(deps-dev): bump @types/jsdom from 27.0.0 to 28.0.0 [`#39`](https://github.com/noeGnh/vue3-map-chart/pull/39)
+- build(deps): bump vue from 3.5.28 to 3.5.29 [`#42`](https://github.com/noeGnh/vue3-map-chart/pull/42)
+- build(deps-dev): bump jsdom from 28.0.0 to 28.1.0 [`#37`](https://github.com/noeGnh/vue3-map-chart/pull/37)
+- build(deps-dev): bump @types/node from 25.2.3 to 25.3.0 [`#38`](https://github.com/noeGnh/vue3-map-chart/pull/38)
+- build(deps-dev): bump @vue/compiler-dom from 3.5.27 to 3.5.28 [`#33`](https://github.com/noeGnh/vue3-map-chart/pull/33)
+- build(deps): bump vue from 3.5.27 to 3.5.28 [`#34`](https://github.com/noeGnh/vue3-map-chart/pull/34)
+- build(deps-dev): bump @vue/compiler-sfc from 3.5.27 to 3.5.28 [`#35`](https://github.com/noeGnh/vue3-map-chart/pull/35)
+- build(deps): bump @vueuse/core from 14.2.0 to 14.2.1 [`#36`](https://github.com/noeGnh/vue3-map-chart/pull/36)
+- build(deps-dev): bump @types/node from 25.2.1 to 25.2.3 [`#32`](https://github.com/noeGnh/vue3-map-chart/pull/32)
+- build(deps-dev): bump vite from 5.4.21 to 7.3.1 [`#28`](https://github.com/noeGnh/vue3-map-chart/pull/28)
+- build(deps-dev): bump vitepress from 1.1.4 to 1.6.4 [`#29`](https://github.com/noeGnh/vue3-map-chart/pull/29)
+- build(deps-dev): bump vitest from 0.28.5 to 4.0.18 [`#31`](https://github.com/noeGnh/vue3-map-chart/pull/31)
+- build(deps): bump @vueuse/core from 12.8.2 to 14.2.0 [`#30`](https://github.com/noeGnh/vue3-map-chart/pull/30)
+- build(deps-dev): bump tsx from 4.20.3 to 4.21.0 [`#25`](https://github.com/noeGnh/vue3-map-chart/pull/25)
+- build(deps-dev): bump @types/node from 25.2.0 to 25.2.1 [`#26`](https://github.com/noeGnh/vue3-map-chart/pull/26)
+- build(deps-dev): bump eslint-plugin-prettier from 4.2.5 to 5.5.5 [`#27`](https://github.com/noeGnh/vue3-map-chart/pull/27)
+- build(deps-dev): bump @vitejs/plugin-vue from 4.6.2 to 6.0.4 [`#22`](https://github.com/noeGnh/vue3-map-chart/pull/22)
+- build(deps-dev): bump @types/jsdom from 21.1.7 to 27.0.0 [`#24`](https://github.com/noeGnh/vue3-map-chart/pull/24)
+- build(deps): bump i18n-iso-countries from 7.11.3 to 7.14.0 [`#23`](https://github.com/noeGnh/vue3-map-chart/pull/23)
+- build(deps-dev): bump auto-changelog from 2.4.0 to 2.5.0 [`#20`](https://github.com/noeGnh/vue3-map-chart/pull/20)
+- build(deps-dev): bump rollup-plugin-visualizer from 6.0.3 to 6.0.5 [`#21`](https://github.com/noeGnh/vue3-map-chart/pull/21)
+- build(deps-dev): bump jsdom from 21.1.2 to 28.0.0 [`#15`](https://github.com/noeGnh/vue3-map-chart/pull/15)
+- build(deps-dev): bump husky from 8.0.3 to 9.1.7 [`#18`](https://github.com/noeGnh/vue3-map-chart/pull/18)
+- build(deps): bump vue from 3.4.27 to 3.5.27 [`#16`](https://github.com/noeGnh/vue3-map-chart/pull/16)
+- build(deps-dev): bump @vue/eslint-config-prettier from 7.1.0 to 10.2.0 [`#17`](https://github.com/noeGnh/vue3-map-chart/pull/17)
+- build(deps-dev): bump lint-staged from 13.3.0 to 16.2.7 [`#19`](https://github.com/noeGnh/vue3-map-chart/pull/19)
+
+### Commits
+
+- fix: resolve some operational issues with custom maps [`dbffcdc`](https://github.com/noeGnh/vue3-map-chart/commit/dbffcdc89e1fa397ad00267d8129fa71f25d64c2)
+- build: update some dependencies [`971c8d8`](https://github.com/noeGnh/vue3-map-chart/commit/971c8d81f300508ba91a5a73863ca43e497253d6)
+- build: update some dependencies [`bbe9667`](https://github.com/noeGnh/vue3-map-chart/commit/bbe9667b4603d819ba0c68bd6a78020f57ca8b2b)
+
+## [v0.1.9](https://github.com/noeGnh/vue3-map-chart/compare/v0.1.8...v0.1.9) - 2026-02-04
 
 ### Merged
 
