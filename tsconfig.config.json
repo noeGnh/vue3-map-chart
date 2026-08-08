@@ -1,0 +1,14 @@
+{
+  "extends": "@tsconfig/node22/tsconfig.json",
+  "include": [
+    "packages/*/vite.config.*",
+    "package/*/vitest.config.*",
+    "cypress.config.*",
+    "playwright.config.*"
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "types": ["node"],
+    "ignoreDeprecations": "6.0"
+  }
+}

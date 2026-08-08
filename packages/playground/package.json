@@ -1,0 +1,24 @@
+{
+  "name": "playground",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "deploy": "gh-pages -d dist -b demo"
+  },
+  "dependencies": {
+    "vue": "^3.5.40",
+    "vue3-map-chart": "workspace:*",
+    "vue3-map-chart-lite": "workspace:*"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0",
+    "rollup-plugin-visualizer": "^7.0.1",
+    "vite": "^8.1.5",
+    "vite-svg-loader": "^5.1.1",
+    "vue-tsc": "^3.3.8"
+  }
+}

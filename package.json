@@ -1,0 +1,68 @@
+{
+  "name": "vue3-map-chart-monorepo",
+  "version": "0.0.1",
+  "description": "A monorepo template for developing Vue libraries",
+  "author": "Noé Gnanih <noegnanih@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "docs": "pnpm -F docs run dev",
+    "dev": "pnpm -F playground run dev",
+    "test": "pnpm -F vue3-map-chart run test",
+    "build": "pnpm build-plugin && pnpm build-plugin-lite && pnpm build-playground && pnpm build-docs",
+    "build-plugin": "pnpm -r -F vue3-map-chart run build",
+    "build-plugin-lite": "pnpm -r -F vue3-map-chart-lite run build",
+    "build-playground": "pnpm -F playground run build",
+    "build-docs": "pnpm -F docs run build",
+    "lint": "eslint --ext .js,.ts,.vue .",
+    "lint:fix": "eslint --ext .js,.ts,.vue . --fix",
+    "format": "prettier . --write",
+    "commit": "git add --all && git commit",
+    "commit-push": "git add --all && git commit && git push origin --all",
+    "execute-husky": "npx husky install && npx husky add .husky/pre-commit \"npx --no-install lint-staged\"",
+    "deploy-playground": "pnpm -F playground run deploy"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.{js,ts,vue}": [
+      "eslint . --fix",
+      "prettier . --write"
+    ]
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
+    "@tsconfig/node22": "^22.0.5",
+    "@types/node": "^26.1.2",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "@vitejs/plugin-vue": "^6.0.7",
+    "@vue/compiler-dom": "^3.5.40",
+    "@vue/compiler-sfc": "^3.5.40",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/eslint-config-typescript": "^13.0.0",
+    "@vue/test-utils": "^2.4.11",
+    "@vue/tsconfig": "^0.9.1",
+    "eslint": "^8.57.1",
+    "eslint-import-resolver-typescript": "^4.4.5",
+    "eslint-plugin-prettier": "^5.5.6",
+    "eslint-plugin-vue": "^9.33.0",
+    "husky": "^9.1.7",
+    "jsdom": "^30.0.1",
+    "lint-staged": "^17.1.1",
+    "prettier": "^3.9.6",
+    "typescript": "~6.0.3",
+    "unplugin-auto-import": "^21.0.0",
+    "unplugin-vue-components": "^32.1.0",
+    "vite": "^8.1.5",
+    "vitest": "^4.1.10",
+    "vue": "^3.5.40",
+    "vue-tsc": "^3.3.8"
+  }
+}
